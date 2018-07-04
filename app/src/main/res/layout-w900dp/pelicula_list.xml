@@ -24,8 +24,7 @@
         android:name="com.senkou.carteleraa7.PeliculaListFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:padding="4dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.senkou.carteleraa7.activities.PeliculaListActivity"
         tools:listitem="@layout/pelicula_list_content" />

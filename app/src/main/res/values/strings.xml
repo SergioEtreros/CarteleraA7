@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Cartelera A7</string>
     <string name="title_pelicula_detail">Pelicula Detail</string>
+    <string name="cartel">Cartél</string>
 </resources>

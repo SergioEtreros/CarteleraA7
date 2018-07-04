@@ -33,11 +33,6 @@ class PeliculaListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//        }
-
         if (pelicula_detail_container != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -46,7 +41,9 @@ class PeliculaListActivity : AppCompatActivity() {
             twoPane = true
         }
 
-        val cartelera = Cartelera()
+        val context = applicationContext
+
+        var cartelera = Cartelera(context) /*TODO*/ //Meter esto en la clase APPLICATION PARA QUE SEA COMÚN
         setupRecyclerView(pelicula_list, cartelera.peliculas)
         cartelera.iniciarDatosCartelera(pelicula_list.adapter as PeliculaItemRecyclerViewAdapter)
     }

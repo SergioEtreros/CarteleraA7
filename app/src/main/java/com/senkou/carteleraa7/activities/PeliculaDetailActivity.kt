@@ -23,7 +23,7 @@ class PeliculaDetailActivity : AppCompatActivity() {
         setSupportActionBar(detail_toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Abrir trailer", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
 
@@ -44,8 +44,11 @@ class PeliculaDetailActivity : AppCompatActivity() {
             // using a fragment transaction.
             val fragment = PeliculaDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(PeliculaDetailFragment.ARG_ITEM_ID,
-                            intent.getStringExtra(PeliculaDetailFragment.ARG_ITEM_ID))
+//                    putString(PeliculaDetailFragment.ARG_ITEM_ID, intent.getStringExtra(PeliculaDetailFragment.ARG_ITEM_ID))
+                    putString("TITULO_PELICULA", intent.getStringExtra("TITULO_PELICULA"))
+                    putStringArrayList("DETALLES_PELICULA", intent.getStringArrayListExtra("DETALLES_PELICULA"))
+                    putString("URL_TRAILER", intent.getStringExtra("URL_TRAILER"))
+                    putString("URL_CARTEL", intent.getStringExtra("URL_CARTEL"))
                 }
             }
 

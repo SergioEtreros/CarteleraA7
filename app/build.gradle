@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'org.jetbrains.anko:anko-common:0.9'
     implementation 'org.jsoup:jsoup:1.10.3'
     testImplementation 'junit:junit:4.12'

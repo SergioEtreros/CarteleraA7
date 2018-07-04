@@ -13,7 +13,6 @@ import com.senkou.carteleraa7.Clases.Pelicula
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.activities.PeliculaDetailActivity
 import com.senkou.carteleraa7.activities.PeliculaListActivity
-import com.senkou.carteleraa7.dummy.DummyContent
 import com.senkou.carteleraa7.fragments.PeliculaDetailFragment
 import kotlinx.android.synthetic.main.pelicula_list_content.view.*
 
@@ -26,11 +25,15 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
 
     init {
         onClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyContent.PeliculaItem
+            val item = v.tag as Pelicula
             if (twoPane) {
                 val fragment = PeliculaDetailFragment().apply {
                     arguments = Bundle().apply {
-                        putString(PeliculaDetailFragment.ARG_ITEM_ID, item.titulo)
+//                        putString(PeliculaDetailFragment.ARG_ITEM_ID, item.tituloPelicula)
+                        putString("TITULO_PELICULA", item.tituloPelicula)
+                        putStringArrayList("DETALLES_PELICULA", item.textoFicha)
+                        putString("URL_TRAILER", item.urlTrailer)
+                        putString("URL_CARTEL", item.urlCartel)
                     }
                 }
                 parentActivity.supportFragmentManager
@@ -39,7 +42,11 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
                         .commit()
             } else {
                 val intent = Intent(v.context, PeliculaDetailActivity::class.java).apply {
-                    putExtra(PeliculaDetailFragment.ARG_ITEM_ID, item.titulo)
+//                    putExtra(PeliculaDetailFragment.ARG_ITEM_ID, item.tituloPelicula)
+                    putExtra("TITULO_PELICULA", item.tituloPelicula)
+                    putExtra("DETALLES_PELICULA", item.textoFicha)
+                    putExtra("URL_TRAILER", item.urlTrailer)
+                    putExtra("URL_CARTEL", item.urlCartel)
                 }
                 v.context.startActivity(intent)
             }
@@ -55,7 +62,7 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.idView.text = item.tituloPelicula
-        holder.contentView.text = item.urlHorarios
+        holder.contentView.text = item.textoSesionesHoy
         Glide.with(this.parentActivity).load(item.urlCartel).into(holder.image)
 
 

@@ -1,8 +1,13 @@
 package com.senkou.carteleraa7.Clases
 
 import android.content.Context
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
+import com.google.gson.Gson
 import com.senkou.carteleraa7.adapters.PeliculaItemRecyclerViewAdapter
+import org.apache.commons.text.StringEscapeUtils
+import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.jsoup.Jsoup
@@ -15,53 +20,31 @@ class Cartelera(context: Context) {
     var proximamente: MutableList<Pelicula> = ArrayList()
     val context = context
 
-    fun iniciarDatosCartelera (adapter : PeliculaItemRecyclerViewAdapter) {
+    fun iniciarDatosCartelera (adapter : PeliculaItemRecyclerViewAdapter, progreso: ProgressBar) {
             doAsync {
-            Jsoup.connect("http://www.artesiete.es/principal/index/0/020/Artesiete%20Segovia").get().run {
-                this.getElementsByClass("sz_image_003_wrapper").forEachIndexed { index, grupo ->
-                    grupo.getElementsByClass("sz_image_003_trig_wrap").forEachIndexed { indice, it ->
-                        val objetoImg = it.select("img")
-                        val urlImg = objetoImg.attr("src")
-                        val objetoFicha = it.getElementsByAttributeValueContaining("class","fancybox.ajax")
-                        val urlFicha = objetoFicha.attr("href")
-                        val idPelicula = urlFicha.substringAfterLast("/")
-                        val objetoTrailer = it.getElementsByAttributeValueContaining("href","youtube")
-                        val urlTrailer = objetoTrailer.attr("href")
-                        if (index == 0 || index == 1) {
-                            val enlace = it.getElementsByClass("tamletra2")[1]
-                            val tituloPelicula = enlace.text()
 
-                            if (index == 0){
-                                peliculas.add(Pelicula(tituloPelicula, urlImg, urlFicha, urlTrailer, idPelicula, false))
-                                uiThread {
-                                    adapter.notifyDataSetChanged()
-                                }
-                                if (indice.equals(it.childNodeSize()-1))
-                                {
-                                    uiThread {
-                                        Toast.makeText(context, "Carga Completa", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                                peliculas.last().obtenerDatosFicha()
-                            }
-                            else if (index == 1){
+            Jsoup.connect("https://artesiete.es/CineL/22/Artesiete-Segovia").get().run {
+                val cuerpo = this.getElementById("wrapper3")
+                var utils = StringEscapeUtils.unescapeHtml4(cuerpo.html())
+                val json = "{\"Cartelera\":" + utils.substring(utils.indexOf(":[")+1, utils.lastIndexOf("rootUrl")-2)+"}"
 
-                                ventaAnticipada.add(Pelicula(tituloPelicula, urlImg, urlFicha, urlTrailer, idPelicula, false))
-                                uiThread {
-                                    adapter.notifyDataSetChanged()
-                                }
-                                ventaAnticipada.last().obtenerDatosFicha()
-                            }
-                        }else{
-                            val tituloPelicula = it.getElementsByAttributeValue("href", "#")[1].text()
-                            proximamente.add(Pelicula(tituloPelicula, urlImg, urlFicha, urlTrailer, idPelicula, true))
-                            uiThread {
-                                adapter.notifyDataSetChanged()
-                            }
-                            proximamente.last().obtenerDatosFicha()
+                val cartelera = Gson().fromJson(json, Json4Kotlin_Base::class.java).pelis
+
+                cartelera.forEachWithIndex { i, peli ->
+                    if (peli.fechasSesiones[0].pasesVersiones[0].pases[0].enVentaAnticipada == 0)
+                        peliculas.add(Pelicula(peli.titulo, peli.urlImagen, "", peli.video, peli.codigo, peli.fechasSesiones[0].pasesVersiones[0]))
+                    uiThread {
+                        progreso.visibility = View.GONE
+//                                    progress.visibility = View.INVISIBLE
+                        adapter.notifyDataSetChanged()
+                    }
+                    if (i.equals(cartelera.size-1))
+                    {
+                        uiThread {
+                            Toast.makeText(context, "Carga Completa", Toast.LENGTH_SHORT).show()
                         }
                     }
-
+//                    peliculas.last().obtenerDatosFicha()
                 }
             }
         }

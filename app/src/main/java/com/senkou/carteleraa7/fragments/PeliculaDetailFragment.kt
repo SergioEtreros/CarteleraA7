@@ -69,13 +69,40 @@ class PeliculaDetailFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.pelicula_detail, container, false)
 
+        val builder = StringBuilder()
+            textoFicha.forEachIndexed { index, s ->
+                if (index > 0)
+                    builder.append("\n\n")
 
-//            textoFicha.forEach {
+                if (index == textoFicha.size-1)
+                    builder.append("Sinopsis:\n")
 
-//                textView.text= textoFicha[0]
-//                textView2.text = textoFicha[1]
-//                textView3.text = textoFicha[2]
-//            }
+                builder.append(s)
+
+                if (index == 0)
+                {
+                    builder.insert(3, "ulo")
+                    if (builder.contains("Director"))
+                        builder.insert(builder.indexOf("Director"), "\n")
+
+                    if (builder.contains("Interpretes"))
+                    builder.insert(builder.indexOf("Interpretes"), "\n")
+                }
+                else if (index == 1)
+                {
+                    if (builder.contains("Genero"))
+                    builder.insert(builder.indexOf("Genero"), "\n")
+
+                    if (builder.contains("Estreno"))
+                    builder.insert(builder.indexOf("Estreno"), "\n")
+
+                    if (builder.contains("Calificacion"))
+                    builder.insert(builder.indexOf("Calificacion"), "\n")
+                }
+            }
+        rootView.pelicula_detail.text = builder.toString()
+        rootView.pelicula_detail.textSize = 12.0F
+//        rootView.pelicula_detail.textAlignment =
 
         return rootView
     }

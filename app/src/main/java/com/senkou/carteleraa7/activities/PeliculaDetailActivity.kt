@@ -8,6 +8,9 @@ import android.view.MenuItem
 import com.senkou.carteleraa7.fragments.PeliculaDetailFragment
 import com.senkou.carteleraa7.R
 import kotlinx.android.synthetic.main.activity_pelicula_detail.*
+import android.content.ActivityNotFoundException
+import android.net.Uri
+
 
 /**
  * An activity representing a single Pelicula detail screen. This
@@ -17,6 +20,8 @@ import kotlinx.android.synthetic.main.activity_pelicula_detail.*
  */
 class PeliculaDetailActivity : AppCompatActivity() {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pelicula_detail)
@@ -25,6 +30,9 @@ class PeliculaDetailActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Abrir trailer", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+
+            val videoId = intent.getStringExtra("URL_TRAILER").substringAfter("embed/")
+            openYoutubeLink(videoId)
         }
 
         // Show the Up button in the action bar.
@@ -67,9 +75,21 @@ class PeliculaDetailActivity : AppCompatActivity() {
                     //
                     // http://developer.android.com/design/patterns/navigation.html#up-vs-back
 
-                    navigateUpTo(Intent(this, PeliculaListActivity::class.java))
+                    onBackPressed()
+//                    navigateUpTo(Intent(this, PeliculaListActivity::class.java))
                     true
                 }
                 else -> super.onOptionsItemSelected(item)
             }
+
+    fun openYoutubeLink(youtubeID: String) {
+        val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + youtubeID))
+        val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youtubeID))
+        try {
+            this.startActivity(intentApp)
+        } catch (ex: ActivityNotFoundException) {
+            this.startActivity(intentBrowser)
+        }
+
+    }
 }

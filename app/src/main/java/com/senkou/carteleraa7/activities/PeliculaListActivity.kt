@@ -42,10 +42,13 @@ class PeliculaListActivity : AppCompatActivity() {
         }
 
         val context = applicationContext
+        var progreso = progress
+        if (twoPane)
+            progreso = progress2
 
         var cartelera = Cartelera(context) /*TODO*/ //Meter esto en la clase APPLICATION PARA QUE SEA COMÚN
         setupRecyclerView(pelicula_list, cartelera.peliculas)
-        cartelera.iniciarDatosCartelera(pelicula_list.adapter as PeliculaItemRecyclerViewAdapter)
+        cartelera.iniciarDatosCartelera(pelicula_list.adapter as PeliculaItemRecyclerViewAdapter, progreso)
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, peliculas: MutableList<Pelicula>) {

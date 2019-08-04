@@ -11,6 +11,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 package com.senkou.carteleraa7.Clases
 
 import com.google.gson.annotations.SerializedName
+import org.jetbrains.anko.collections.forEachWithIndex
 
 data class Peli (
 
@@ -33,4 +34,52 @@ data class Peli (
 		@SerializedName("Idioma") val idioma : String,
 		@SerializedName("MostrarEstreno") val mostrarEstreno : Int,
 		@SerializedName("FechasSesiones") val fechasSesiones : List<FechasSesiones>
-)
+){
+	var textoFicha:ArrayList<String> = ArrayList<String>()
+
+	class Salas (val sala:String, var horas:String){}
+
+	fun crearTextoSesiones():String{
+
+		var sesions = ArrayList<Salas>()
+		var textoSesionesHoy = ""
+
+		fechasSesiones[0].pasesVersiones[0].pases.forEachWithIndex { _, pases ->
+
+			var obj = sesions.find { s -> s.sala == pases.sala}
+			if ( obj != null ){
+				obj.horas += " - " + pases.hora.substring(0, pases.hora.lastIndexOf(":"))
+			}
+			else
+				sesions.add(Salas(pases.sala, pases.hora.substring(0, pases.hora.lastIndexOf(":"))))
+		}
+
+		sesions.forEachWithIndex { i, salas ->
+			if (i == (sesions.size -1) )
+				textoSesionesHoy += salas.sala.replace("0", "") + " : " + salas.horas
+			else
+				textoSesionesHoy += salas.sala.replace("0", "") + " : " + salas.horas + "\n"
+		}
+
+		crearDetalles()
+		return textoSesionesHoy
+	}
+
+	fun crearDetalles(){
+
+		if (textoFicha == null)
+			textoFicha = ArrayList<String>()
+
+		if (textoFicha.isEmpty()){
+			textoFicha.add("");
+			textoFicha.add("Título original: " + tituloOriginal)
+            textoFicha.add("Duración: " + duracion)
+            textoFicha.add("Director: " + director)
+            textoFicha.add("Género: " + genero)
+            textoFicha.add("Calificación: " + calificacion)
+			textoFicha.add("Reparto: " + actores)
+            textoFicha.add("Fecha de estreno: " + fechaEstreno)
+            textoFicha.add(sinopsis)
+		}
+	}
+}

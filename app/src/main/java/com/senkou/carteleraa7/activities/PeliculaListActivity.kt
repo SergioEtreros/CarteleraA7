@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import com.senkou.carteleraa7.Clases.Cartelera
-import com.senkou.carteleraa7.Clases.Pelicula
+import com.senkou.carteleraa7.Clases.Peli
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.adapters.PeliculaItemRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_pelicula_list.*
@@ -41,17 +41,16 @@ class PeliculaListActivity : AppCompatActivity() {
             twoPane = true
         }
 
-        val context = applicationContext
         var progreso = progress
         if (twoPane)
             progreso = progress2
 
-        var cartelera = Cartelera(context) /*TODO*/ //Meter esto en la clase APPLICATION PARA QUE SEA COMÚN
-        setupRecyclerView(pelicula_list, cartelera.peliculas)
-        cartelera.iniciarDatosCartelera(pelicula_list.adapter as PeliculaItemRecyclerViewAdapter, progreso)
+        var cartelera = Cartelera() /*TODO*/ //Meter esto en la clase APPLICATION PARA QUE SEA COMÚN
+        setupRecyclerView(peli_list, cartelera.peliculas)
+        cartelera.iniciarDatosCartelera(peli_list.adapter as PeliculaItemRecyclerViewAdapter, progreso)
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView, peliculas: MutableList<Pelicula>) {
+    private fun setupRecyclerView(recyclerView: RecyclerView, peliculas: MutableList<Peli>) {
         recyclerView.adapter = PeliculaItemRecyclerViewAdapter(this, peliculas, twoPane)
     }
 }

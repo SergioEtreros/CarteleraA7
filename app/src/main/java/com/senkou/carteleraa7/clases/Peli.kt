@@ -8,7 +8,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
-package com.senkou.carteleraa7.Clases
+package com.senkou.carteleraa7.clases
 
 import com.google.gson.annotations.SerializedName
 import org.jetbrains.anko.collections.forEachWithIndex
@@ -35,23 +35,25 @@ data class Peli (
 		@SerializedName("MostrarEstreno") val mostrarEstreno : Int,
 		@SerializedName("FechasSesiones") val fechasSesiones : List<FechasSesiones>
 ){
-	var textoFicha:ArrayList<String> = ArrayList<String>()
+	var textoFicha:ArrayList<String> = ArrayList()
 
-	class Salas (val sala:String, var horas:String){}
+	class Salas (val sala:String, var horas:String)
 
 	fun crearTextoSesiones():String{
 
-		var sesions = ArrayList<Salas>()
+		val sesions = ArrayList<Salas>()
 		var textoSesionesHoy = ""
 
-		fechasSesiones[0].pasesVersiones[0].pases.forEachWithIndex { _, pases ->
+		if (!fechasSesiones.isNullOrEmpty()){
+			fechasSesiones[0].pasesVersiones[0].pases.forEachWithIndex { _, pases ->
 
-			var obj = sesions.find { s -> s.sala == pases.sala}
-			if ( obj != null ){
-				obj.horas += " - " + pases.hora.substring(0, pases.hora.lastIndexOf(":"))
+				val obj = sesions.find { s -> s.sala == pases.sala}
+				if ( obj != null ){
+					obj.horas += " - " + pases.hora.substring(0, pases.hora.lastIndexOf(":"))
+				}
+				else
+					sesions.add(Salas(pases.sala, pases.hora.substring(0, pases.hora.lastIndexOf(":"))))
 			}
-			else
-				sesions.add(Salas(pases.sala, pases.hora.substring(0, pases.hora.lastIndexOf(":"))))
 		}
 
 		sesions.forEachWithIndex { i, salas ->
@@ -72,13 +74,13 @@ data class Peli (
 
 		if (textoFicha.isEmpty()){
 			textoFicha.add("");
-			textoFicha.add("Título original: " + tituloOriginal)
-            textoFicha.add("Duración: " + duracion)
-            textoFicha.add("Director: " + director)
-            textoFicha.add("Género: " + genero)
-            textoFicha.add("Calificación: " + calificacion)
-			textoFicha.add("Reparto: " + actores)
-            textoFicha.add("Fecha de estreno: " + fechaEstreno)
+			textoFicha.add("Título original: $tituloOriginal")
+            textoFicha.add("Duración: $duracion")
+            textoFicha.add("Director: $director")
+            textoFicha.add("Género: $genero")
+            textoFicha.add("Calificación: $calificacion")
+			textoFicha.add("Reparto: $actores")
+            textoFicha.add("Fecha de estreno: $fechaEstreno")
             textoFicha.add(sinopsis)
 		}
 	}

@@ -1,14 +1,16 @@
 package com.senkou.carteleraa7.fragments
 
+import android.graphics.Rect
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.senkou.carteleraa7.R
 import kotlinx.android.synthetic.main.activity_pelicula_detail.*
 import kotlinx.android.synthetic.main.pelicula_detail.view.*
-
 
 
 /**
@@ -34,20 +36,24 @@ class PeliculaDetailFragment : Fragment() {
         arguments?.let {
             if (it.containsKey("TITULO_PELICULA")) {
                 tituloPelicula = it.getString("TITULO_PELICULA")
-                activity?.toolbar_layout?.title = tituloPelicula
+                activity?.cabeceraDetalle?.title = tituloPelicula
+               // cabeceraDetalle.title = tituloPelicula
             }
 
             if (it.containsKey("URL_CARTEL")) {
                 urlCartel = it.getString("URL_CARTEL")
 
-//                val theBitmap = Glide.with(this).load(urlCartel).asBitmap().get()
-//
-//                activity?.toolbar_layout?.background = kk
-//
-//                if (pic != null) {
-////                    pic.setImageDrawable(activity?.toolbar_layout?.background)
-//                    activity?.toolbar_layout?.background = pic.drawable
-//                }
+                this.activity?.runOnUiThread {
+                    AsyncTask.execute {
+
+                        val futureTarget = Glide.with(this).asDrawable().load(urlCartel).submit()
+
+                        activity?.cabeceraDetalle?.foreground = futureTarget.get()
+
+                        Glide.with(context!!).clear(futureTarget)
+                    }
+                }
+
             }
 
             if (it.containsKey("DETALLES_PELICULA")) {

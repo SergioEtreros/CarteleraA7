@@ -82,9 +82,9 @@ class PeliculaDetailActivity : AppCompatActivity() {
                 else -> super.onOptionsItemSelected(item)
             }
 
-    fun openYoutubeLink(youtubeID: String) {
-        val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + youtubeID))
-        val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youtubeID))
+    private fun openYoutubeLink(youtubeID: String) {
+        val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$youtubeID"))
+        val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=$youtubeID"))
         try {
             this.startActivity(intentApp)
         } catch (ex: ActivityNotFoundException) {

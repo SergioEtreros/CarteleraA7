@@ -3,8 +3,8 @@ package com.senkou.carteleraa7.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import com.senkou.carteleraa7.Clases.Cartelera
-import com.senkou.carteleraa7.Clases.Peli
+import com.senkou.carteleraa7.clases.Cartelera
+import com.senkou.carteleraa7.clases.Peli
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.adapters.PeliculaItemRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_pelicula_list.*
@@ -45,7 +45,7 @@ class PeliculaListActivity : AppCompatActivity() {
         if (twoPane)
             progreso = progress2
 
-        var cartelera = Cartelera() /*TODO*/ //Meter esto en la clase APPLICATION PARA QUE SEA COMÚN
+        val cartelera = Cartelera() /*TODO*/ //Meter esto en la clase APPLICATION PARA QUE SEA COMÚN
         setupRecyclerView(peli_list, cartelera.peliculas)
         cartelera.iniciarDatosCartelera(peli_list.adapter as PeliculaItemRecyclerViewAdapter, progreso)
     }

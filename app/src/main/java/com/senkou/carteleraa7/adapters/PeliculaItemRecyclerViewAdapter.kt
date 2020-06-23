@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.senkou.carteleraa7.Clases.Peli
+import com.senkou.carteleraa7.clases.Peli
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.activities.PeliculaDetailActivity
 import com.senkou.carteleraa7.activities.PeliculaListActivity
 import com.senkou.carteleraa7.fragments.PeliculaDetailFragment
 import kotlinx.android.synthetic.main.pelicula_list_content.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListActivity,
                                       private val values: MutableList<Peli>,
@@ -65,6 +67,17 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
         holder.contentView.text = item.crearTextoSesiones()
         Glide.with(this.parentActivity).load(item.urlImagen).into(holder.image)
 
+        val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fecha = parser.parse(parser.format(Date()))
+        val fechaEstreno = parser.parse(item.fechaEstreno)
+
+        if (fechaEstreno >= fecha) {
+            holder.fecha.text = item.fechaEstreno
+            holder.fecha.visibility = View.VISIBLE
+        }else{
+            holder.fecha.visibility = View.GONE
+        }
+
         with(holder.itemView) {
             tag = item
             setOnClickListener(onClickListener)
@@ -77,5 +90,6 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
         val idView: TextView = view.id_text
         val contentView: TextView = view.id_horarios
         val image: ImageView = view.id_image
+        val fecha: TextView = view.id_fecha_estreno
     }
 }

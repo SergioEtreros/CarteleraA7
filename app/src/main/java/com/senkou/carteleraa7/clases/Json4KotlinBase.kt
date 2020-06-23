@@ -1,8 +1,8 @@
-package com.senkou.carteleraa7.Clases
+package com.senkou.carteleraa7.clases
 
 import com.google.gson.annotations.SerializedName
 
-data class Json4Kotlin_Base(
+data class Json4KotlinBase(
 
         @SerializedName("Cartelera") val pelis: List<Peli>
 )

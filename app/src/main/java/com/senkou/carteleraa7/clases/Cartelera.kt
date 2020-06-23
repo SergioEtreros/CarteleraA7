@@ -1,4 +1,4 @@
-package com.senkou.carteleraa7.Clases
+package com.senkou.carteleraa7.clases
 
 import android.view.View
 import android.widget.ProgressBar
@@ -10,7 +10,7 @@ import org.jetbrains.anko.uiThread
 import org.jsoup.Jsoup
 import java.util.*
 
-class Cartelera() {
+class Cartelera {
 
     var peliculas: MutableList<Peli> = ArrayList()
 
@@ -18,12 +18,12 @@ class Cartelera() {
             doAsync {
 
             Jsoup.connect("https://artesiete.es/CineL/22/Artesiete-Segovia").get().run {
-                val cuerpo = this.getElementById("wrapper3")
-                var utils = StringEscapeUtils.unescapeHtml4(cuerpo.html())
+                val cuerpo = this.getElementById("wrapper")
+                val utils = StringEscapeUtils.unescapeHtml4(cuerpo.html())
                 val json = "{\"Cartelera\":" + utils.substring(utils.indexOf(":[")+1, utils.lastIndexOf("rootUrl")-2)+"}"
 
-                peliculas.addAll(Gson().fromJson(json, Json4Kotlin_Base::class.java).pelis.toMutableList())
-                peliculas.removeAll{ x -> x.fechasSesiones[0].pasesVersiones[0].pases[0].enVentaAnticipada == 1}
+                peliculas.addAll(Gson().fromJson(json, Json4KotlinBase::class.java).pelis.toMutableList())
+                //peliculas.removeAll{ x -> x.fechasSesiones[0].pasesVersiones[0].pases[0].enVentaAnticipada == 1}
                 uiThread {
                     progreso.visibility = View.GONE
                     adapter.notifyDataSetChanged()

@@ -60,6 +60,7 @@ class PeliculaListActivity : AppCompatActivity() {
 
     private fun iniciarRecycler(progreso:ProgressBar, dia:String){
         peli_list.adapter = PeliculaItemRecyclerViewAdapter(this, cartelera.peliculas, twoPane, dia)
+        cartelera.peliculas.clear()
         cartelera.iniciarDatosCartelera(peli_list.adapter as PeliculaItemRecyclerViewAdapter, progreso, spDia)
     }
 }

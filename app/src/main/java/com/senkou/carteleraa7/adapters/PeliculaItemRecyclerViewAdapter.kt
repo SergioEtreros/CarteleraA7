@@ -20,7 +20,8 @@ import java.util.*
 
 class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListActivity,
                                       private val values: MutableList<Peli>,
-                                      private val twoPane: Boolean) :
+                                      private val twoPane: Boolean,
+                                      private val dia:String) :
         RecyclerView.Adapter<PeliculaItemRecyclerViewAdapter.ViewHolder>() {
 
     private val onClickListener: View.OnClickListener
@@ -64,7 +65,7 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.idView.text = item.titulo
-        holder.contentView.text = item.crearTextoSesiones()
+        holder.contentView.text = item.crearTextoSesiones(dia)
         Glide.with(this.parentActivity).load(item.urlImagen).into(holder.image)
 
         val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -86,7 +87,7 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
 
     override fun getItemCount() = values.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val idView: TextView = view.id_text
         val contentView: TextView = view.id_horarios
         val image: ImageView = view.id_image

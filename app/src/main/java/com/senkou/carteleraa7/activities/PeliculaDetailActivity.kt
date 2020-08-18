@@ -10,6 +10,7 @@ import com.senkou.carteleraa7.R
 import kotlinx.android.synthetic.main.activity_pelicula_detail.*
 import android.content.ActivityNotFoundException
 import android.net.Uri
+import android.widget.Toast
 
 
 /**
@@ -31,8 +32,22 @@ class PeliculaDetailActivity : AppCompatActivity() {
             Snackbar.make(view, "Abrir trailer", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
 
-            val videoId = intent.getStringExtra("URL_TRAILER").substringAfter("embed/")
-            openYoutubeLink(videoId)
+            val urlTrailer = intent.getStringExtra("URL_TRAILER")
+
+            when {
+                urlTrailer.contains("youtu.be") -> {
+                    val videoId = intent.getStringExtra("URL_TRAILER").substringAfter("youtu.be/")
+                    openYoutubeLink(videoId)
+                }
+                urlTrailer.contains("youtube") -> {
+
+                    val videoId = intent.getStringExtra("URL_TRAILER").substringAfter("v=")
+                    openYoutubeLink(videoId)
+                }
+                else -> {
+                    Toast.makeText(this, "No se reconoce la ID del vídeo", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         // Show the Up button in the action bar.

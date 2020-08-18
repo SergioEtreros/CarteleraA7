@@ -2,11 +2,12 @@ package com.senkou.carteleraa7.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
-import com.senkou.carteleraa7.clases.Cartelera
-import com.senkou.carteleraa7.clases.Peli
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ProgressBar
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.adapters.PeliculaItemRecyclerViewAdapter
+import com.senkou.carteleraa7.clases.Cartelera
 import kotlinx.android.synthetic.main.activity_pelicula_list.*
 import kotlinx.android.synthetic.main.pelicula_list.*
 
@@ -25,6 +26,7 @@ class PeliculaListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    private val cartelera = Cartelera()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,12 +47,19 @@ class PeliculaListActivity : AppCompatActivity() {
         if (twoPane)
             progreso = progress2
 
-        val cartelera = Cartelera() /*TODO*/ //Meter esto en la clase APPLICATION PARA QUE SEA COMÚN
-        setupRecyclerView(peli_list, cartelera.peliculas)
-        cartelera.iniciarDatosCartelera(peli_list.adapter as PeliculaItemRecyclerViewAdapter, progreso)
+        // Añadimos el listener para el desplegable
+        spDia.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val item = if (spDia.getItemAtPosition(position).toString() == baseContext.getString(R.string.dia_hoy)) "" else spDia.getItemAtPosition(position).toString()
+                iniciarRecycler(progreso, item)
+            }
+        }
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView, peliculas: MutableList<Peli>) {
-        recyclerView.adapter = PeliculaItemRecyclerViewAdapter(this, peliculas, twoPane)
+    private fun iniciarRecycler(progreso:ProgressBar, dia:String){
+        peli_list.adapter = PeliculaItemRecyclerViewAdapter(this, cartelera.peliculas, twoPane, dia)
+        cartelera.iniciarDatosCartelera(peli_list.adapter as PeliculaItemRecyclerViewAdapter, progreso, spDia)
     }
 }

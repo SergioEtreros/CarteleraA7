@@ -12,6 +12,9 @@ package com.senkou.carteleraa7.clases
 
 import com.google.gson.annotations.SerializedName
 import org.jetbrains.anko.collections.forEachWithIndex
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 data class Peli (
 
@@ -33,26 +36,36 @@ data class Peli (
 		@SerializedName("Audio") val audio : String,
 		@SerializedName("Idioma") val idioma : String,
 		@SerializedName("MostrarEstreno") val mostrarEstreno : Int,
-		@SerializedName("FechasSesiones") val fechasSesiones : List<FechasSesiones>
+		@SerializedName("Sesiones") val sesiones : List<Pases>
 ){
 	var textoFicha:ArrayList<String> = ArrayList()
 
 	class Salas (val sala:String, var horas:String)
 
-	fun crearTextoSesiones():String{
+	fun crearTextoSesiones(dia:String):String{
 
 		val sesions = ArrayList<Salas>()
 		var textoSesionesHoy = ""
 
-		if (!fechasSesiones.isNullOrEmpty()){
-			fechasSesiones[0].pasesVersiones[0].pases.forEachWithIndex { _, pases ->
+		val diaSesiones = if (dia.isNotEmpty())dia else{
+			val formater = SimpleDateFormat("dd/MM/yyyy")
+			val cal = Calendar.getInstance()
+			formater.format(cal.time)}
 
-				val obj = sesions.find { s -> s.sala == pases.sala}
-				if ( obj != null ){
-					obj.horas += " - " + pases.hora.substring(0, pases.hora.lastIndexOf(":"))
+		if (!sesiones.isNullOrEmpty()){
+			sesiones.forEachWithIndex { _, pases ->
+
+				println("Fechas: -$diaSesiones- -${pases.fecha}-")
+
+				if (pases.fecha == diaSesiones) {
+
+					val obj = sesions.find { s -> s.sala == pases.sala }
+					if (obj != null) {
+						obj.horas += " - " + pases.hora.substring(0, pases.hora.lastIndexOf(":"))
+					} else {
+						sesions.add(Salas(pases.sala, pases.hora.substring(0, pases.hora.lastIndexOf(":"))))
+					}
 				}
-				else
-					sesions.add(Salas(pases.sala, pases.hora.substring(0, pases.hora.lastIndexOf(":"))))
 			}
 		}
 
@@ -67,13 +80,13 @@ data class Peli (
 		return textoSesionesHoy
 	}
 
-	fun crearDetalles(){
+	private fun crearDetalles(){
 
 		if (textoFicha == null)
 			textoFicha = ArrayList<String>()
 
 		if (textoFicha.isEmpty()){
-			textoFicha.add("");
+			textoFicha.add("")
 			textoFicha.add("Título original: $tituloOriginal")
             textoFicha.add("Duración: $duracion")
             textoFicha.add("Director: $director")

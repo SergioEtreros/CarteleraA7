@@ -2,4 +2,9 @@
     <string name="app_name">Cartelera A7</string>
     <string name="title_pelicula_detail">Pelicula Detail</string>
     <string name="cartel">Cartél</string>
+    <string name="dia_hoy">Hoy</string>
+    <array name="dias">
+        <item>@string/dia_hoy</item>
+    </array>
+    <string name="texto_dias">Fecha: </string>
 </resources>

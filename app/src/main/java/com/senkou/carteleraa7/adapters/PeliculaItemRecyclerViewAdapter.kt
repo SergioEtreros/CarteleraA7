@@ -2,19 +2,19 @@ package com.senkou.carteleraa7.adapters
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.senkou.carteleraa7.clases.Peli
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.activities.PeliculaDetailActivity
 import com.senkou.carteleraa7.activities.PeliculaListActivity
+import com.senkou.carteleraa7.clases.Peli
 import com.senkou.carteleraa7.fragments.PeliculaDetailFragment
-import kotlinx.android.synthetic.main.pelicula_list_content.view.*
+import kotlinx.android.synthetic.main.card_pelicula.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,7 +32,6 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
             if (twoPane) {
                 val fragment = PeliculaDetailFragment().apply {
                     arguments = Bundle().apply {
-//                        putString(PeliculaDetailFragment.ARG_ITEM_ID, item.tituloPelicula)
                         putString("TITULO_PELICULA", item.titulo)
                         putStringArrayList("DETALLES_PELICULA", item.textoFicha)
                         putString("URL_TRAILER", item.video)
@@ -45,7 +44,6 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
                         .commit()
             } else {
                 val intent = Intent(v.context, PeliculaDetailActivity::class.java).apply {
-//                    putExtra(PeliculaDetailFragment.ARG_ITEM_ID, item.tituloPelicula)
                     putExtra("TITULO_PELICULA", item.titulo)
                     putExtra("DETALLES_PELICULA", item.textoFicha)
                     putExtra("URL_TRAILER", item.video)
@@ -58,11 +56,13 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.pelicula_list_content, parent, false)
+                .inflate(R.layout.card_pelicula, parent, false)
+
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val item = values[position]
         holder.idView.text = item.titulo
         holder.contentView.text = item.crearTextoSesiones(dia)
@@ -72,7 +72,7 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
         val fecha = parser.parse(parser.format(Date()))
         val fechaEstreno = parser.parse(item.fechaEstreno)
 
-        if (fechaEstreno >= fecha) {
+        if (fechaEstreno!! >= fecha!!) {
             holder.fecha.text = item.fechaEstreno
             holder.fecha.visibility = View.VISIBLE
         }else{

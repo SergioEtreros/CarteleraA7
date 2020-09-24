@@ -48,14 +48,14 @@ data class Peli (
 		var textoSesionesHoy = ""
 
 		val diaSesiones = if (dia.isNotEmpty())dia else{
-			val formater = SimpleDateFormat("dd/MM/yyyy")
+			val formater = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 			val cal = Calendar.getInstance()
 			formater.format(cal.time)}
 
 		if (!sesiones.isNullOrEmpty()){
 			sesiones.forEachWithIndex { _, pases ->
 
-				println("Fechas: -$diaSesiones- -${pases.fecha}-")
+//				println("Fechas: -$diaSesiones- -${pases.fecha}-")
 
 				if (pases.fecha == diaSesiones) {
 
@@ -70,10 +70,10 @@ data class Peli (
 		}
 
 		sesions.forEachWithIndex { i, salas ->
-			if (i == (sesions.size -1) )
-				textoSesionesHoy += salas.sala.replace("0", "") + " : " + salas.horas
-			else
-				textoSesionesHoy += salas.sala.replace("0", "") + " : " + salas.horas + "\n"
+			textoSesionesHoy += if (i == (sesions.size -1) )
+					salas.sala.replace("0", "") + " : " + salas.horas
+				else
+					salas.sala.replace("0", "") + " : " + salas.horas + "\n"
 		}
 
 		crearDetalles()
@@ -82,10 +82,8 @@ data class Peli (
 
 	private fun crearDetalles(){
 
-		if (textoFicha == null)
-			textoFicha = ArrayList<String>()
-
-		if (textoFicha.isEmpty()){
+		if (textoFicha.isNullOrEmpty()){
+			textoFicha = ArrayList()
 			textoFicha.add("")
 			textoFicha.add("Título original: $tituloOriginal")
             textoFicha.add("Duración: $duracion")

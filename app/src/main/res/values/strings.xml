@@ -7,4 +7,5 @@
         <item>@string/dia_hoy</item>
     </array>
     <string name="texto_dias">Fecha: </string>
+    <string name="descripcion_cartel">Cartel de la película</string>
 </resources>

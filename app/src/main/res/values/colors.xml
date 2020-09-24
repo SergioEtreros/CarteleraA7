@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorBlack">#000000</color>
+    <color name="color_blanco">#FFFFFF</color>
+    <color name="fondo_lista">#4682B4</color>
+    <color name="resalte_ticket">#2B2B2B</color>
 </resources>

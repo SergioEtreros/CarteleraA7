@@ -1,10 +1,11 @@
 package com.senkou.carteleraa7.activities
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+//import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.adapters.PeliculaItemRecyclerViewAdapter
 import com.senkou.carteleraa7.clases.Cartelera
@@ -43,17 +44,13 @@ class PeliculaListActivity : AppCompatActivity() {
             twoPane = true
         }
 
-        var progreso = progress
-        if (twoPane)
-            progreso = progress2
-
         // Añadimos el listener para el desplegable
         spDia.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val item = if (spDia.getItemAtPosition(position).toString() == baseContext.getString(R.string.dia_hoy)) "" else spDia.getItemAtPosition(position).toString()
-                iniciarRecycler(progreso, item)
+                iniciarRecycler(progress, item)
             }
         }
     }

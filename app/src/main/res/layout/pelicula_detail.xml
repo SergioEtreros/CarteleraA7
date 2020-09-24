@@ -5,6 +5,8 @@
     style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fondo_lista"
     android:padding="16dp"
+    android:textColor="@color/color_blanco"
     android:textIsSelectable="true"
     tools:context=".fragments.PeliculaDetailFragment" />

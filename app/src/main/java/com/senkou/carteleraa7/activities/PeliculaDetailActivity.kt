@@ -1,16 +1,17 @@
 package com.senkou.carteleraa7.activities
 
-import android.content.Intent
+//import android.support.design.widget.Snackbar
+//import android.support.v7.app.AppCompatActivity
+import android.os.AsyncTask
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.senkou.carteleraa7.fragments.PeliculaDetailFragment
+import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.senkou.carteleraa7.R
+import com.senkou.carteleraa7.fragments.PeliculaDetailFragment
+import com.senkou.carteleraa7.util.Utilidades
 import kotlinx.android.synthetic.main.activity_pelicula_detail.*
-import android.content.ActivityNotFoundException
-import android.net.Uri
-import android.widget.Toast
 
 
 /**
@@ -21,12 +22,24 @@ import android.widget.Toast
  */
 class PeliculaDetailActivity : AppCompatActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pelicula_detail)
         setSupportActionBar(detail_toolbar)
+
+        val urlCartel = intent.getStringExtra("URL_CARTEL")
+
+        runOnUiThread {
+            AsyncTask.execute {
+
+                val futureTarget = Glide.with(this).asDrawable().load(urlCartel).submit()
+
+                val draw = futureTarget.get()
+                img_collapse.setImageDrawable(draw)
+
+                Glide.with(this).clear(futureTarget)
+            }
+        }
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Abrir trailer", Snackbar.LENGTH_LONG)
@@ -34,20 +47,7 @@ class PeliculaDetailActivity : AppCompatActivity() {
 
             val urlTrailer = intent.getStringExtra("URL_TRAILER")
 
-            when {
-                urlTrailer.contains("youtu.be") -> {
-                    val videoId = intent.getStringExtra("URL_TRAILER").substringAfter("youtu.be/")
-                    openYoutubeLink(videoId)
-                }
-                urlTrailer.contains("youtube") -> {
-
-                    val videoId = intent.getStringExtra("URL_TRAILER").substringAfter("v=")
-                    openYoutubeLink(videoId)
-                }
-                else -> {
-                    Toast.makeText(this, "No se reconoce la ID del vídeo", Toast.LENGTH_SHORT).show()
-                }
-            }
+            urlTrailer?.let { Utilidades.playTrailer(this, it) }
         }
 
         // Show the Up button in the action bar.
@@ -96,15 +96,4 @@ class PeliculaDetailActivity : AppCompatActivity() {
                 }
                 else -> super.onOptionsItemSelected(item)
             }
-
-    private fun openYoutubeLink(youtubeID: String) {
-        val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$youtubeID"))
-        val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=$youtubeID"))
-        try {
-            this.startActivity(intentApp)
-        } catch (ex: ActivityNotFoundException) {
-            this.startActivity(intentBrowser)
-        }
-
-    }
 }

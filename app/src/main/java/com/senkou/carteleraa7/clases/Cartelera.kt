@@ -7,6 +7,7 @@ import android.widget.Spinner
 import com.google.gson.Gson
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.adapters.PeliculaItemRecyclerViewAdapter
+import com.senkou.carteleraa7.util.Utilidades
 import org.apache.commons.text.StringEscapeUtils
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -41,8 +42,8 @@ class Cartelera {
                         fechasSpinner.add(pases.fecha)
                     }
                 }}
-                fechasSpinner.sort()
 
+                Utilidades.ordenarMeses(fechasSpinner)
                 fechasSpinner[0] = spDia.context.getString(R.string.dia_hoy)
 
                 val adapterSP = ArrayAdapter(spDia.context,

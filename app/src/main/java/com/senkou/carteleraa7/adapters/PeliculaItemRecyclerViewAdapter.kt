@@ -64,8 +64,9 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val item = values[position]
-        holder.idView.text = item.titulo
-        holder.contentView.text = item.crearTextoSesiones(dia)
+        holder.titulo.text = item.titulo
+        holder.titulo.isSelected = true
+        holder.horarios.text = item.crearTextoSesiones(dia)
         Glide.with(this.parentActivity).load(item.urlImagen).into(holder.image)
 
         val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -88,8 +89,8 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
     override fun getItemCount() = values.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.id_text
-        val contentView: TextView = view.id_horarios
+        val titulo: TextView = view.id_text
+        val horarios: TextView = view.id_horarios
         val image: ImageView = view.id_image
         val fecha: TextView = view.id_fecha_estreno
     }

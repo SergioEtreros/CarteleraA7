@@ -7,24 +7,19 @@
     android:layout_height="wrap_content"
     android:layout_gravity="clip_vertical|fill|top"
     android:layout_margin="8dp"
-    android:background="@drawable/tickt_entrada_recortada"
-    android:paddingStart="20dp"
-    android:paddingTop="30dp"
-    android:paddingEnd="20dp"
-    android:paddingBottom="30dp">
+    android:background="@drawable/ticket_blanco"
+    android:padding="18dp">
 
     <ImageView
         android:id="@+id/id_image"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/cartel"
         android:cropToPadding="false"
         android:foregroundGravity="top|center|clip_vertical"
         android:scaleType="fitCenter"
         card_view:layout_constraintBottom_toBottomOf="parent"
-        card_view:layout_constraintEnd_toStartOf="@+id/id_text"
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintTop_toTopOf="parent"
         card_view:srcCompat="@mipmap/ic_launcher" />
@@ -33,19 +28,20 @@
         android:id="@+id/id_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="24dp"
         android:background="@color/resalte_ticket"
+        android:ellipsize="marquee"
         android:gravity="start|center_horizontal"
         android:marqueeRepeatLimit="marquee_forever"
-        android:maxLines="1"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        android:singleLine="true"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="@color/color_blanco"
         android:textIsSelectable="false"
         android:textSize="18sp"
         card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintStart_toEndOf="@+id/id_image"
         card_view:layout_constraintTop_toTopOf="@+id/id_image"
         tools:text="Película" />
 
@@ -81,5 +77,14 @@
         card_view:layout_constraintStart_toStartOf="@+id/id_image"
         card_view:layout_constraintTop_toTopOf="@+id/id_image"
         tools:ignore="SmallSp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="47dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/adorno"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:srcCompat="@drawable/cinema" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,4 +8,5 @@
     </array>
     <string name="texto_dias">Fecha: </string>
     <string name="descripcion_cartel">Cartel de la película</string>
+    <string name="adorno">adorno</string>
 </resources>

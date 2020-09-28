@@ -35,7 +35,23 @@ class Utilidades {
             } catch (ex: ActivityNotFoundException) {
                 context.startActivity(intentBrowser)
             }
+        }
 
+        fun ordenarMeses(fechasSpinner: ArrayList<String>) {
+            fechasSpinner.sort()
+            val primero = fechasSpinner.first()
+
+            val index = fechasSpinner.indexOf(
+                fechasSpinner.find {element->
+                    element.substring(element.indexOf('/')+1, element.lastIndexOf('/')) <
+                    primero.substring(primero.indexOf('/')+1, primero.lastIndexOf('/'))
+            })
+
+            for (i in 1 ..index)
+            {
+                fechasSpinner.add(fechasSpinner.first())
+                fechasSpinner.removeFirst()
+            }
         }
     }
 }

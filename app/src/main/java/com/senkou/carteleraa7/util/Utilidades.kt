@@ -28,8 +28,14 @@ class Utilidades {
 
         private fun openYoutubeLink(context: Context, youtubeID: String) {
 
-            val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$youtubeID"))
-            val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=$youtubeID"))
+            val id = if (youtubeID.contains ("youtube")) {
+                youtubeID.substring(youtubeID.lastIndexOf("/")+1) }
+            else {
+                youtubeID
+            }
+
+            val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$id"))
+            val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=$id"))
             try {
                 context.startActivity(intentApp)
             } catch (ex: ActivityNotFoundException) {

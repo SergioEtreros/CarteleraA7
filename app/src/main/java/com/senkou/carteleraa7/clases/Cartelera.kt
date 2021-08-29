@@ -1,55 +1,63 @@
 package com.senkou.carteleraa7.clases
 
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.ProgressBar
-import android.widget.Spinner
 import com.google.gson.Gson
-import com.senkou.carteleraa7.R
+import com.senkou.carteleraa7.activities.PeliculaListActivity
 import com.senkou.carteleraa7.adapters.PeliculaItemRecyclerViewAdapter
-import com.senkou.carteleraa7.util.Utilidades
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.apache.commons.text.StringEscapeUtils
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import org.jsoup.Jsoup
-import java.util.*
+import java.net.URL
 
-class Cartelera {
+abstract class Cartelera (private val activity: PeliculaListActivity) {
 
     var peliculas: MutableList<Peli> = ArrayList()
 
-    fun iniciarDatosCartelera (adapter: PeliculaItemRecyclerViewAdapter, progreso: ProgressBar, spDia: Spinner) {
-        doAsync {
+    abstract fun rellenarSpinnerDia()
+    abstract fun notificarInsercion(posicion: Int)
 
-            Jsoup.connect("https://prc.artesiete.es/Cine/22/Artesiete-segovia").get().run {
-                val cuerpo = this.getElementById("wrapper")
-                val utils = StringEscapeUtils.unescapeHtml4(cuerpo.html())
-                val json = "{\"Cartelera\":" + utils.substring(utils.indexOf(":[")+1, utils.lastIndexOf("rootUrl")-2)+"}"
+    fun iniciarDatosCartelera (adapter: PeliculaItemRecyclerViewAdapter, progreso: ProgressBar) {
 
-                peliculas.addAll(Gson().fromJson(json, Json4KotlinBase::class.java).pelis.toMutableList())
-                //peliculas.removeAll{ x -> x.fechasSesiones[0].pasesVersiones[0].pases[0].enVentaAnticipada == 1}
-                uiThread {
-                    progreso.visibility = View.GONE
-                    adapter.notifyDataSetChanged()
-                }
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                Jsoup.connect("https://artesiete.es/Cine/13/Artesiete-Segovia").get().run {
+                    val cuerpo = this.getElementById("wrapper")
+                    val utils = StringEscapeUtils.unescapeHtml4(cuerpo.html())
+                    val json = "{\"Cartelera\":" + utils.substring(
+                        utils.indexOf(":[") + 1,
+                        utils.lastIndexOf("rootUrl") - 2
+                    ) + "}"
 
-            // rellenamos el spinner de los dias
-            if (spDia.adapter.count <= 1){
-                val fechasSpinner = arrayListOf<String>()
-                peliculas.forEach { peli: Peli ->  peli.sesiones.forEach{pases: Pases ->
-                    if (!fechasSpinner.contains(pases.fecha)){
-                        fechasSpinner.add(pases.fecha)
+                    Gson().fromJson(json,Json4KotlinBase::class.java).pelis.toMutableList().forEach {peli->
+
+                        val jsonPases= URL("https://www.artesiete.es/Pelicula/${peli.codigo}/13/").readText()
+                        val pasesPelis = Gson().fromJson(jsonPases, PasesPelis::class.java)
+
+                        pasesPelis.Programacion.forEach { programa->
+                            programa.Pelis.forEach {sesion->
+                                sesion.Pases.forEach {pase->
+                                    peli.sesiones.forEach {
+                                        if (it.iD_Sesion == pase.ID_Pase.toInt()) {
+                                            it.fecha = programa.FechaEfectiva
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        peliculas.add(peli)
                     }
-                }}
 
-                Utilidades.ordenarMeses(fechasSpinner)
-                fechasSpinner[0] = spDia.context.getString(R.string.dia_hoy)
-
-                val adapterSP = ArrayAdapter(spDia.context,
-                        android.R.layout.simple_spinner_item, fechasSpinner)
-                spDia.adapter = adapterSP
-                adapterSP.notifyDataSetChanged()
+                    activity.runOnUiThread {
+                        progreso.visibility = View.GONE
+                        adapter.notifyItemRangeInserted(0, peliculas.size)
+                    }
+                    rellenarSpinnerDia()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

@@ -50,7 +50,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/fondo_lista"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical"
+        android:clipToPadding="true"
+        tools:context=".fragments.PeliculaDetailFragment">
+        <TextView
+            android:id="@+id/pelicula_detail_text"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/fondo_lista"
+            android:padding="16dp"
+            android:textColor="@color/color_blanco"/>
+
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -61,6 +74,7 @@
         app:backgroundTint="@android:color/holo_red_dark"
         app:layout_anchor="@+id/pelicula_detail_container"
         app:layout_anchorGravity="top|end"
-        app:srcCompat="@drawable/ic_play_arrow_white_48dp" />
+        app:srcCompat="@drawable/ic_play_arrow_white_48dp"
+        android:contentDescription="@string/reproducir_trailer" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

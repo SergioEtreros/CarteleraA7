@@ -11,14 +11,13 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 package com.senkou.carteleraa7.clases
 
 import com.google.gson.annotations.SerializedName
-import org.jetbrains.anko.collections.forEachWithIndex
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 data class Peli (
 
-		@SerializedName("Codigo") val codigo : Int,
+		@SerializedName("ID_Espectaculo") val codigo : Int,
 		@SerializedName("Distribuidora") val distribuidora : String,
 		@SerializedName("Genero") val genero : String,
 		@SerializedName("Director") val director : String,
@@ -30,13 +29,14 @@ data class Peli (
 		@SerializedName("FechaEstreno") val fechaEstreno : String,
 		@SerializedName("Calificacion") val calificacion : String,
 		@SerializedName("Sinopsis") val sinopsis : String,
+		@SerializedName("NombreFormato") val nombreFormato : String,
 		@SerializedName("IdiomaOriginal") val idiomaOriginal : String,
 		@SerializedName("UrlImagen") val urlImagen : String,
 		@SerializedName("Video") val video : String,
-		@SerializedName("Audio") val audio : String,
-		@SerializedName("Idioma") val idioma : String,
+//		@SerializedName("Audio") val audio : String,
+//		@SerializedName("Idioma") val idioma : String,
 		@SerializedName("MostrarEstreno") val mostrarEstreno : Int,
-		@SerializedName("Sesiones") val sesiones : List<Pases>
+		@SerializedName("Sesiones") var sesiones : List<Pases>
 ){
 	var textoFicha:ArrayList<String> = ArrayList()
 
@@ -53,7 +53,7 @@ data class Peli (
 			formater.format(cal.time)}
 
 		if (!sesiones.isNullOrEmpty()){
-			sesiones.forEachWithIndex { _, pases ->
+			sesiones.forEachIndexed { _, pases ->
 
 //				println("Fechas: -$diaSesiones- -${pases.fecha}-")
 
@@ -69,7 +69,7 @@ data class Peli (
 			}
 		}
 
-		sesions.forEachWithIndex { i, salas ->
+		sesions.forEachIndexed { i, salas ->
 			textoSesionesHoy += if (i == (sesions.size -1) )
 					salas.sala.replace("0", "") + " : " + salas.horas
 				else

@@ -14,13 +14,13 @@ import com.google.gson.annotations.SerializedName
 
 data class Pases (
 
-		@SerializedName("ID_Sesion") val iD_Sesion : Int,
-		@SerializedName("Sala") val sala : String,
-		@SerializedName("ID_Pelicula") val iD_Pelicula : Int,
-		@SerializedName("Fecha") val fecha : String,
-		@SerializedName("Hora") val hora : String,
-		@SerializedName("EnVentaAnticipada") val enVentaAnticipada : Int,
-		@SerializedName("Version") val version : String,
-		@SerializedName("InfoVersion") val infoVersion : String,
-		@SerializedName("Fin") val fin : Int
+	@SerializedName("ID_Pase") val iD_Sesion : Int,
+	@SerializedName("Sala") val sala : String,
+	@SerializedName("ID_Espectaculo") val iD_Pelicula : Int,
+	@SerializedName("Fecha") var fecha : String,
+	@SerializedName("Hora") val hora : String,
+	@SerializedName("EnVentaAnticipada") val enVentaAnticipada : Int,
+	@SerializedName("NombreFormato") val version : String,
+	@SerializedName("InfoVersion") val infoVersion : String,
+	@SerializedName("Fin") val fin : Int
 )

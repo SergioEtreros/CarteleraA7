@@ -69,7 +69,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/pelicula_list" />
+        <include layout="@layout/pelicula_list"
+            android:id="@+id/peli_list_layout" />
 
         <ProgressBar
             android:id="@+id/progress"

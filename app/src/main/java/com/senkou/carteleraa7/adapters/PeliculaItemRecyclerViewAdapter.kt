@@ -13,8 +13,8 @@ import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.activities.PeliculaDetailActivity
 import com.senkou.carteleraa7.activities.PeliculaListActivity
 import com.senkou.carteleraa7.clases.Peli
+import com.senkou.carteleraa7.databinding.CardPeliculaBinding
 import com.senkou.carteleraa7.fragments.PeliculaDetailFragment
-import kotlinx.android.synthetic.main.card_pelicula.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,33 +24,29 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
                                       private val dia:String) :
         RecyclerView.Adapter<PeliculaItemRecyclerViewAdapter.ViewHolder>() {
 
-    private val onClickListener: View.OnClickListener
-
-    init {
-        onClickListener = View.OnClickListener { v ->
-            val item = v.tag as Peli
-            if (twoPane) {
-                val fragment = PeliculaDetailFragment().apply {
-                    arguments = Bundle().apply {
-                        putString("TITULO_PELICULA", item.titulo)
-                        putStringArrayList("DETALLES_PELICULA", item.textoFicha)
-                        putString("URL_TRAILER", item.video)
-                        putString("URL_CARTEL", item.urlImagen)
-                    }
+    private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
+        val item = v.tag as Peli
+        if (twoPane) {
+            val fragment = PeliculaDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString("TITULO_PELICULA", item.titulo)
+                    putStringArrayList("DETALLES_PELICULA", item.textoFicha)
+                    putString("URL_TRAILER", item.video)
+                    putString("URL_CARTEL", item.urlImagen)
                 }
-                parentActivity.supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.pelicula_detail_container, fragment)
-                        .commit()
-            } else {
-                val intent = Intent(v.context, PeliculaDetailActivity::class.java).apply {
-                    putExtra("TITULO_PELICULA", item.titulo)
-                    putExtra("DETALLES_PELICULA", item.textoFicha)
-                    putExtra("URL_TRAILER", item.video)
-                    putExtra("URL_CARTEL", item.urlImagen)
-                }
-                v.context.startActivity(intent)
             }
+            parentActivity.supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.pelicula_detail_container, fragment)
+                    .commit()
+        } else {
+            val intent = Intent(v.context, PeliculaDetailActivity::class.java).apply {
+                putExtra("TITULO_PELICULA", item.titulo)
+                putExtra("DETALLES_PELICULA", item.textoFicha)
+                putExtra("URL_TRAILER", item.video)
+                putExtra("URL_CARTEL", "https://artesiete.es"+item.urlImagen)
+            }
+            v.context.startActivity(intent)
         }
     }
 
@@ -67,7 +63,7 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
         holder.titulo.text = item.titulo
         holder.titulo.isSelected = true
         holder.horarios.text = item.crearTextoSesiones(dia)
-        Glide.with(this.parentActivity).load(item.urlImagen).into(holder.image)
+        Glide.with(this.parentActivity).load("https://artesiete.es"+item.urlImagen).into(holder.image)
 
         val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val fecha = parser.parse(parser.format(Date()))
@@ -89,9 +85,12 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
     override fun getItemCount() = values.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val titulo: TextView = view.id_text
-        val horarios: TextView = view.id_horarios
-        val image: ImageView = view.id_image
-        val fecha: TextView = view.id_fecha_estreno
+
+        private var binding = CardPeliculaBinding.bind(view)
+
+        val titulo: TextView = binding.idText
+        val horarios: TextView = binding.idHorarios
+        val image: ImageView = binding.idImage
+        val fecha: TextView = binding.idFechaEstreno
     }
 }

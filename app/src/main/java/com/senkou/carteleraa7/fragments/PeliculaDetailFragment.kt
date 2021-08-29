@@ -8,25 +8,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.senkou.carteleraa7.R
+import com.senkou.carteleraa7.databinding.PeliculaDetailBinding
 import com.senkou.carteleraa7.util.Utilidades
-import kotlinx.android.synthetic.main.activity_pelicula_detail.*
-import kotlinx.android.synthetic.main.pelicula_detail.view.*
 
 class PeliculaDetailFragment : Fragment() {
+
+    private lateinit var binding: PeliculaDetailBinding
 
     private var tituloPelicula :String? = null
     private var textoFicha:ArrayList<String> = ArrayList()
     private var urlTrailer :String? = null
     private var urlCartel :String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        binding = PeliculaDetailBinding.inflate(layoutInflater)
 
         arguments?.let {
             if (it.containsKey("TITULO_PELICULA")) {
                 tituloPelicula = it.getString("TITULO_PELICULA")
-                activity?.cabeceraDetalle?.title = tituloPelicula
+                binding.tvTituloApaisado?.text = tituloPelicula
             }
 
             if (it.containsKey("URL_CARTEL")) {
@@ -41,30 +42,24 @@ class PeliculaDetailFragment : Fragment() {
                 urlTrailer = it.getString("URL_TRAILER")
             }
         }
-    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.pelicula_detail, container, false)
-
-        rootView.fab_apaisado?.setOnClickListener { view ->
+        binding.fabApaisado?.setOnClickListener { view ->
             Snackbar.make(view, "Abrir trailer", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
 
             urlTrailer?.let { Utilidades.playTrailer(requireContext(), it) }
         }
 
-        if (rootView.img_poster_apaisado!=null){
-            Glide.with(requireContext()).load(urlCartel).into(rootView.img_poster_apaisado)
-        }
+        Glide.with(this).load("https://artesiete.es$urlCartel").into(binding.imgPosterApaisado!!)
 
         val builder = StringBuilder()
 
         textoFicha.forEachIndexed { _, s -> builder.append(s + "\n\n") }
 
-        rootView.pelicula_detail.text = builder.toString()
-        rootView.pelicula_detail.textSize = 13.0F
 
-        return rootView
+        binding.peliculaDetail.text = builder.toString()
+        binding.peliculaDetail.textSize = 13.0F
+
+        return binding.root
     }
 }

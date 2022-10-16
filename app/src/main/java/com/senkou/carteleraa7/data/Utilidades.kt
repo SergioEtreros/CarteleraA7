@@ -1,10 +1,12 @@
-package com.senkou.carteleraa7.util
+package com.senkou.carteleraa7.data
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.ImageView
 import android.widget.Toast
+import com.senkou.carteleraa7.data.data_clases.IImagenes
 
 class Utilidades {
     companion object{
@@ -44,20 +46,26 @@ class Utilidades {
         }
 
         fun ordenarMeses(fechasSpinner: ArrayList<String>) {
-            fechasSpinner.sort()
-            val primero = fechasSpinner.first()
 
-            val index = fechasSpinner.indexOf(
-                fechasSpinner.find {element->
-                    element.substring(element.indexOf('/')+1, element.lastIndexOf('/')) <
-                    primero.substring(primero.indexOf('/')+1, primero.lastIndexOf('/'))
-            })
+            if (fechasSpinner.isNotEmpty()) {
+                fechasSpinner.sort()
+                val primero = fechasSpinner.first()
 
-            for (i in 1 ..index)
-            {
-                fechasSpinner.add(fechasSpinner.first())
-                fechasSpinner.removeFirst()
+                val index = fechasSpinner.indexOf(
+                    fechasSpinner.find { element ->
+                        element.substring(element.indexOf('/') + 1, element.lastIndexOf('/')) <
+                        primero.substring(primero.indexOf('/') + 1, primero.lastIndexOf('/'))
+                    })
+
+                for (i in 1..index) {
+                    fechasSpinner.add(fechasSpinner.first())
+                    fechasSpinner.removeFirst()
+                }
             }
+        }
+
+        fun cargarImagen(imagenes: IImagenes,view: ImageView, url: String) {
+            imagenes.cargarImagen(view, url)
         }
     }
 }

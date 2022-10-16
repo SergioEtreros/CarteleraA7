@@ -1,4 +1,4 @@
-package com.senkou.carteleraa7.adapters
+package com.senkou.carteleraa7.ui.adapters
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,20 +8,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.senkou.carteleraa7.R
-import com.senkou.carteleraa7.activities.PeliculaDetailActivity
-import com.senkou.carteleraa7.activities.PeliculaListActivity
-import com.senkou.carteleraa7.clases.Peli
+import com.senkou.carteleraa7.data.data_clases.IImagenes
+import com.senkou.carteleraa7.data.data_clases.Peli
 import com.senkou.carteleraa7.databinding.CardPeliculaBinding
-import com.senkou.carteleraa7.fragments.PeliculaDetailFragment
+import com.senkou.carteleraa7.ui.PeliculaDetailActivity
+import com.senkou.carteleraa7.ui.PeliculaDetailFragment
+import com.senkou.carteleraa7.ui.PeliculaListActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListActivity,
                                       private val values: MutableList<Peli>,
                                       private val twoPane: Boolean,
-                                      private val dia:String) :
+                                      private val dia:String,
+                                      private val imagenes: IImagenes
+) :
         RecyclerView.Adapter<PeliculaItemRecyclerViewAdapter.ViewHolder>() {
 
     private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
@@ -30,7 +32,7 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
             val fragment = PeliculaDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString("TITULO_PELICULA", item.titulo)
-                    putStringArrayList("DETALLES_PELICULA", item.textoFicha)
+                    putStringArrayList("DETALLES_PELICULA", item.crearDetalles())
                     putString("URL_TRAILER", item.video)
                     putString("URL_CARTEL", item.urlImagen)
                 }
@@ -42,7 +44,7 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
         } else {
             val intent = Intent(v.context, PeliculaDetailActivity::class.java).apply {
                 putExtra("TITULO_PELICULA", item.titulo)
-                putExtra("DETALLES_PELICULA", item.textoFicha)
+                putExtra("DETALLES_PELICULA", item.crearDetalles())
                 putExtra("URL_TRAILER", item.video)
                 putExtra("URL_CARTEL", "https://artesiete.es"+item.urlImagen)
             }
@@ -63,7 +65,7 @@ class PeliculaItemRecyclerViewAdapter(private val parentActivity: PeliculaListAc
         holder.titulo.text = item.titulo
         holder.titulo.isSelected = true
         holder.horarios.text = item.crearTextoSesiones(dia)
-        Glide.with(this.parentActivity).load("https://artesiete.es"+item.urlImagen).into(holder.image)
+        imagenes.cargarImagen(holder.image, "https://artesiete.es${item.urlImagen}")
 
         val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val fecha = parser.parse(parser.format(Date()))

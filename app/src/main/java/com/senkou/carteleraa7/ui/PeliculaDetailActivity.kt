@@ -1,13 +1,12 @@
-package com.senkou.carteleraa7.activities
+package com.senkou.carteleraa7.ui
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.senkou.carteleraa7.data.Utilidades
 import com.senkou.carteleraa7.databinding.ActivityPeliculaDetailBinding
-import com.senkou.carteleraa7.util.Utilidades
+import com.senkou.carteleraa7.repository.ImegenesGlide
 
 class PeliculaDetailActivity : AppCompatActivity() {
 
@@ -41,17 +40,7 @@ class PeliculaDetailActivity : AppCompatActivity() {
                 urlTrailer?.let { Utilidades.playTrailer(this, it) }
             }
 
-            runOnUiThread {
-                AsyncTask.execute {
-
-                    val futureTarget = Glide.with(this@PeliculaDetailActivity).asDrawable().load(urlCartel).submit()
-
-                    val draw = futureTarget.get()
-                    binding.imgCollapse.setImageDrawable(draw)
-
-                    Glide.with(this@PeliculaDetailActivity).clear(futureTarget)
-                }
-            }
+            urlCartel?.let { Utilidades.cargarImagen(ImegenesGlide(this), binding.imgCollapse, it) }
         }
 
         // Show the Up button in the action bar.
@@ -59,12 +48,11 @@ class PeliculaDetailActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                android.R.id.home -> {
-
-                    onBackPressed()
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
             }
+            else -> super.onOptionsItemSelected(item)
+        }
 }

@@ -1,4 +1,4 @@
-package com.senkou.carteleraa7.clases
+package com.senkou.carteleraa7.data.data_clases
 
 import com.google.gson.annotations.SerializedName
 

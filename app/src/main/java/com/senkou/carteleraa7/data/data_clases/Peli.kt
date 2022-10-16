@@ -8,12 +8,11 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
-package com.senkou.carteleraa7.clases
+package com.senkou.carteleraa7.data.data_clases
 
 import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 data class Peli (
 
@@ -38,8 +37,6 @@ data class Peli (
 		@SerializedName("MostrarEstreno") val mostrarEstreno : Int,
 		@SerializedName("Sesiones") var sesiones : List<Pases>
 ){
-	var textoFicha:ArrayList<String> = ArrayList()
-
 	class Salas (val sala:String, var horas:String)
 
 	fun crearTextoSesiones(dia:String):String{
@@ -47,13 +44,13 @@ data class Peli (
 		val sesions = ArrayList<Salas>()
 		var textoSesionesHoy = ""
 
-		val diaSesiones = if (dia.isNotEmpty())dia else{
+		val diaSesiones = dia.ifEmpty {
 			val formater = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 			val cal = Calendar.getInstance()
-			formater.format(cal.time)}
+			formater.format(cal.time)
+		}
 
-		if (!sesiones.isNullOrEmpty()){
-			sesiones.forEachIndexed { _, pases ->
+			sesiones.forEach { pases ->
 
 //				println("Fechas: -$diaSesiones- -${pases.fecha}-")
 
@@ -65,7 +62,7 @@ data class Peli (
 					} else {
 						sesions.add(Salas(pases.sala, pases.hora.substring(0, pases.hora.lastIndexOf(":"))))
 					}
-				}
+//				}
 			}
 		}
 
@@ -76,23 +73,22 @@ data class Peli (
 					salas.sala.replace("0", "") + " : " + salas.horas + "\n"
 		}
 
-		crearDetalles()
 		return textoSesionesHoy
 	}
 
-	private fun crearDetalles(){
+	fun crearDetalles():ArrayList<String>{
 
-		if (textoFicha.isNullOrEmpty()){
-			textoFicha = ArrayList()
-			textoFicha.add("")
-			textoFicha.add("Título original: $tituloOriginal")
-            textoFicha.add("Duración: $duracion")
-            textoFicha.add("Director: $director")
-            textoFicha.add("Género: $genero")
-            textoFicha.add("Calificación: $calificacion")
-			textoFicha.add("Reparto: $actores")
-            textoFicha.add("Fecha de estreno: $fechaEstreno")
-            textoFicha.add(sinopsis)
-		}
+		val textoFicha:ArrayList<String> = ArrayList()
+		textoFicha.add("")
+		textoFicha.add("Título original: $tituloOriginal")
+		textoFicha.add("Duración: $duracion")
+		textoFicha.add("Director: $director")
+		textoFicha.add("Género: $genero")
+		textoFicha.add("Calificación: $calificacion")
+		textoFicha.add("Reparto: $actores")
+		textoFicha.add("Fecha de estreno: $fechaEstreno")
+		textoFicha.add(sinopsis)
+
+		return textoFicha
 	}
 }

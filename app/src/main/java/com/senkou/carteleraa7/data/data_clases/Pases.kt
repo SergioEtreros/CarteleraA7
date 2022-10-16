@@ -8,7 +8,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
-package com.senkou.carteleraa7.clases
+package com.senkou.carteleraa7.data.data_clases
 
 import com.google.gson.annotations.SerializedName
 
@@ -17,7 +17,7 @@ data class Pases (
 	@SerializedName("ID_Pase") val iD_Sesion : Int,
 	@SerializedName("Sala") val sala : String,
 	@SerializedName("ID_Espectaculo") val iD_Pelicula : Int,
-	@SerializedName("Fecha") var fecha : String,
+	@SerializedName("Fecha") var fecha : String?,
 	@SerializedName("Hora") val hora : String,
 	@SerializedName("EnVentaAnticipada") val enVentaAnticipada : Int,
 	@SerializedName("NombreFormato") val version : String,

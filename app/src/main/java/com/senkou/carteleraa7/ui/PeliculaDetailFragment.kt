@@ -1,4 +1,4 @@
-package com.senkou.carteleraa7.fragments
+package com.senkou.carteleraa7.ui
 
 
 import android.os.Bundle
@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.senkou.carteleraa7.data.Utilidades
 import com.senkou.carteleraa7.databinding.PeliculaDetailBinding
-import com.senkou.carteleraa7.util.Utilidades
+import com.senkou.carteleraa7.repository.ImegenesGlide
 
 class PeliculaDetailFragment : Fragment() {
 
@@ -50,7 +50,9 @@ class PeliculaDetailFragment : Fragment() {
             urlTrailer?.let { Utilidades.playTrailer(requireContext(), it) }
         }
 
-        Glide.with(this).load("https://artesiete.es$urlCartel").into(binding.imgPosterApaisado!!)
+        binding.imgPosterApaisado?.let {
+            Utilidades.cargarImagen(ImegenesGlide(requireContext()), it, "https://artesiete.es$urlCartel")
+        }
 
         val builder = StringBuilder()
 

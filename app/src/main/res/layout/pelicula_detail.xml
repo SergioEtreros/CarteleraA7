@@ -12,5 +12,5 @@
         android:padding="16dp"
         android:textColor="@color/color_blanco"
         android:textIsSelectable="true"
-        tools:context=".fragments.PeliculaDetailFragment" />
+        tools:context=".ui.PeliculaDetailFragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>

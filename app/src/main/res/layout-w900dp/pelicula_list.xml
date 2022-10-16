@@ -8,37 +8,37 @@
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:showDividers="middle"
-    tools:context=".activities.PeliculaListActivity">
+    tools:context=".ui.PeliculaListActivity">
 
-    <!--
-    This layout is a two-pane layout for the peliculas
-    master/detail flow.
-    
-    -->
+        <!--
+        This layout is a two-pane layout for the peliculas
+        master/detail flow.
 
-    <LinearLayout
-        android:layout_width="400dp"
-        android:layout_height="match_parent"
-        android:background="@color/fondo_lista"
-        android:orientation="vertical">
+        -->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/peli_list"
-            android:name="com.senkou.carteleraa7.PeliculaListFragment"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="400dp"
             android:layout_height="match_parent"
-            android:padding="4dp"
-            app:layoutManager="LinearLayoutManager"
-            tools:context="com.senkou.carteleraa7.activities.PeliculaListActivity"
-            tools:listitem="@layout/card_pelicula" />
+            android:background="@color/fondo_lista"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/peli_list"
+                android:name="com.senkou.carteleraa7.PeliculaListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                app:layoutManager="LinearLayoutManager"
+                tools:context="com.senkou.carteleraa7.ui.PeliculaListActivity"
+                tools:listitem="@layout/card_pelicula" />
 
-    <FrameLayout
-        android:id="@+id/pelicula_detail_container"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="@color/fondo_lista" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/pelicula_detail_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@color/fondo_lista" />
 
 </LinearLayout>

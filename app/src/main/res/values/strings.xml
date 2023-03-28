@@ -1,13 +1,8 @@
 <resources>
     <string name="app_name">Cartelera A7</string>
     <string name="title_pelicula_detail">Pelicula Detail</string>
-    <string name="cartel">Cartél</string>
-    <string name="dia_hoy">Hoy</string>
-    <array name="dias">
-        <item>@string/dia_hoy</item>
-    </array>
-    <string name="texto_dias">Fecha: </string>
-    <string name="descripcion_cartel">Cartel de la película</string>
-    <string name="adorno">adorno</string>
-    <string name="reproducir_trailer">Reproducir trailer</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
 </resources>

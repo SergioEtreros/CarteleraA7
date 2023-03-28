@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.ImageView
 import android.widget.Toast
-import com.senkou.carteleraa7.data.data_clases.IImagenes
+import com.senkou.carteleraa7.data.model.IImagenes
 
 class Utilidades {
     companion object{

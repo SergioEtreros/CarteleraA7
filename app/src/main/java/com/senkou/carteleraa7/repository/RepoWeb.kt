@@ -2,11 +2,11 @@ package com.senkou.carteleraa7.repository
 
 import com.google.gson.Gson
 import com.senkou.carteleraa7.data.IRepository
-import com.senkou.carteleraa7.data.data_clases.Json4KotlinBase
-import com.senkou.carteleraa7.data.data_clases.PasesPelis
-import com.senkou.carteleraa7.data.data_clases.Peli
+import com.senkou.carteleraa7.data.model.Json4KotlinBase
+import com.senkou.carteleraa7.data.model.PasesPelis
+import com.senkou.carteleraa7.data.model.Peli
 import org.apache.commons.text.StringEscapeUtils
-import org.jsoup.Jsoup
+import java.net.HttpURLConnection
 import java.net.URL
 
 class RepoWeb: IRepository{
@@ -14,14 +14,20 @@ class RepoWeb: IRepository{
     override fun obtenerCartelera(): MutableList<Peli> {
         val pelisAux: MutableList<Peli> = ArrayList()
         try {
-            Jsoup.connect("https://artesiete.es/Cine/13/Artesiete-Segovia").get().run {
-                val cuerpo = this.getElementById("wrapper")
-                val utils = StringEscapeUtils.unescapeHtml4(cuerpo.html())
-                val json = "{\"Cartelera\":" + utils.substring(
-                    utils.indexOf(":[") + 1,
-                    utils.lastIndexOf("rootUrl") - 2
-                ) + "}"
+                val url = URL("https://artesiete.es/Cine/13/Artesiete-Segovia")
+                val urlConnection = url.openConnection() as HttpURLConnection
 
+                var json = ""
+                try {
+                    val utils = urlConnection.inputStream.bufferedReader().readText()
+                    json = "{\"Cartelera\":" + utils.substring(
+                        utils.indexOf("Peliculas&quot;:[") + 16,
+                        utils.lastIndexOf("rootUrl") - 7
+                    ) + "}"
+                } finally {
+                    urlConnection.disconnect()
+                }
+                json = StringEscapeUtils.unescapeHtml4(json)
                 Gson().fromJson(
                     json,
                     Json4KotlinBase::class.java
@@ -42,9 +48,10 @@ class RepoWeb: IRepository{
                             }
                         }
                     }
+                    peli.urlImagen = "https://artesiete.es${peli.urlImagen}"
                     pelisAux.add(peli)
                 }
-            }
+//            }
 
         } catch (e: Exception) {
             e.printStackTrace()

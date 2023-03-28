@@ -1,6 +1,6 @@
 package com.senkou.carteleraa7.data
 
-import com.senkou.carteleraa7.data.data_clases.Peli
+import com.senkou.carteleraa7.data.model.Peli
 
 class DataA7(private val repo: IRepository) {
 

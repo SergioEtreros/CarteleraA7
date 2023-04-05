@@ -1,42 +1,56 @@
 package com.senkou.carteleraa7.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.senkou.carteleraa7.presentation.theme.fondo_lista
+import com.senkou.carteleraa7.presentation.theme.resalte_ticket
 
 @Composable
 fun MainScreen(navController: NavHostController, model: PeliViewModel = viewModel()) {
 
-    val lista = model.peliculas.value
+//    var tabIndex by remember { mutableStateOf(0) }
+//    var tabIndex = model.getTabIndex()
 
-    if (lista != null) {
+    val tabIndex = model.tabindex.observeAsState().value
 
-//        val state = rememberScrollState()
+    val tabData = listOf(
+        "CARTELERA",
+        "PROX.ESTRENOS"
+    )
 
-        LazyColumn(
-            modifier = Modifier.background(fondo_lista),
-            contentPadding = PaddingValues(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-
-            itemsIndexed(
-                items = lista,
-                itemContent = {index, peli ->
-                    PeliculaItem(navController, data = peli, index)
+    Column(modifier = Modifier.fillMaxWidth()) {
+        tabIndex?.let {
+            TabRow(selectedTabIndex = tabIndex) {
+                tabData.forEachIndexed { index, text ->
+                    Tab(modifier = Modifier.background(color = resalte_ticket),
+                        selected = tabIndex == index,
+                        onClick = {
+                            model.actualizarTabIndex(index)
+                        },
+                        text = {
+                            Text(text = text)
+                        })
                 }
-            )
+            }
+            when (tabIndex){
+                0->Cartelera(navController = navController, model = model)
+                1-> ProximosEstrenos(navController = navController, model = model)
+            }
         }
     }
+
+
+//    Cartelera(navController = navController, model = model)
 }
 
 @Preview(showSystemUi = false)
@@ -44,6 +58,6 @@ fun MainScreen(navController: NavHostController, model: PeliViewModel = viewMode
 fun MainScreenPreview() {
     val model: PeliViewModel = viewModel()
 //    model.dataA7 = DataA7(RepoWeb())
-    model.cargarCartelera()
+//    model.cargarCartelera()
     MainScreen(rememberNavController(), model)
 }

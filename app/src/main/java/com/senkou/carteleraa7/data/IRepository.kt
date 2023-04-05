@@ -1,7 +1,7 @@
 package com.senkou.carteleraa7.data
 
-import com.senkou.carteleraa7.data.model.Peli
+import com.senkou.carteleraa7.data.model.Json4KotlinBase
 
 interface IRepository {
-    fun obtenerCartelera():MutableList<Peli>
+    fun obtenerCartelera(): Json4KotlinBase?
 }

@@ -1,6 +1,5 @@
 package com.senkou.carteleraa7.presentation
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +27,7 @@ fun SplashScreen(navController: NavHostController, model: PeliViewModel) {
     model.cargarCartelera()
 //    val lista = model.peliculas.observeAsState().value
     model.peliculas.observe(LocalLifecycleOwner.current){
-        Log.d("Cartelera", "Cambiando estado de la cartelera")
+//        Log.d("Cartelera", "Cambiando estado de la cartelera")
         navController.popBackStack()
         navController.navigate(AppScreens.MainScreen.route)
     }

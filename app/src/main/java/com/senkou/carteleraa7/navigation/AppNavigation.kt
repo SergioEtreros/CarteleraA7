@@ -7,10 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.senkou.carteleraa7.presentation.DetallePelicula
-import com.senkou.carteleraa7.presentation.MainScreen
-import com.senkou.carteleraa7.presentation.PeliViewModel
-import com.senkou.carteleraa7.presentation.SplashScreen
+import com.senkou.carteleraa7.presentation.*
 
 @Composable
 fun AppNavitagion(model: PeliViewModel = viewModel()){
@@ -34,6 +31,19 @@ fun AppNavitagion(model: PeliViewModel = viewModel()){
                 if (id >= 0){
                     model.peliculas.value?.let {lista->
                         DetallePelicula(navController, lista[id])
+                    }
+                }
+            }
+        }
+        composable(
+            route = "${AppScreens.DetalleProximoEstreno.route}/{itemId}",
+            arguments = listOf(navArgument("itemId"){type = NavType.IntType})
+        ){navBackStackEntry->
+            val id = navBackStackEntry.arguments?.getInt("itemId", -1)
+            id?.let {
+                if (id >= 0){
+                    model.proximosEstrenos.value?.let {lista->
+                        DetalleProximoEstreno(navController, lista[id])
                     }
                 }
             }

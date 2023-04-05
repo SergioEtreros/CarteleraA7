@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.SubcomposeAsyncImage
 import com.senkou.carteleraa7.data.DataA7
 import com.senkou.carteleraa7.data.model.Peli
+import com.senkou.carteleraa7.data.model.ProximoEstreno
 import com.senkou.carteleraa7.navigation.AppScreens
 import com.senkou.carteleraa7.presentation.theme.Typography
 import com.senkou.carteleraa7.presentation.theme.fondoFechaEstreno
@@ -101,13 +102,92 @@ fun PeliculaItem(navController: NavHostController, data: Peli, index: Int){
                                 .background(fondoFechaEstreno),
                                 textAlign = TextAlign.Center,
                                 color = Color.White,
-                                style = Typography.body2,
+                                style = Typography.subtitle1,
                                 text = data.fechaEstreno
                             )
                         }
                     }
                 }
             }
+//        }
+//    }
+}
+
+@Composable
+fun PeliculaItem(navController: NavHostController, data: ProximoEstreno, index: Int){
+
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .clickable { navController.navigate("${AppScreens.DetalleScreen.route}/$index") },
+//        RoundedCornerShape(15.dp),
+//        backgroundColor = Color.White,
+//        elevation = 5.dp,
+//    ) {
+//
+//        Column(modifier = Modifier
+//            .padding(8.dp)
+//            .fillMaxSize()
+//        ){
+//
+//            Text(modifier = Modifier
+//                .fillMaxWidth()
+//                .background(
+//                    color = resalte_ticket,
+//                    shape = RoundedCornerShape(5.dp)
+//                )
+//                .padding(2.dp),
+//                maxLines = 1,
+//                textAlign = TextAlign.Center,
+//                color = Color.White,
+//                style = Typography.subtitle1,
+//                text = data.titulo)
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+
+    val shape = RoundedCornerShape(15.dp)
+
+    Box (modifier = Modifier
+        .shadow(35.dp, shape, spotColor = Color.Black)
+        .clip(shape)
+        .border(2.dp, fondoLogo, shape)
+        .clickable {
+            navController.navigate("${AppScreens.DetalleProximoEstreno.route}/$index")
+        }) {
+        SubcomposeAsyncImage(
+//                    model = "https://artesiete.es${data.urlImagen}",
+            model = data.cartel,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+
+            ,
+            alignment = Alignment.TopCenter,
+            loading = { CircularProgressIndicator() },
+            contentDescription = data.titulo)
+
+        if (data.fechaEstreno.isNotEmpty() ) {
+            val parserSalida = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val fecha = parser.parse(parser.format(Date()))
+            val fechaEstreno = parser.parse(data.fechaEstreno)
+            if (fechaEstreno != null && fecha != null) {
+                if (fechaEstreno >= fecha) {
+                    Text(modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .clip(RoundedCornerShape(15.dp, 15.dp))
+                        .background(fondoFechaEstreno),
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
+                        style = Typography.subtitle1,
+                        text = parserSalida.format(fechaEstreno)
+                    )
+                }
+            }
+        }
+    }
 //        }
 //    }
 }

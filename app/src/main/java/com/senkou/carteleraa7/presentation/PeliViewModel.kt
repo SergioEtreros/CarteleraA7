@@ -8,6 +8,7 @@ import com.senkou.carteleraa7.data.DataA7
 import com.senkou.carteleraa7.data.Utilidades
 import com.senkou.carteleraa7.data.model.Pases
 import com.senkou.carteleraa7.data.model.Peli
+import com.senkou.carteleraa7.data.model.ProximoEstreno
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -24,10 +25,31 @@ class PeliViewModel: ViewModel() {
         }
     }
 
+    val proximosEstrenos: MutableLiveData<MutableList<ProximoEstreno>> by lazy {
+        MutableLiveData<MutableList<ProximoEstreno>>().also {
+            cargarCartelera()
+        }
+    }
+
+    val tabindex: MutableLiveData<Int> = MutableLiveData(0)
+
 //    private val peliculasDia: MutableLiveData<MutableList<Peli>> by lazy {
 //        MutableLiveData<MutableList<Peli>>().also {
 //            it.value = arrayListOf()
 //        }
+//    }
+
+    fun actualizarTabIndex (index: Int){
+        tabindex.value = index
+    }
+
+//    fun getTabIndex(): Int{
+//        return if (tabindex.value != null){
+//            tabindex.value!!
+//        } else {
+//            0
+//        }
+//
 //    }
 
     private val dias: MutableLiveData<List<String>> by lazy {
@@ -65,7 +87,9 @@ class PeliViewModel: ViewModel() {
     fun cargarCartelera(){
 
         viewModelScope.launch (Dispatchers.IO) {
-            peliculas.postValue(dataA7?.obtenerCartelera())
+            val response = dataA7?.obtenerCartelera()
+            peliculas.postValue(response?.pelis?.toMutableList())
+            proximosEstrenos.postValue(response?.proximosEstrenos?.toMutableList())
         }
     }
 

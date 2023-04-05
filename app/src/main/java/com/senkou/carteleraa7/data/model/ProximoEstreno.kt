@@ -2,6 +2,7 @@ package com.senkou.carteleraa7.data.model
 
 
 import com.google.gson.annotations.SerializedName
+import org.apache.commons.text.StringEscapeUtils
 
 data class ProximoEstreno(
     @SerializedName("AbreviaturaCalificacion")
@@ -13,7 +14,7 @@ data class ProximoEstreno(
     @SerializedName("Calificacion")
     val calificacion: String,
     @SerializedName("Cartel")
-    val cartel: String,
+    var cartel: String,
     @SerializedName("Cartel2")
     val cartel2: String,
     @SerializedName("Cartel3")
@@ -106,4 +107,27 @@ data class ProximoEstreno(
     val videoSecundario: String,
     @SerializedName("WhatsCine")
     val whatsCine: String
-)
+){
+    fun crearDetalles(): ArrayList<String> {
+
+        val textoFicha: ArrayList<String> = ArrayList()
+        textoFicha.add("")
+        textoFicha.add("Título original: ${decodeString(tituloOriginal)}")
+        textoFicha.add("Duración: ${decodeString(duracion)}")
+        textoFicha.add("Director: ${decodeString(director)}")
+        textoFicha.add("Género: ${decodeString(genero)}")
+        textoFicha.add("Calificación: ${decodeString(calificacion)}")
+        textoFicha.add("Reparto: ${decodeString(interpretes)}")
+        textoFicha.add("Fecha de estreno: ${decodeString(fechaEstreno)}")
+        textoFicha.add(decodeString(sinopsis))
+
+        return textoFicha
+    }
+
+    private fun decodeString (s:String): String{
+        var cadena = s
+        cadena = StringEscapeUtils.unescapeEcmaScript(cadena)
+        cadena = String(cadena.toByteArray(Charsets.ISO_8859_1))
+        return cadena
+    }
+}

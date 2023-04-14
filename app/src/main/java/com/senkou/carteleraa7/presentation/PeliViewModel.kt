@@ -88,6 +88,14 @@ class PeliViewModel: ViewModel() {
 
         viewModelScope.launch (Dispatchers.IO) {
             val response = dataA7?.obtenerCartelera()
+//            val pelisAux: MutableList<Peli> = ArrayList()
+//            val pelisProxAux: MutableList<ProximoEstreno> = ArrayList()
+//            response?.pelis?.forEach {
+//                pelisAux.add(it)
+//                peliculas.postValue(pelisAux)
+//                delay(500)
+//            }
+//
             peliculas.postValue(response?.pelis?.toMutableList())
             proximosEstrenos.postValue(response?.proximosEstrenos?.toMutableList())
         }

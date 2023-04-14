@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.senkou.carteleraa7.data.IRepository
 import com.senkou.carteleraa7.data.model.Json4KotlinBase
 import com.senkou.carteleraa7.data.model.PasesPelis
-import com.senkou.carteleraa7.data.model.Peli
 import org.apache.commons.text.StringEscapeUtils
 import java.net.HttpURLConnection
 import java.net.URL
@@ -13,20 +12,14 @@ class RepoWeb: IRepository{
 
     override fun obtenerCartelera(): Json4KotlinBase? {
         var response:Json4KotlinBase? = null
-        val pelisAux: MutableList<Peli> = ArrayList()
-//        val pelisProxAux: MutableList<ProximoEstreno> = ArrayList()
         try {
             val url = URL("https://artesiete.es/Cine/13/Artesiete-Segovia")
             val urlConnection = url.openConnection() as HttpURLConnection
 
-
-
-            var json = ""
-//            var jsonProx = ""
+            var json: String
             try {
 
                 val html = urlConnection.inputStream.bufferedReader().readText()
-//                val html = urlConnection.inputStream.bufferedReader(charset = Charsets.ISO_8859_1).readText()
 
                 json = "{\"Cartelera\":" + html.substring(
                     html.indexOf("Peliculas&quot;:[") + 16,
@@ -70,18 +63,11 @@ class RepoWeb: IRepository{
                     }
                 }
                 peli.urlImagen = "https://artesiete.es${peli.urlImagen}"
-//                pelisAux.add(peli)
             }
 
             response?.proximosEstrenos?.forEach {estreno->
                 estreno.cartel = "https://artesiete.es/Posters/${estreno.cartel}"
             }
-
-//            pelisProxAux.addAll(Gson().fromJson(
-//                jsonProx,
-//                ResponseProximosEstrenos::class.java
-//            ).proximosEstrenos)
-//            }
 
         } catch (e: Exception) {
             e.printStackTrace()

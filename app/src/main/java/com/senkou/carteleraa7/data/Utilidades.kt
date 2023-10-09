@@ -7,9 +7,14 @@ import android.net.Uri
 import android.widget.ImageView
 import android.widget.Toast
 import com.senkou.carteleraa7.data.model.IImagenes
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Utilidades {
     companion object{
+
+        const val RUTA_CARTELES = "https://artesiete.es/Posters/"
+        const val HOY = "Hoy"
 
         fun playTrailer(context: Context, urlTrailer: String){
             when {
@@ -67,5 +72,7 @@ class Utilidades {
         fun cargarImagen(imagenes: IImagenes,view: ImageView, url: String) {
             imagenes.cargarImagen(view, url)
         }
+
+        fun getDateFormatter() = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     }
 }

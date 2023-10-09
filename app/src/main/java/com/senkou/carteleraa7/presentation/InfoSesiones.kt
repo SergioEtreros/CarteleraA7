@@ -4,7 +4,15 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -20,11 +28,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import com.senkou.carteleraa7.data.model.Sesion
 import com.senkou.carteleraa7.presentation.theme.Typography
 import com.senkou.carteleraa7.presentation.theme.fondoLogo
 
 @Composable
-fun InfoSesiones(urlImagen:String, fecha: String, textoSesiones: String) {
+fun InfoSesiones(urlImagen:String, fecha: String, sesiones: List<Sesion>) {
 
     val shape = RoundedCutoutShape(offset = 287.0F, 10.dp, Orientation.Horizontal)
 
@@ -86,7 +95,7 @@ fun InfoSesiones(urlImagen:String, fecha: String, textoSesiones: String) {
                 color = Color.Black,
                 textAlign = TextAlign.Start,
                 style = Typography.body2,
-                text = textoSesiones
+                text = sesiones.first().crearTextoSesiones(sesiones)
             )
         }
     }
@@ -95,5 +104,5 @@ fun InfoSesiones(urlImagen:String, fecha: String, textoSesiones: String) {
 @Preview
 @Composable
 fun PreviewInfoSesiones(){
-    InfoSesiones("", "09/03/2023", "sdfsdfsfsfd")
+//    InfoSesiones("", "09/03/2023", "sdfsdfsfsfd")
 }

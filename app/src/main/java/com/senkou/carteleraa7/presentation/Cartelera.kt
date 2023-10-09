@@ -16,25 +16,21 @@ import com.senkou.carteleraa7.presentation.theme.fondo_lista
 @Composable
 fun Cartelera(navController: NavHostController, model: PeliViewModel = viewModel()) {
 
-    val lista = model.peliculas.value
+    val lista = model.getPeliculas()
+    val state = rememberLazyListState()
 
-    if (lista != null) {
+    LazyColumn(
+        modifier = Modifier.background(fondo_lista),
+        state = state,
+        contentPadding = PaddingValues(24.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
 
-        val state = rememberLazyListState()
-
-        LazyColumn(
-            modifier = Modifier.background(fondo_lista),
-            state = state,
-            contentPadding = PaddingValues(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-
-            itemsIndexed(
-                items = lista,
-                itemContent = {index, peli ->
-                    PeliculaItem(navController, data = peli, index)
-                }
-            )
-        }
+        itemsIndexed(
+            items = lista,
+            itemContent = {index, peli ->
+                PeliculaItem(navController, data = peli, index)
+            }
+        )
     }
 }

@@ -34,7 +34,14 @@ fun MainScreen(navController: NavHostController, model: PeliViewModel = viewMode
         "CARTELERA",
         "PROX. ESTRENOS"
     )
-
+//    val tabIndex = model.tabindex.observeAsState().value
+//    val pagerState = rememberPagerState(
+//        initialPage = 0,
+//        initialPageOffsetFraction = 0f,
+//    ) {
+//        tabData.size
+//    }
+//    val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxWidth()) {
         tabIndex?.let {
@@ -57,6 +64,7 @@ fun MainScreen(navController: NavHostController, model: PeliViewModel = viewMode
                 }
             }
 
+
             HorizontalPager(
                 pageCount = tabData.size,
                 state = pagerState,
@@ -64,6 +72,13 @@ fun MainScreen(navController: NavHostController, model: PeliViewModel = viewMode
                 model.actualizarTabIndex(tabIndex)
                 NavegarTabs(navController = navController, model = model , tabIndex = tabIndex)
             }
+
+//            HorizontalPager(
+//                state = pagerState,
+//            ){ page ->
+//                model.actualizarTabIndex(page)
+//                NavegarTabs(navController = navController, model = model, tabIndex = page)
+//            }
         }
     }
 }
@@ -71,7 +86,7 @@ fun MainScreen(navController: NavHostController, model: PeliViewModel = viewMode
 @Composable
 private fun NavegarTabs(navController: NavHostController, model: PeliViewModel, tabIndex: Int){
     when (tabIndex){
-        0->Cartelera(navController = navController, model = model)
+        0-> Cartelera(navController = navController, model = model)
         1-> ProximosEstrenos(navController = navController, model = model)
     }
 }

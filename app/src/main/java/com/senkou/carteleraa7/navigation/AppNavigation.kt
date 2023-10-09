@@ -7,7 +7,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.senkou.carteleraa7.presentation.*
+import com.senkou.carteleraa7.presentation.DetallePelicula
+import com.senkou.carteleraa7.presentation.DetalleProximoEstreno
+import com.senkou.carteleraa7.presentation.MainScreen
+import com.senkou.carteleraa7.presentation.PeliViewModel
+import com.senkou.carteleraa7.presentation.SplashScreen
 
 @Composable
 fun AppNavitagion(model: PeliViewModel = viewModel()){
@@ -28,10 +32,11 @@ fun AppNavitagion(model: PeliViewModel = viewModel()){
         ){navBackStackEntry->
             val id = navBackStackEntry.arguments?.getInt("itemId", -1)
             id?.let {
-                if (id >= 0){
-                    model.peliculas.value?.let {lista->
-                        DetallePelicula(navController, lista[id])
-                    }
+                model.getPeliculas().getOrNull(id)?.let {
+                    DetallePelicula(
+                        navController,
+                        model.getSesiones(it.iDEspectaculo),
+                    )
                 }
             }
         }

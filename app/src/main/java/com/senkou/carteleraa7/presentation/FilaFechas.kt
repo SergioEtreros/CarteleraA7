@@ -14,26 +14,27 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun FilaFechas(sesiones: List<Sesion>, model: PeliViewModel = viewModel()){
+fun FilaFechas(sesiones: List<Sesion>, model: PeliViewModel = viewModel()) {
 
-    val lista = model.obtenerDiasSesiones(sesiones)
+   val lista = model.obtenerDiasSesiones(sesiones)
 
-    LazyRow(modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ){
-        items(
-            items = lista,
-            itemContent = {dia ->
+   LazyRow(
+      modifier = Modifier.fillMaxSize(),
+      horizontalArrangement = Arrangement.spacedBy(8.dp)
+   ) {
+      items(
+         items = lista,
+         itemContent = { dia ->
 
-                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val hoy = sdf.format(Calendar.getInstance().time)
-                val fecha = Utilidades.HOY.takeIf { hoy == dia } ?: dia
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val hoy = sdf.format(Calendar.getInstance().time)
+            val fecha = Utilidades.HOY.takeIf { hoy == dia } ?: dia
 
-                InfoSesiones(
-                    sesiones.first().getUrlCartel(),
-                    fecha,
-                    sesiones.filter { it.diacompleto == dia})
-            }
-        )
-    }
+            InfoSesiones(
+               sesiones.first().getUrlCartel(),
+               fecha,
+               sesiones.filter { it.diacompleto == dia })
+         }
+      )
+   }
 }

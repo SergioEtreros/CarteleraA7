@@ -21,38 +21,38 @@ import com.senkou.carteleraa7.repository.RepoWeb
 @Composable
 fun SplashScreen(navController: NavHostController, model: PeliViewModel) {
 
-    Splash()
+   Splash()
 
-    model.dataA7 = DataA7(RepoWeb())
-    model.cargarCartelera()
-//    val lista = model.peliculas.observeAsState().value
-    model.peliculas.observe(LocalLifecycleOwner.current){
-//        Log.d("Cartelera", "Cambiando estado de la cartelera")
-        navController.popBackStack()
-        navController.navigate(AppScreens.MainScreen.route)
-    }
+   model.dataA7 = DataA7(RepoWeb())
+   model.cargarCartelera()
+   model.peliculas.observe(LocalLifecycleOwner.current) {
+      navController.popBackStack()
+      navController.navigate(AppScreens.MainScreen.route)
+   }
 }
 
 @Composable
-fun Splash(){
-    
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(fondoLogo),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Image(
-            painter = painterResource(
-            id = R.drawable.ic_launcher_foreground),
-            contentDescription = "Splash")
-        
-    }
+fun Splash() {
+
+   Column(
+      modifier = Modifier
+         .fillMaxSize()
+         .background(fondoLogo),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center
+   ) {
+      Image(
+         painter = painterResource(
+            id = R.drawable.ic_launcher_foreground
+         ),
+         contentDescription = "Splash"
+      )
+
+   }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun SplashScreenPreview(){
-    Splash()
+fun SplashScreenPreview() {
+   Splash()
 }

@@ -31,54 +31,51 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun PeliculaItem(navController: NavHostController, data: Pelicula, index: Int){
+fun PeliculaItem(navController: NavHostController, data: Pelicula, index: Int) {
 
-    val shape = RoundedCornerShape(15.dp)
+   val shape = RoundedCornerShape(15.dp)
 
-    Box (modifier = Modifier
-        .shadow(35.dp, shape, spotColor = Color.Black)
-        .clip(shape)
-        .border(2.dp, fondoLogo, shape)
-        .clickable {
-            if (data.iDEspectaculo > 0) {
-                navController.navigate("${AppScreens.DetalleScreen.route}/$index")
+   Box(modifier = Modifier
+      .shadow(35.dp, shape, spotColor = Color.Black)
+      .clip(shape)
+      .border(2.dp, fondoLogo, shape)
+      .clickable {
+         if (data.iDEspectaculo > 0) {
+            navController.navigate("${AppScreens.DetalleScreen.route}/$index")
+         }
+      }) {
+      SubcomposeAsyncImage(
+         model = data.getUrlCartel(),
+         contentScale = ContentScale.Crop,
+         modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+         alignment = Alignment.TopCenter,
+         loading = { CircularProgressIndicator() },
+         contentDescription = data.titulo
+      )
+
+      if (data.fechaEstreno.isNotEmpty()) {
+         val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+         val fecha = parser.parse(parser.format(Date()))
+         val fechaEstreno = parser.parse(data.fechaEstreno)
+         if (fechaEstreno != null && fecha != null) {
+            if (fechaEstreno >= fecha) {
+               Text(
+                  modifier = Modifier
+                     .fillMaxWidth()
+                     .wrapContentHeight()
+                     .clip(RoundedCornerShape(15.dp, 15.dp))
+                     .background(fondoFechaEstreno),
+                  textAlign = TextAlign.Center,
+                  color = Color.White,
+                  style = Typography.subtitle1,
+                  text = Utilidades.getDateFormatter().format(fechaEstreno)
+               )
             }
-//            else {
-//                navController.navigate("${AppScreens.DetalleProximoEstreno.route}/$index")
-//            }
-    }) {
-        SubcomposeAsyncImage(
-//                    model = "https://artesiete.es${data.urlImagen}",
-            model = data.getUrlCartel(),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            alignment = Alignment.TopCenter,
-            loading = { CircularProgressIndicator() },
-            contentDescription = data.titulo)
-
-        if (data.fechaEstreno.isNotEmpty() ) {
-//            val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val fecha = parser.parse(parser.format(Date()))
-            val fechaEstreno = parser.parse(data.fechaEstreno)
-            if (fechaEstreno != null && fecha != null) {
-                if (fechaEstreno >= fecha) {
-                    Text(modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .clip(RoundedCornerShape(15.dp, 15.dp))
-                        .background(fondoFechaEstreno),
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
-                        style = Typography.subtitle1,
-                        text = Utilidades.getDateFormatter().format(fechaEstreno)
-                    )
-                }
-            }
-        }
-    }
+         }
+      }
+   }
 }
 
 //@Preview(showSystemUi = false)

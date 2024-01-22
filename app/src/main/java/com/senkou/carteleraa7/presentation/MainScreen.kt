@@ -12,8 +12,11 @@ import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,76 +29,65 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(navController: NavHostController, model: PeliViewModel = viewModel()) {
 
-    val tabIndex = model.tabindex.observeAsState().value
-    val pagerState =  rememberPagerState()
-    val coroutineScope = rememberCoroutineScope()
+   var tabIndex by remember { mutableIntStateOf(0) }
+   val coroutineScope = rememberCoroutineScope()
 
-    val tabData = listOf(
-        "CARTELERA",
-        "PROX. ESTRENOS"
-    )
-//    val tabIndex = model.tabindex.observeAsState().value
-//    val pagerState = rememberPagerState(
-//        initialPage = 0,
-//        initialPageOffsetFraction = 0f,
-//    ) {
-//        tabData.size
-//    }
-//    val coroutineScope = rememberCoroutineScope()
+   val tabData = listOf(
+      "CARTELERA",
+      "PROX. ESTRENOS"
+   )
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        tabIndex?.let {
-            TabRow(selectedTabIndex = tabIndex,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator( modifier = Modifier.tabIndicatorOffset(
-                    currentTabPosition = tabPositions[tabIndex],
-                ))
-            }) {
-                tabData.forEachIndexed { index, title ->
-                    Tab(modifier = Modifier.background(color = resalte_ticket),
-                        selected = tabIndex == index,
-                        onClick = { model.actualizarTabIndex(index)
-                            coroutineScope.launch {
-                                // Call scroll to on pagerState
-                                pagerState.scrollToPage(index)
-                            }
-                        },
-                        text = { Text(text = title) })
-                }
-            }
+   val pagerState = rememberPagerState(
+      initialPage = 0,
+      initialPageOffsetFraction = 0f,
+   ) {
+      tabData.size
+   }
 
+   Column(modifier = Modifier.fillMaxWidth()) {
+      TabRow(selectedTabIndex = tabIndex,
+         indicator = { tabPositions ->
+            TabRowDefaults.Indicator(
+               modifier = Modifier.tabIndicatorOffset(
+                  currentTabPosition = tabPositions[tabIndex],
+               )
+            )
+         }) {
+         tabData.forEachIndexed { index, title ->
+            Tab(modifier = Modifier.background(color = resalte_ticket),
+               selected = tabIndex == index,
+               onClick = {
+                  coroutineScope.launch {
+                     // Call scroll to on pagerState
+                     pagerState.scrollToPage(index)
+                  }
+               },
+               text = { Text(text = title) })
+         }
+      }
 
-            HorizontalPager(
-                pageCount = tabData.size,
-                state = pagerState,
-            ) { tabIndex ->
-                model.actualizarTabIndex(tabIndex)
-                NavegarTabs(navController = navController, model = model , tabIndex = tabIndex)
-            }
-
-//            HorizontalPager(
-//                state = pagerState,
-//            ){ page ->
-//                model.actualizarTabIndex(page)
-//                NavegarTabs(navController = navController, model = model, tabIndex = page)
-//            }
-        }
-    }
+      HorizontalPager(
+         state = pagerState,
+      ) { page ->
+         tabIndex = page
+         NavegarTabs(navController = navController, model = model, tabIndex = page)
+      }
+   }
 }
 
 @Composable
-private fun NavegarTabs(navController: NavHostController, model: PeliViewModel, tabIndex: Int){
-    when (tabIndex){
-        0-> Cartelera(navController = navController, model = model)
-        1-> ProximosEstrenos(navController = navController, model = model)
-    }
+private fun NavegarTabs(navController: NavHostController, model: PeliViewModel, tabIndex: Int) {
+   when (tabIndex) {
+      0 -> Cartelera(navController = navController, model = model)
+      1 -> ProximosEstrenos(navController = navController, model = model)
+   }
 }
 
 @Preview(showSystemUi = false)
 @Composable
 fun MainScreenPreview() {
-    val model: PeliViewModel = viewModel()
+   val model: PeliViewModel = viewModel()
 //    model.dataA7 = DataA7(RepoWeb())
 //    model.cargarCartelera()
-    MainScreen(rememberNavController(), model)
+   MainScreen(rememberNavController(), model)
 }

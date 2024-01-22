@@ -10,109 +10,81 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RepoWeb: IRepository{
+class RepoWeb : IRepository {
 
-    override fun obtenerCartelera(): InfoCine? {
-        var response:InfoCine? = null
-        try {
-            val url = URL("https://artesiete.es/Cine/13/Artesiete-segovia")
-            val urlConnection = url.openConnection() as HttpURLConnection
+   override fun obtenerCartelera(): InfoCine? {
+      var response: InfoCine? = null
+      try {
+         val url = URL("https://artesiete.es/Cine/13/Artesiete-segovia")
+         val urlConnection = url.openConnection() as HttpURLConnection
 
-            var json: String
-            try {
+         var json: String
+         try {
 
-                val html = urlConnection.inputStream.bufferedReader().readText()
+            val html = urlConnection.inputStream.bufferedReader().readText()
 
-                json = "{\"Cartelera\":" + html.substring(
-                    html.indexOf(":onlytitlesinfo='[") + 17,
-                    html.lastIndexOf("}]' :fullsessionsinfo") +2
-                ) + ","
+            json = "{\"Cartelera\":" + html.substring(
+               html.indexOf(":onlytitlesinfo='[") + 17,
+               html.lastIndexOf("}]' :fullsessionsinfo") + 2
+            ) + ","
 
-                json += "\"Sesiones\":" + html.substring(
-                    html.indexOf(":fullsessionsinfo='[") + 19,
-                    html.lastIndexOf(";}]") + 3
-                ) + ","
+            json += "\"Sesiones\":" + html.substring(
+               html.indexOf(":fullsessionsinfo='[") + 19,
+               html.lastIndexOf(";}]") + 3
+            ) + ","
 
-                json += obtenerEstrenos(html)
+            json += obtenerEstrenos(html)
 
-                json += "}"
+            json += "}"
 
-            } finally {
-                urlConnection.disconnect()
-            }
-            json = StringEscapeUtils.unescapeHtml4(json)
-//            json = StringEscapeUtils.unescapeEcmaScript(json)
-//            json = String(json.toByteArray(Charsets.ISO_8859_1))
-//            jsonProx = StringEscapeUtils.unescapeHtml4(jsonProx)
-//            jsonProx = StringEscapeUtils.unescapeEcmaScript(jsonProx)
-//            jsonProx = String(jsonProx.toByteArray(Charsets.ISO_8859_1))
-            response = Gson().fromJson(
-                json.replace("\\/", "/"),
-                InfoCine::class.java
-            )
+         } finally {
+            urlConnection.disconnect()
+         }
+         json = StringEscapeUtils.unescapeHtml4(json)
+         response = Gson().fromJson(
+            json.replace("\\/", "/"),
+            InfoCine::class.java
+         )
+      } catch (e: Exception) {
+         e.printStackTrace()
+      }
+      return response
+   }
 
-//            response?.pelis?.toMutableList()?.forEach { peli ->
-//
-//                val jsonPases =
-//                    URL("https://www.artesiete.es/Pelicula/${peli.iDEspectaculo}/13/").readText()
-//                val pasesPelis = Gson().fromJson(jsonPases, PasesPelis::class.java)
-//
-//                pasesPelis.Programacion.forEach { programa ->
-//                    programa.Pelis.forEach { sesion ->
-//                        sesion.Pases.forEach { pase ->
-//                            peli.sesiones.forEach {
-//                                if (it.iD_Sesion == pase.ID_Pase.toInt()) {
-//                                    it.fecha = programa.FechaEfectiva
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                peli.urlImagen = "https://artesiete.es${peli.urlImagen}"
-//            }
-//
-//            response?.proximosEstrenos?.forEach {estreno->
-//                estreno.cartel = "https://artesiete.es/Posters/${estreno.cartel}"
-//            }
+   private fun obtenerEstrenos(html: String): String {
+      var json = "\"Proximamente\" :"
+      Jsoup.parse(html).apply {
 
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return response
-    }
+         json += "[\n"
+         this.getElementsByClass("swiper mySwiperNext mb-5").first()
+            ?.getElementsByClass("swiper-slide")?.forEach { estreno ->
+               val parser = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
+               val fechaEstreno =
+                  parser.parse(estreno.child(0).child(0).textNodes()[0].toString().trim())
+               var fecha = ""
 
-    private fun obtenerEstrenos(html: String): String {
-        var json = "\"Proximamente\" :"
-        Jsoup.parse(html).apply {
+               val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-            json += "[\n"
-            this.getElementsByClass("swiper mySwiperNext mb-5").first()?.getElementsByClass("swiper-slide")?.forEach { estreno ->
-                val parser = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
-                val fechaEstreno = parser.parse(estreno.child(0).child(0).textNodes()[0].toString().trim())
-                var fecha = ""
+               fechaEstreno?.let { fecha = formatter.format(fechaEstreno) }
 
-                val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+               val cartel = estreno.child(0).child(1).attr("src").toString()
+               val titulo = estreno.child(1).child(0).textNodes()[0].toString()
 
-                fechaEstreno?.let { fecha =  formatter.format(fechaEstreno) }
+               if (json.length > 20) {
+                  json += ",\n"
+               }
 
-                val cartel = estreno.child(0).child(1).attr("src").toString()
-                val titulo = estreno.child(1).child(0).textNodes()[0].toString()
-
-                if (json.length > 20) {
-                    json += ",\n"
-                }
-
-                json += "  {\n"
-                json += "    \"Cartel\" : \"$cartel\",\n"
-                json += "    \"FechaEstreno\" : \"$fecha\",\n"
-                json += "    \"ID_Espectaculo\" : 0,\n"
-                json += "    \"Titulo\" : \"$titulo\"\n"
-                json += "  }"
+               json += "  {\n"
+               json += "    \"Cartel\" : \"$cartel\",\n"
+               json += "    \"FechaEstreno\" : \"$fecha\",\n"
+               json += "    \"ID_Espectaculo\" : 0,\n"
+               json += "    \"Titulo\" : \"$titulo\"\n"
+               json += "  }"
             }
 
-            json += "\n]"
-        }
+         json += "\n]"
+      }
 
-        return json
-    }
+      return json
+   }
 }

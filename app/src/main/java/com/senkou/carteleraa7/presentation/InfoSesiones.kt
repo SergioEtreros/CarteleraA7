@@ -33,76 +33,81 @@ import com.senkou.carteleraa7.presentation.theme.Typography
 import com.senkou.carteleraa7.presentation.theme.fondoLogo
 
 @Composable
-fun InfoSesiones(urlImagen:String, fecha: String, sesiones: List<Sesion>) {
+fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
 
-    val shape = RoundedCutoutShape(offset = 287.0F, 10.dp, Orientation.Horizontal)
+   val shape = RoundedCutoutShape(offset = 287.0F, 10.dp, Orientation.Horizontal)
 
-    Row(
-        modifier = Modifier
-            .width(250.dp)
-            .height(140.dp)
-            .background(
-                color = Color.White,
-                shape = shape
-            )
-            .border(1.dp, fondoLogo, shape)
-            .padding(12.dp, 12.dp),
-    ) {
-        SubcomposeAsyncImage(
-            model = urlImagen,
-            contentScale = ContentScale.Inside,
+   Row(
+      modifier = Modifier
+         .width(250.dp)
+         .height(140.dp)
+         .background(
+            color = Color.White,
+            shape = shape
+         )
+         .border(1.dp, fondoLogo, shape)
+         .padding(12.dp, 12.dp),
+   ) {
+      SubcomposeAsyncImage(
+         model = urlImagen,
+         contentScale = ContentScale.Inside,
+         modifier = Modifier
+            .width(80.dp)
+            .fillMaxHeight()
+            .align(Alignment.CenterVertically)
+            .clip(RoundedCornerShape(5.dp)),
+         contentDescription = "",
+         loading = { CircularProgressIndicator() }
+      )
+
+      Spacer(modifier = Modifier.width(12.dp))
+
+      val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+      Canvas(
+         Modifier
+            .fillMaxHeight()
+            .width(2.dp)
+      ) {
+
+         drawLine(
+            color = Color.Gray,
+            start = Offset(0f, 0f),
+            end = Offset(0f, size.height),
+            pathEffect = pathEffect
+         )
+      }
+
+      Spacer(modifier = Modifier.width(12.dp))
+
+      Column(modifier = Modifier.fillMaxWidth()) {
+
+         Text(
             modifier = Modifier
-                .width(80.dp)
-                .fillMaxHeight()
-                .align(Alignment.CenterVertically)
-                .clip(RoundedCornerShape(5.dp)),
-            contentDescription = "",
-            loading = { CircularProgressIndicator() }
-        )
+               .fillMaxWidth()
+               .wrapContentHeight(),
+            color = Color.Black,
+            textAlign = TextAlign.Start,
+            style = Typography.subtitle2,
+            text = fecha
+         )
 
-        Spacer(modifier = Modifier.width(12.dp))
+         Spacer(modifier = Modifier.width(3.dp))
 
-        val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-        Canvas(Modifier.fillMaxHeight().width(2.dp)) {
-
-            drawLine(
-                color = Color.Gray,
-                start = Offset(0f, 0f),
-                end = Offset( 0f, size.height),
-                pathEffect = pathEffect
-            )
-        }
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        Column(modifier = Modifier.fillMaxWidth()) {
-            
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                color = Color.Black,
-                textAlign = TextAlign.Start,
-                style = Typography.subtitle2,
-                text = fecha)
-
-            Spacer(modifier = Modifier.width(3.dp))
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                color = Color.Black,
-                textAlign = TextAlign.Start,
-                style = Typography.body2,
-                text = sesiones.first().crearTextoSesiones(sesiones)
-            )
-        }
-    }
+         Text(
+            modifier = Modifier
+               .fillMaxWidth()
+               .wrapContentHeight(),
+            color = Color.Black,
+            textAlign = TextAlign.Start,
+            style = Typography.body2,
+            text = sesiones.first().crearTextoSesiones(sesiones)
+         )
+      }
+   }
 }
 
 @Preview
 @Composable
-fun PreviewInfoSesiones(){
+fun PreviewInfoSesiones() {
 //    InfoSesiones("", "09/03/2023", "sdfsdfsfsfd")
 }

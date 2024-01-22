@@ -14,27 +14,25 @@ import androidx.navigation.NavHostController
 import com.senkou.carteleraa7.presentation.theme.fondo_lista
 
 @Composable
-fun ProximosEstrenos(navController: NavHostController, model: PeliViewModel = viewModel()){
+fun ProximosEstrenos(navController: NavHostController, model: PeliViewModel = viewModel()) {
 
-    val lista = model.proximosEstrenos.value
+   val lista = model.proximosEstrenos.value
 
-    if (lista != null) {
+   if (lista != null) {
+      val state = rememberLazyListState()
 
-        val state = rememberLazyListState()
-
-        LazyColumn(
-            modifier = Modifier.background(fondo_lista),
-            state = state,
-            contentPadding = PaddingValues(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-
-            itemsIndexed(
-                items = lista,
-                itemContent = {index, peli ->
-                    PeliculaItem(navController, data = peli, index)
-                }
-            )
-        }
-    }
+      LazyColumn(
+         modifier = Modifier.background(fondo_lista),
+         state = state,
+         contentPadding = PaddingValues(24.dp),
+         verticalArrangement = Arrangement.spacedBy(24.dp)
+      ) {
+         itemsIndexed(
+            items = lista,
+            itemContent = { index, peli ->
+               PeliculaItem(navController, data = peli, index)
+            }
+         )
+      }
+   }
 }

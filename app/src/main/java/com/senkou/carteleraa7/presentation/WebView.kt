@@ -12,18 +12,20 @@ import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
 fun WebView(url: String) {
-    AndroidView(
-        modifier = Modifier.fillMaxWidth().height(200.dp),
-        factory = {
-        WebView(it).apply {
+   AndroidView(
+      modifier = Modifier
+         .fillMaxWidth()
+         .height(200.dp),
+      factory = {
+         WebView(it).apply {
             webViewClient = WebViewClient()
             loadUrl(url)
-        }
-    })
+         }
+      })
 }
 
 @Preview
 @Composable
 fun WebViewPreview() {
-    WebView(url = "https://artesiete.es/Sesion/13/ARTESIETE-Segovia/BARBIE/14808/11279")
+   WebView(url = "https://artesiete.es/Sesion/13/ARTESIETE-Segovia/BARBIE/14808/11279")
 }

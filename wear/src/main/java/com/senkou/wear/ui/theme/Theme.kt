@@ -1,0 +1,15 @@
+package com.senkou.wear.ui.theme
+
+import androidx.compose.runtime.Composable
+import androidx.wear.compose.material.MaterialTheme
+
+@Composable
+fun CarteleraA7Theme(
+   content: @Composable () -> Unit
+) {
+   MaterialTheme(
+      colors = wearColorPalette,
+      typography = Typography,
+      content = content
+   )
+}

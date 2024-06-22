@@ -1,9 +1,26 @@
 package com.senkou.wear.ui.screens.mainscreen
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.TargetBasedAnimation
+import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
@@ -18,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.LocalTextStyle
@@ -28,7 +46,7 @@ import kotlinx.coroutines.delay
 fun MarqueeText(
    text: String,
    modifier: Modifier = Modifier,
-   gradientEdgeColor: Color = Color.White,
+   gradientEdgeColor: Color = Color.Transparent,
    color: Color = Color.Unspecified,
    fontSize: TextUnit = TextUnit.Unspecified,
    fontStyle: FontStyle? = null,
@@ -64,7 +82,7 @@ fun MarqueeText(
       )
    }
 
-   var offset by remember { mutableStateOf(0) }
+   var offset by remember { mutableIntStateOf(0) }
    val textLayoutInfoState = remember { mutableStateOf<TextLayoutInfo?>(null) }
    LaunchedEffect(textLayoutInfoState.value) {
       val textLayoutInfo = textLayoutInfoState.value ?: return@LaunchedEffect
@@ -177,7 +195,14 @@ private data class TextLayoutInfo(
 )
 
 
-
+@Preview
+@Composable
+fun MarqueeTextPreview() {
+   MarqueeText(
+      modifier = Modifier.width(100.dp),
+      text = "Hasdasdasdasdasdasello",
+   )
+}
 
 
 

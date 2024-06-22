@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,7 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
+import coil.compose.AsyncImage
 import com.senkou.carteleraa7.ui.common.RoundedCutoutShape
 import com.senkou.carteleraa7.ui.theme.Typography
 import com.senkou.carteleraa7.ui.theme.fondoLogo
@@ -51,16 +50,16 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
          .border(1.dp, fondoLogo, shape)
          .padding(12.dp, 12.dp),
    ) {
-      SubcomposeAsyncImage(
+      AsyncImage(
          model = urlImagen,
-         contentScale = ContentScale.Inside,
+         contentScale = ContentScale.Fit,
          modifier = Modifier
             .width(80.dp)
             .fillMaxHeight()
             .align(Alignment.CenterVertically)
             .clip(RoundedCornerShape(5.dp)),
          contentDescription = "",
-         loading = { CircularProgressIndicator() }
+//         loading = { CircularProgressIndicator() }
       )
 
       Spacer(modifier = Modifier.width(12.dp))

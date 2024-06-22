@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -33,7 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
+import coil.compose.AsyncImage
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.theme.Typography
@@ -69,14 +68,14 @@ fun DetallePelicula(
                val context = LocalContext.current
 
                Box {
-                  SubcomposeAsyncImage(
+                  AsyncImage(
                      model = state.sesiones.first().cartel,
-                     contentScale = ContentScale.Crop,
+                     contentScale = ContentScale.Fit,
                      modifier = Modifier
                         .height(200.dp)
                         .fillMaxWidth(),
                      contentDescription = "",
-                     loading = { CircularProgressIndicator() }
+//                     loading = { CircularProgressIndicator() }
                   )
 
                   Text(

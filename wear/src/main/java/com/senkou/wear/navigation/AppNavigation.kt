@@ -1,18 +1,15 @@
 package com.senkou.wear.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.senkou.data.MoviesRepository
-import com.senkou.data.VideoRepository
 import com.senkou.framework.remote.WebMovieDatasource
 import com.senkou.usecases.CargarCarteleraUseCase
 import com.senkou.usecases.CargarDetalleUseCase
-import com.senkou.usecases.ReproducirTrailerUseCase
 import com.senkou.wear.ui.screens.detailscreen.DetallePelicula
 import com.senkou.wear.ui.screens.detailscreen.DetalleViewModel
 import com.senkou.wear.ui.screens.mainscreen.MainScreen
@@ -25,12 +22,6 @@ fun AppNavitagion() {
 
    val moviesRepository = MoviesRepository(WebMovieDatasource())
    val model = PeliViewModel(CargarCarteleraUseCase(moviesRepository))
-
-   val videoRepository = VideoRepository(
-      com.senkou.framework.YoutubeDatasource(
-         context = LocalContext.current
-      )
-   )
 
    SwipeDismissableNavHost(
       navController = navController,
@@ -56,11 +47,8 @@ fun AppNavitagion() {
                DetalleViewModel(
                   idEspectaculo,
                   cargarDetalle = CargarDetalleUseCase(moviesRepository),
-                  reproducirTrailer = ReproducirTrailerUseCase(videoRepository)
                )
-            ) {
-               navController.popBackStack()
-            }
+            )
          }
       }
    }

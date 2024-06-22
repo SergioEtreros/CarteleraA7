@@ -23,11 +23,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.senkou.carteleraa7.data.MoviesRepository
-import com.senkou.carteleraa7.framework.remote.WebMovieDatasource
-import com.senkou.carteleraa7.ui.theme.resalte_ticket
 import com.senkou.carteleraa7.ui.Screen
-import com.senkou.carteleraa7.usecase.CargarCarteleraUseCase
+import com.senkou.carteleraa7.ui.theme.resalte_ticket
+import com.senkou.data.MoviesRepository
+import com.senkou.usecases.CargarCarteleraUseCase
 import kotlinx.coroutines.launch
 
 @Composable
@@ -56,7 +55,9 @@ fun MainScreen(
             initialPageOffsetFraction = 0f,
          ) { tabData.size }
 
-         Column(modifier = Modifier.fillMaxWidth().padding(paddingValues)) {
+         Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(paddingValues)) {
             TabRow(selectedTabIndex = tabIndex,
                indicator = { tabPositions ->
                   SecondaryIndicator(
@@ -95,7 +96,7 @@ fun MainScreen(
 @Preview(showSystemUi = false)
 @Composable
 fun MainScreenPreview() {
-   val moviesRepository = MoviesRepository(WebMovieDatasource())
+   val moviesRepository = MoviesRepository(com.senkou.framework.remote.WebMovieDatasource())
    val peliListViewModel = PeliListViewModel(CargarCarteleraUseCase(moviesRepository))
    MainScreen(peliListViewModel) {}
 }

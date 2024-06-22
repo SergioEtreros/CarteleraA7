@@ -7,14 +7,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.senkou.wear.data.model.Sesion
-import com.senkou.wear.ui.screens.mainscreen.PeliViewModel
+import com.senkou.domain.model.Sesion
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
-fun FilaFechas(sesiones: List<Sesion>, model: PeliViewModel = viewModel()) {
-
-   val lista = model.obtenerDiasSesiones(sesiones)
+fun FilaFechas(
+   sesiones: List<Sesion>,
+   lista: List<String>
+) {
 
    LazyRow(
       modifier = Modifier.fillMaxSize(),
@@ -23,13 +24,17 @@ fun FilaFechas(sesiones: List<Sesion>, model: PeliViewModel = viewModel()) {
       items(
          items = lista,
          itemContent = { dia ->
-            val fecha = if (dia == "Hoy") {
-               ""
-            } else {
-               dia
-            }
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val hoy = sdf.format(Calendar.getInstance().time)
+            val fecha = "Hoy".takeIf { hoy == dia } ?: dia
+
+//            val fecha = if (dia == "Hoy") {
+//               ""
+//            } else {
+//               dia
+//            }
             InfoSesiones(
-               sesiones.first().getUrlCartel(),
+               sesiones.first().cartel,
                fecha,
                sesiones.filter { it.diacompleto == dia })
          }

@@ -10,8 +10,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.senkou.carteleraa7.domain.model.Pelicula
 import com.senkou.carteleraa7.ui.theme.fondo_lista
+import com.senkou.domain.model.Pelicula
 
 @Composable
 fun Cartelera(

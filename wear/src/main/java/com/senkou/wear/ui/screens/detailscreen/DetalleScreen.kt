@@ -12,69 +12,75 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
-import com.senkou.wear.data.model.Sesion
+import com.senkou.domain.common.crearDetalles
 import com.senkou.wear.ui.theme.Typography
 import com.senkou.wear.ui.theme.fondo_lista
 import com.senkou.wear.ui.theme.resalte_ticket
 
 @Composable
-fun DetallePelicula(sesiones: List<Sesion>) {
+fun DetallePelicula(
+   model: DetalleViewModel,
+   onBack: () -> Unit
+) {
 
-   Column(
-      modifier = Modifier
-         .fillMaxSize()
-         .background(fondo_lista),
-      horizontalAlignment = Alignment.CenterHorizontally
-   ) {
-
-
-      Text(
-         modifier = Modifier
-            .fillMaxWidth()
-            .background(
-               color = resalte_ticket,
-               shape = RoundedCornerShape(5.dp)
-            )
-            .padding(16.dp, 8.dp, 16.dp, 8.dp),
-         maxLines = 1,
-         textAlign = TextAlign.Center,
-         color = Color.White,
-         style = Typography.body2,
-         text = sesiones[0].titulo
-      )
-
+   val state = model.uiState.collectAsState().value
+   if (state.sesiones.isNotEmpty()) {
       Column(
-         Modifier
-            .padding(16.dp, 6.dp)
+         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(state = rememberScrollState(), true)
+            .background(fondo_lista),
+         horizontalAlignment = Alignment.CenterHorizontally
       ) {
 
-         FilaFechas(sesiones = sesiones)
 
-         sesiones.first().crearDetalles().forEach { detalles ->
+         Text(
+            modifier = Modifier
+               .fillMaxWidth()
+               .background(
+                  color = resalte_ticket,
+                  shape = RoundedCornerShape(5.dp)
+               )
+               .padding(16.dp, 8.dp, 16.dp, 8.dp),
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            style = Typography.body2,
+            text = state.sesiones[0].titulo
+         )
 
-            Text(
-               modifier = Modifier
-                  .fillMaxWidth()
-                  .wrapContentHeight(),
-               color = Color.White,
-               textAlign = TextAlign.Start,
-               style = Typography.display1,
-               text = detalles
-            )
+         Column(
+            Modifier
+               .padding(16.dp, 6.dp)
+               .fillMaxSize()
+               .verticalScroll(state = rememberScrollState(), true)
+         ) {
 
-            Spacer(modifier = Modifier.height(6.dp))
+            FilaFechas(state.sesiones, model.obtenerDiasSesiones())
+
+            state.sesiones.first().crearDetalles().forEach { detalles ->
+
+               Text(
+                  modifier = Modifier
+                     .fillMaxWidth()
+                     .wrapContentHeight(),
+                  color = Color.White,
+                  textAlign = TextAlign.Start,
+                  style = Typography.display1,
+                  text = detalles
+               )
+
+               Spacer(modifier = Modifier.height(6.dp))
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
          }
-
-         Spacer(modifier = Modifier.height(28.dp))
       }
    }
-
 }

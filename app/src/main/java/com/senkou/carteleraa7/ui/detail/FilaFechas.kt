@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.senkou.carteleraa7.domain.model.Sesion
+import com.senkou.domain.model.Sesion
 import java.text.SimpleDateFormat
 import java.util.*
 

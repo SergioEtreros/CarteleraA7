@@ -2,10 +2,10 @@ package com.senkou.carteleraa7.ui.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.senkou.carteleraa7.domain.model.Sesion
-import com.senkou.carteleraa7.ui.common.ordenarMeses
-import com.senkou.carteleraa7.usecase.CargarDetalleUseCase
-import com.senkou.carteleraa7.usecase.ReproducirTrailerUseCase
+import com.senkou.domain.common.ordenarMeses
+import com.senkou.domain.model.Sesion
+import com.senkou.usecases.CargarDetalleUseCase
+import com.senkou.usecases.ReproducirTrailerUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

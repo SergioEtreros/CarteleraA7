@@ -17,15 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Card
 import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
 import coil.compose.SubcomposeAsyncImage
-import com.senkou.wear.data.Utilidades
-import com.senkou.wear.data.model.Pelicula
-import com.senkou.wear.navigation.AppScreens
+import com.senkou.domain.common.format
+import com.senkou.domain.model.Pelicula
 import com.senkou.wear.ui.theme.Typography
 import com.senkou.wear.ui.theme.color_blanco
 import com.senkou.wear.ui.theme.fondoFechaEstreno
@@ -34,18 +32,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun PeliculaItem(navController: NavHostController, data: Pelicula, index: Int) {
+fun PeliculaItem(
+   pelicula: Pelicula,
+   onMovieClicked: (idEspectaculo: Int) -> Unit,
+) {
 
    Card(modifier = Modifier
       .padding(10.dp, 3.dp) // Si está antes del tamaño/background, es margin sino, padding
       .fillMaxWidth(),
-      onClick = {
-         navController.navigate("${AppScreens.DetalleScreen.route}/$index")
-      }
+      onClick = { onMovieClicked(pelicula.iDEspectaculo) }
    ) {
 
       Column(modifier = Modifier.fillMaxSize()) {
-
          Text(
             modifier = Modifier
                .fillMaxWidth()
@@ -59,7 +57,7 @@ fun PeliculaItem(navController: NavHostController, data: Pelicula, index: Int) {
             textAlign = TextAlign.Center,
             color = Color.White,
             style = Typography.body1,
-            text = data.titulo
+            text = pelicula.titulo
          )
 
 //            MarqueeText(modifier = Modifier
@@ -78,7 +76,7 @@ fun PeliculaItem(navController: NavHostController, data: Pelicula, index: Int) {
 
          Scaffold {
             SubcomposeAsyncImage(
-               model = data.getUrlCartel(),
+               model = pelicula.cartel,
                contentScale = ContentScale.Crop,
                modifier = Modifier
                   .fillMaxWidth()
@@ -86,14 +84,14 @@ fun PeliculaItem(navController: NavHostController, data: Pelicula, index: Int) {
                   .clip(RoundedCornerShape(15.dp)),
                alignment = Alignment.TopCenter,
                loading = { CircularProgressIndicator() },
-               contentDescription = data.titulo
+               contentDescription = pelicula.titulo
             )
 
-            if (data.fechaEstreno.isNotEmpty()) {
+            if (pelicula.fechaEstreno.isNotEmpty()) {
 //                    val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                val fecha = parser.parse(parser.format(Date()))
-               val fechaEstreno = parser.parse(data.fechaEstreno)
+               val fechaEstreno = parser.parse(pelicula.fechaEstreno)
                if (fechaEstreno != null && fecha != null) {
                   if (fechaEstreno >= fecha) {
                      Text(
@@ -105,7 +103,7 @@ fun PeliculaItem(navController: NavHostController, data: Pelicula, index: Int) {
                         textAlign = TextAlign.Center,
                         color = color_blanco,
                         style = Typography.body2,
-                        text = Utilidades.getDateFormatter().format(fechaEstreno)
+                        text = fechaEstreno.format()
                      )
                   }
                }

@@ -36,12 +36,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.ui.Screen
-import com.senkou.carteleraa7.ui.common.crearDetalles
 import com.senkou.carteleraa7.ui.theme.Typography
 import com.senkou.carteleraa7.ui.theme.color_blanco
 import com.senkou.carteleraa7.ui.theme.fondoFechaEstreno
 import com.senkou.carteleraa7.ui.theme.fondo_lista
 import com.senkou.carteleraa7.ui.theme.transparente
+import com.senkou.domain.common.crearDetalles
 
 @Composable
 fun DetallePelicula(

@@ -20,11 +20,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
-import com.senkou.carteleraa7.domain.model.Pelicula
-import com.senkou.carteleraa7.ui.common.format
 import com.senkou.carteleraa7.ui.theme.Typography
 import com.senkou.carteleraa7.ui.theme.fondoFechaEstreno
 import com.senkou.carteleraa7.ui.theme.fondoLogo
+import com.senkou.domain.common.format
+import com.senkou.domain.model.Pelicula
 import java.text.SimpleDateFormat
 import java.util.*
 

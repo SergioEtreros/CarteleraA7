@@ -309,7 +309,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/star/baseline_star_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Users/Senkou/AppData/Local/JetBrains/Toolbox/apps/AndroidStudio/ch-0/221.6008.13.2211.9619390/plugins/android/lib/android.jar!/images/material/icons/materialicons/arrow_back/baseline_arrow_back_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -319,8 +319,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="2b2b2b" />
-                            <entry key="outputName" value="ic_baseline_star_48" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="baseline_arrow_back_48" />
                             <entry key="sourceFile" value="E:\Miscelanea\Descargas\logo (1).svg" />
                           </map>
                         </option>

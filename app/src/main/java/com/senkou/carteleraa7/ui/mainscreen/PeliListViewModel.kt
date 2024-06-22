@@ -2,8 +2,8 @@ package com.senkou.carteleraa7.ui.mainscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.senkou.carteleraa7.domain.model.Pelicula
-import com.senkou.carteleraa7.usecase.CargarCarteleraUseCase
+import com.senkou.domain.model.Pelicula
+import com.senkou.usecases.CargarCarteleraUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

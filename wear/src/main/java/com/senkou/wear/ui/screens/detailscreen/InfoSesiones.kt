@@ -23,7 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Text
 import coil.compose.SubcomposeAsyncImage
-import com.senkou.wear.data.model.Sesion
+import com.senkou.domain.common.crearTextoSesiones
+import com.senkou.domain.model.Sesion
 import com.senkou.wear.ui.theme.Typography
 import com.senkou.wear.ui.theme.color_blanco
 
@@ -74,7 +75,7 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             color = Color.Black,
             textAlign = TextAlign.Start,
             style = Typography.display2,
-            text = sesiones.first().crearTextoSesiones(sesiones)
+            text = sesiones.crearTextoSesiones()
          )
       }
    }

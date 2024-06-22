@@ -6,18 +6,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.senkou.carteleraa7.data.MoviesRepository
-import com.senkou.carteleraa7.data.VideoRepository
-import com.senkou.carteleraa7.framework.remote.WebMovieDatasource
-import com.senkou.carteleraa7.framework.YoutubeDatasource
 import com.senkou.carteleraa7.ui.detail.DetallePelicula
 import com.senkou.carteleraa7.ui.detail.DetalleViewModel
 import com.senkou.carteleraa7.ui.mainscreen.MainScreen
 import com.senkou.carteleraa7.ui.mainscreen.PeliListViewModel
 import com.senkou.carteleraa7.ui.splash.SplashScreen
-import com.senkou.carteleraa7.usecase.CargarCarteleraUseCase
-import com.senkou.carteleraa7.usecase.CargarDetalleUseCase
-import com.senkou.carteleraa7.usecase.ReproducirTrailerUseCase
+import com.senkou.data.MoviesRepository
+import com.senkou.data.VideoRepository
+import com.senkou.framework.remote.WebMovieDatasource
+import com.senkou.usecases.CargarCarteleraUseCase
+import com.senkou.usecases.CargarDetalleUseCase
+import com.senkou.usecases.ReproducirTrailerUseCase
 
 @Composable
 fun AppNavitagion() {
@@ -27,7 +26,7 @@ fun AppNavitagion() {
    val peliListViewModel = PeliListViewModel(CargarCarteleraUseCase(moviesRepository))
 
    val videoRepository = VideoRepository(
-      YoutubeDatasource(
+      com.senkou.framework.YoutubeDatasource(
          context = LocalContext.current
       )
    )

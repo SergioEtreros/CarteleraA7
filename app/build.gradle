@@ -58,10 +58,15 @@ android {
     }
 }
 dependencies {
-    implementation 'androidx.compose.material3:material3-android:1.2.1'
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     def lifecycle = "2.8.2"
-    def nav_version = '2.7.7'
+//    def nav_version = '2.7.7'
+
+
+    implementation(project(":data"))
+    implementation(project(":framework"))
+    implementation(project(":domain"))
+    implementation(project(":usecases"))
+    implementation 'androidx.compose.material3:material3-android:1.2.1'
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
@@ -72,11 +77,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation 'com.google.code.gson:gson:2.11.0'
-    implementation 'org.jsoup:jsoup:1.17.2'
+//    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+//    implementation 'com.google.code.gson:gson:2.11.0'
+//    implementation 'org.jsoup:jsoup:1.17.2'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
-    implementation 'org.apache.commons:commons-text:1.12.0'
+//    implementation 'org.apache.commons:commons-text:1.12.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle"
@@ -84,8 +89,8 @@ dependencies {
 //    implementation 'androidx.compose.material:material'
     implementation "io.coil-kt:coil-compose:2.6.0"
 
-    implementation "com.squareup.retrofit2:retrofit:2.11.0"
-    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+//    implementation "com.squareup.retrofit2:retrofit:2.11.0"
+//    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
 
     implementation('org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3')
 
@@ -104,6 +109,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     debugImplementation "androidx.compose.ui:ui-tooling"
     debugImplementation "androidx.compose.ui:ui-test-manifest"
 }

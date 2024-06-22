@@ -29,11 +29,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
-import com.senkou.carteleraa7.domain.model.Sesion
-import com.senkou.carteleraa7.ui.common.crearTextoSesiones
-import com.senkou.carteleraa7.ui.theme.fondoLogo
 import com.senkou.carteleraa7.ui.common.RoundedCutoutShape
 import com.senkou.carteleraa7.ui.theme.Typography
+import com.senkou.carteleraa7.ui.theme.fondoLogo
+import com.senkou.domain.common.crearTextoSesiones
+import com.senkou.domain.model.Sesion
 
 @Composable
 fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {

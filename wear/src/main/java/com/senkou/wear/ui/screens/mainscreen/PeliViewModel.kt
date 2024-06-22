@@ -1,154 +1,36 @@
 package com.senkou.wear.ui.screens.mainscreen
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.senkou.wear.data.DataA7
-import com.senkou.wear.data.Utilidades
-import com.senkou.wear.data.model.Pelicula
-import com.senkou.wear.data.model.Sesion
-import kotlinx.coroutines.Dispatchers
+import com.senkou.domain.model.Pelicula
+import com.senkou.usecases.CargarCarteleraUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 //@HiltViewModel
-class PeliViewModel : ViewModel() {
+class PeliViewModel(
+   private val cargarCarteleraUseCase: CargarCarteleraUseCase
+) : ViewModel() {
 
-   var dataA7: DataA7? = null
+   private val _state = MutableStateFlow(UiState())
+   val state get() = _state.asStateFlow()
 
-   val peliculas: MutableLiveData<MutableList<Pelicula>> = MutableLiveData<MutableList<Pelicula>>()
-
-   private val sesiones: MutableLiveData<MutableList<Sesion>> =
-      MutableLiveData<MutableList<Sesion>>()
-
-   val proximosEstrenos: MutableLiveData<MutableList<Pelicula>> =
-      MutableLiveData<MutableList<Pelicula>>()
-
-   val tabindex: MutableLiveData<Int> = MutableLiveData(0)
-
-//    private val peliculasDia: MutableLiveData<MutableList<Peli>> by lazy {
-//        MutableLiveData<MutableList<Peli>>().also {
-//            it.value = arrayListOf()
-//        }
-//    }
-
-   fun actualizarTabIndex(index: Int) {
-      tabindex.value = index
-   }
-
-//    fun getTabIndex(): Int{
-//        return if (tabindex.value != null){
-//            tabindex.value!!
-//        } else {
-//            0
-//        }
-//
-//    }
-
-//    private val dias: MutableLiveData<List<String>> by lazy {
-//        MutableLiveData<List<String>>().also {
-//            it.value = arrayListOf()
-//        }
-//    }
-
-   fun getPeliculas() = peliculas.value.orEmpty()
-
-   fun getSesiones(idPelicula: Int): List<Sesion> =
-      sesiones.value?.filter { it.iDEspectaculo == idPelicula }.orEmpty()
-
-//    fun obtenerPeliculasDia(dia: String): MutableLiveData<MutableList<Peli>> {
-//        filtrarPorDia(dia)
-//        return peliculasDia
-//    }
-
-//    private fun filtrarPorDia(dia: String) {
-//
-//        val diaFlitro = if (dia == "Hoy") {
-//            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            sdf.format(Calendar.getInstance().time)
-//        } else {
-//            dia
-//        }
-//
-//        if (_peliculas.value != null) {
-//
-//            _peliculasDia.value = _peliculas.value!!.toMutableList()
-//
-//            _peliculasDia.value?.forEach { peli -> }
-//        }
-//    }
-
-   fun cargarCartelera() {
-
-      viewModelScope.launch(Dispatchers.IO) {
-         val response = dataA7?.obtenerCartelera()
-//            val pelisAux: MutableList<Peli> = ArrayList()
-//            val pelisProxAux: MutableList<ProximoEstreno> = ArrayList()
-//            response?.pelis?.forEach {
-//                pelisAux.add(it)
-//                peliculas.postValue(pelisAux)
-//                delay(500)
-//            }
-//
-         peliculas.postValue(response?.pelis?.toMutableList())
-         sesiones.postValue(response?.sesiones?.toMutableList())
-         proximosEstrenos.postValue(response?.proximosEstrenos?.toMutableList())
-      }
-   }
-
-//    fun obtenerDias(): LiveData<List<String>>{
-//        cargarDias()
-//        return dias
-//    }
-//
-//    private fun cargarDias() {
-//        val fechasSpinner = arrayListOf<String>()
-//        _peliculas.value?.forEach { peli: Peli ->  peli.sesiones.forEach{ pases: Pases ->
-//            pases.fecha?.let {
-//                if (!fechasSpinner.contains(it)){
-//                     fechasSpinner.add(it)
-//                }
-//            }
-//        }}
-//
-//        if (fechasSpinner.isNotEmpty()) {
-//            Utilidades.ordenarMeses(fechasSpinner)
-//
-//            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            val hoy = sdf.format(Calendar.getInstance().time)
-//            if (hoy == fechasSpinner[0]) {
-//                fechasSpinner[0] = "Hoy"
-//            } else {
-//                fechasSpinner.add(0, "Hoy")
-//            }
-//
-//            dias.value=fechasSpinner
-//        }
-//    }
-
-   fun obtenerDiasSesiones(sesiones: List<Sesion>): List<String> {
-      val fechasSpinner = arrayListOf<String>()
-      sesiones.forEach { sesion ->
-         sesion.diacompleto.let {
-            if (!fechasSpinner.contains(it)) {
-               fechasSpinner.add(it)
-            }
+   init {
+      viewModelScope.launch {
+         val cartelera = cargarCarteleraUseCase()
+         _state.update {
+            it.copy(
+               peliculas = cartelera.peliculas,
+               proximosEstrenos = cartelera.proximosEstrenos
+            )
          }
       }
-
-      if (fechasSpinner.isNotEmpty()) {
-         fechasSpinner.sort()
-         Utilidades.ordenarMeses(fechasSpinner)
-
-//            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            val hoy = sdf.format(Calendar.getInstance().time)
-//            if (hoy == fechasSpinner[0]) {
-//                fechasSpinner[0] = "Hoy"
-//            } else {
-//                fechasSpinner.add(0, "Hoy")
-//            }
-
-//            dias.value=fechasSpinner
-      }
-      return fechasSpinner
    }
+
+   data class UiState(
+      val peliculas: List<Pelicula> = emptyList(),
+      val proximosEstrenos: List<Pelicula> = emptyList()
+   )
 }

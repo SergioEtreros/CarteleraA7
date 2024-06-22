@@ -2,44 +2,40 @@ package com.senkou.wear.ui.screens.mainscreen
 
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.wear.compose.material.ScalingLazyColumn
-import androidx.wear.compose.material.items
-import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
-import com.senkou.wear.data.DataA7
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.items
 import com.senkou.wear.ui.theme.fondo_lista
-import com.senkou.wear.repository.RepoWeb
-
 
 @Composable
-fun MainScreen(navController: NavHostController, model: PeliViewModel) {
+fun MainScreen(
+   model: PeliViewModel,
+   onMovieClicked: (idEspectaculo: Int) -> Unit,
+) {
 
-   val lista = model.getPeliculas()
+   val state = model.state.collectAsState().value
 
-   if (lista != null) {
-      ScalingLazyColumn(
-         modifier = Modifier
-            .background(fondo_lista),
+   ScalingLazyColumn(
+      modifier = Modifier
+         .background(fondo_lista),
 //            contentPadding = PaddingValues(16.dp)
-      ) {
+   ) {
 
-         items(
-            items = lista,
-            itemContent = { peli ->
-               PeliculaItem(navController, data = peli, lista.indexOf(peli))
+      items(
+         items = state.peliculas,
+         itemContent = { peli ->
+            PeliculaItem(pelicula = peli) { idEspectaculo ->
+               onMovieClicked(idEspectaculo)
             }
-         )
-      }
+         }
+      )
    }
 }
 
 @Preview
 @Composable
 fun DefaultPreview() {
-   val model = PeliViewModel()
-   model.dataA7 = DataA7(RepoWeb())
-   model.cargarCartelera()
-   MainScreen(rememberSwipeDismissableNavController(), model)
+
 }

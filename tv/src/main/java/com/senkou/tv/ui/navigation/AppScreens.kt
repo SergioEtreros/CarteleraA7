@@ -1,4 +1,4 @@
-package com.senkou.wear.navigation
+package com.senkou.tv.ui.navigation
 
 sealed class AppScreens(val route: String) {
    data object SplashScreen : AppScreens("splash_screen")

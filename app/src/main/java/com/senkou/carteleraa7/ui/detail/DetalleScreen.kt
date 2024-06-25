@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -23,17 +26,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.theme.Typography
 import com.senkou.carteleraa7.ui.theme.color_blanco
@@ -53,7 +54,7 @@ fun DetallePelicula(
          contentWindowInsets = WindowInsets.safeDrawing
       ) { padding ->
 
-         val state = model.uiState.collectAsState().value
+         val state by model.uiState.collectAsStateWithLifecycle()
 
          if (state.sesiones.isNotEmpty()) {
             Column(
@@ -65,17 +66,14 @@ fun DetallePelicula(
                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-               val context = LocalContext.current
-
                Box {
                   AsyncImage(
                      model = state.sesiones.first().cartel,
-                     contentScale = ContentScale.Fit,
+                     contentScale = ContentScale.Crop,
                      modifier = Modifier
                         .height(200.dp)
                         .fillMaxWidth(),
                      contentDescription = "",
-//                     loading = { CircularProgressIndicator() }
                   )
 
                   Text(
@@ -83,14 +81,13 @@ fun DetallePelicula(
                         .fillMaxWidth()
                         .background(
                            color = fondoFechaEstreno,
-//                        shape = RoundedCornerShape(5.dp)
                         )
                         .padding(16.dp, 8.dp, 16.dp, 8.dp),
                      maxLines = 1,
                      textAlign = TextAlign.Center,
                      color = Color.White,
                      style = Typography.bodySmall,
-                     text = state.sesiones[0].titulo
+                     text = state.sesiones.first().titulo
                   )
 
                   Button(modifier = Modifier
@@ -105,7 +102,7 @@ fun DetallePelicula(
                         modifier = Modifier
                            .height(24.dp)
                            .width(24.dp),
-                        painter = painterResource(R.drawable.baseline_arrow_back_48),
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         contentDescription = "Volver",
                         tint = color_blanco
                      )
@@ -118,13 +115,13 @@ fun DetallePelicula(
                         .align(Alignment.BottomEnd)
                         .offset(y = (25).dp),
                      onClick = {
-                        model.playTrailer(state.sesiones[0].video)
+                        model.playTrailer(state.sesiones.first().video)
 
                      },
                      containerColor = Color.Red,
                      contentColor = Color.White
                   ) {
-                     Icon(painterResource(R.drawable.ic_play_arrow_white_48dp), "")
+                     Icon(Icons.Default.PlayArrow, "")
                   }
                }
 

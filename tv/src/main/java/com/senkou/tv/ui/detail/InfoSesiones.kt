@@ -1,9 +1,10 @@
-package com.senkou.carteleraa7.ui.detail
+package com.senkou.tv.ui.detail
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,17 +28,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.tv.material3.Text
 import coil.compose.AsyncImage
-import com.senkou.carteleraa7.ui.common.RoundedCutoutShape
-import com.senkou.carteleraa7.ui.theme.Typography
-import com.senkou.carteleraa7.ui.theme.fondoLogo
 import com.senkou.domain.common.crearTextoSesiones
 import com.senkou.domain.model.Sesion
+import com.senkou.tv.ui.common.RoundedCutoutShape
+import com.senkou.tv.ui.theme.Typography
+import com.senkou.tv.ui.theme.fondoLogo
 
 @Composable
 fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
 
-   val shape = RoundedCutoutShape(offset = 310.0F, 10.dp, Orientation.Horizontal)
+   val shape = RoundedCutoutShape(offset = 210.0F, 10.dp, Orientation.Horizontal)
 
    Row(
       modifier = Modifier
@@ -59,7 +61,6 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             .align(Alignment.CenterVertically)
             .clip(RoundedCornerShape(5.dp)),
          contentDescription = "",
-//         loading = { CircularProgressIndicator() }
       )
 
       Spacer(modifier = Modifier.width(12.dp))
@@ -70,7 +71,6 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             .fillMaxHeight()
             .width(2.dp)
       ) {
-
          drawLine(
             color = Color.Gray,
             start = Offset(0f, 0f),
@@ -96,7 +96,9 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
          Spacer(modifier = Modifier.width(3.dp))
 
          Text(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+               .fillMaxSize()
+               .scrollable(rememberScrollState(), orientation = Orientation.Vertical),
             color = Color.Black,
             textAlign = TextAlign.Start,
             style = Typography.bodySmall,

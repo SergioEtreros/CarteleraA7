@@ -1,29 +1,37 @@
-package com.senkou.wear.navigation
+package com.senkou.tv.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.wear.compose.navigation.SwipeDismissableNavHost
-import androidx.wear.compose.navigation.composable
-import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.senkou.data.MoviesRepository
+import com.senkou.data.VideoRepository
 import com.senkou.framework.remote.WebMovieDatasource
+import com.senkou.tv.ui.detail.DetallePelicula
+import com.senkou.tv.ui.detail.DetalleViewModel
+import com.senkou.tv.ui.mainscreen.MainScreen
+import com.senkou.tv.ui.mainscreen.PeliListViewModel
+import com.senkou.tv.ui.splash.SplashScreen
 import com.senkou.usecases.CargarCarteleraUseCase
 import com.senkou.usecases.CargarDetalleUseCase
-import com.senkou.wear.ui.screens.detailscreen.DetallePelicula
-import com.senkou.wear.ui.screens.detailscreen.DetalleViewModel
-import com.senkou.wear.ui.screens.mainscreen.MainScreen
-import com.senkou.wear.ui.screens.mainscreen.PeliViewModel
-import com.senkou.wear.ui.screens.splashscreen.SplashScreen
+import com.senkou.usecases.ReproducirTrailerUseCase
 
 @Composable
 fun AppNavitagion() {
-   val navController = rememberSwipeDismissableNavController()
+   val navController = rememberNavController()
 
    val moviesRepository = MoviesRepository(WebMovieDatasource())
-   val model = PeliViewModel(CargarCarteleraUseCase(moviesRepository))
+   val model = PeliListViewModel(CargarCarteleraUseCase(moviesRepository))
 
-   SwipeDismissableNavHost(
+   val videoRepository = VideoRepository(
+      com.senkou.framework.YoutubeDatasource(
+         context = LocalContext.current
+      )
+   )
+   NavHost(
       navController = navController,
       startDestination = AppScreens.SplashScreen.route
    ) {
@@ -47,6 +55,7 @@ fun AppNavitagion() {
                DetalleViewModel(
                   idEspectaculo,
                   cargarDetalle = CargarDetalleUseCase(moviesRepository),
+                  reproducirTrailer = ReproducirTrailerUseCase(videoRepository)
                )
             )
          }

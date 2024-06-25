@@ -15,7 +15,6 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.theme.resalte_ticket
 import com.senkou.data.MoviesRepository
@@ -40,7 +40,7 @@ fun MainScreen(
          contentWindowInsets = WindowInsets.safeDrawing
       ) { paddingValues ->
 
-         val state = model.state.collectAsState().value
+         val state by model.state.collectAsStateWithLifecycle()
 
          var tabIndex by rememberSaveable { mutableIntStateOf(0) }
          val coroutineScope = rememberCoroutineScope()

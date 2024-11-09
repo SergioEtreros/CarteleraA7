@@ -40,7 +40,7 @@ fun PeliculaItem(
       .clip(shape)
       .border(2.dp, fondoLogo, shape)
       .clickable {
-         onMovieClicked(pelicula.iDEspectaculo)
+         onMovieClicked(pelicula.idEspectaculo)
       }) {
       AsyncImage(
          model = pelicula.cartel,

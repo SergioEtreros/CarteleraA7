@@ -2,17 +2,5 @@
 
     <string name="app_name">Cartelera A7</string>
     <string name="title_pelicula_detail">Pelicula Detail</string>
-    <string name="cartel">Cartél</string>
-    <string name="dia_hoy">Hoy</string>
-    <array name="dias">
-        <item>@string/dia_hoy</item>
-    </array>
-    <string name="texto_dias">Fecha: </string>
-    <string name="descripcion_cartel">Cartel de la película</string>
-    <string name="adorno">adorno</string>
-    <string name="reproducir_trailer">Reproducir trailer</string>
-    <string name="title_activity_presentation._wear_main">presentation.WearMainActivity</string>
-    <string name="title_activity_wear_main">WearMainActivity</string>
 
-    <string name="hello_world">From the Round world,\nHello, %1$s!</string>
 </resources>

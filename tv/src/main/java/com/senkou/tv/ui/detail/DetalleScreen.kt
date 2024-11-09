@@ -44,7 +44,6 @@ import com.senkou.tv.ui.theme.resalte_ticket
 @Composable
 fun DetallePelicula(
    model: DetalleViewModel,
-//   onBack: () -> Unit
 ) {
    Screen {
 
@@ -78,7 +77,6 @@ fun DetallePelicula(
                Column(
                   modifier = Modifier
                      .fillMaxSize()
-//                  .padding(padding)
                      .background(fondo_lista)
                      .verticalScroll(state = rememberScrollState(), true),
                   horizontalAlignment = Alignment.CenterHorizontally
@@ -115,11 +113,7 @@ fun DetallePelicula(
                            style = Typography.bodyLarge,
                            text = detalles
                         )
-
-//                        Spacer(modifier = Modifier.height(6.dp))
                      }
-
-//                     Spacer(modifier = Modifier.height(28.dp))
                   }
                }
             }
@@ -140,7 +134,4 @@ fun DetallePelicula(
          }
       }
    }
-
-
-//      }
 }

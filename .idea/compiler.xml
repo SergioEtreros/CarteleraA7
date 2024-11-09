@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="Cartelera A7.Cartelera_A7.wear" target="21" />
+      <module name="Cartelera_A7.app" target="21" />
+      <module name="Cartelera_A7.data" target="21" />
+      <module name="Cartelera_A7.data.main" target="21" />
+      <module name="Cartelera_A7.data.test" target="21" />
+      <module name="Cartelera_A7.domain" target="21" />
+      <module name="Cartelera_A7.domain.main" target="21" />
+      <module name="Cartelera_A7.domain.test" target="21" />
+      <module name="Cartelera_A7.framework" target="21" />
+      <module name="Cartelera_A7.tv" target="21" />
+      <module name="Cartelera_A7.usecases" target="21" />
+      <module name="Cartelera_A7.usecases.main" target="21" />
+      <module name="Cartelera_A7.usecases.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>

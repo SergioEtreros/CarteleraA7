@@ -1,12 +1,12 @@
 plugins {
    id("com.android.library")
-   id("org.jetbrains.kotlin.android")
-   id("org.jetbrains.kotlin.plugin.serialization")
+   alias(libs.plugins.jetbrains.kotlin.android)
+   alias(libs.plugins.kotlin.serialization)
 }
 
 android {
    namespace = "com.senkou.framework"
-   compileSdk = 34
+   compileSdk = 35
 
    defaultConfig {
       minSdk = 25
@@ -23,13 +23,15 @@ android {
             "proguard-rules.pro"
          )
       }
+      create("applicationVariants") {
+      }
    }
    compileOptions {
-      sourceCompatibility = JavaVersion.VERSION_17
-      targetCompatibility = JavaVersion.VERSION_17
+      sourceCompatibility = JavaVersion.VERSION_21
+      targetCompatibility = JavaVersion.VERSION_21
    }
    kotlinOptions {
-      jvmTarget = "17"
+      jvmTarget = "21"
    }
 }
 
@@ -37,18 +39,14 @@ dependencies {
 
    implementation(project(":data"))
    implementation(project(":domain"))
-//   implementation(project(":usecases"))
-   implementation("androidx.core:core-ktx:1.13.1")
-   implementation("androidx.appcompat:appcompat:1.7.0")
-   implementation("com.google.android.material:material:1.12.0")
-   implementation("org.apache.commons:commons-text:1.12.0")
-   implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-   implementation("org.jsoup:jsoup:1.17.2")
-   implementation("com.google.code.gson:gson:2.11.0")
-   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
+   implementation(libs.androidx.core.ktx)
+   implementation(libs.kotlinx.serialization.json)
+   implementation(libs.jsoup)
+   implementation(libs.commons.text)
+   implementation(libs.gson)
 
-//   testImplementation("junit:junit:4.13.2")
-   androidTestImplementation("androidx.test.ext:junit:1.1.5")
-   androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+   testImplementation(libs.junit)
+   androidTestImplementation(libs.androidx.junit)
+   androidTestImplementation(libs.androidx.espresso.core)
 }

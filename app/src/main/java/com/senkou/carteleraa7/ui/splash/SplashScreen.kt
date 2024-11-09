@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -14,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.mainscreen.PeliListViewModel
-import com.senkou.carteleraa7.ui.theme.fondoLogo
 
 @Composable
 
@@ -38,7 +38,7 @@ fun Splash() {
       Column(
          modifier = Modifier
             .fillMaxSize()
-            .background(fondoLogo),
+            .background(MaterialTheme.colorScheme.surfaceVariant),
          horizontalAlignment = Alignment.CenterHorizontally,
          verticalArrangement = Arrangement.Center
       ) {

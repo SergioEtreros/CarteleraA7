@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -15,7 +16,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.tv.foundation.lazy.list.TvLazyColumn
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.senkou.data.MoviesRepository
@@ -31,7 +31,7 @@ fun MainScreen(
    Screen {
       val state by model.state.collectAsStateWithLifecycle()
 
-      TvLazyColumn(
+      LazyColumn(
          modifier = Modifier
             .fillMaxSize(),
          verticalArrangement = Arrangement.spacedBy(24.dp)

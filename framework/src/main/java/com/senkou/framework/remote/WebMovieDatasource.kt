@@ -70,7 +70,7 @@ class WebMovieDatasource : RemoteDataSource {
 
          json += "[\n"
          this.getElementsByClass("swiper mySwiperNext mb-5").first()
-            ?.getElementsByClass("swiper-slide")?.forEach { estreno ->
+            ?.getElementsByClass("swiper-slide")?.forEachIndexed { index, estreno ->
                val parser = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
                val fechaEstreno =
                   parser.parse(estreno.child(0).child(0).textNodes()[0].toString().trim())
@@ -90,7 +90,7 @@ class WebMovieDatasource : RemoteDataSource {
                json += "  {\n"
                json += "    \"Cartel\" : \"$cartel\",\n"
                json += "    \"FechaEstreno\" : \"$fecha\",\n"
-               json += "    \"ID_Espectaculo\" : 0,\n"
+               json += "    \"ID_Espectaculo\" : $index,\n"
                json += "    \"Titulo\" : \"$titulo\"\n"
                json += "  }"
             }
@@ -167,7 +167,7 @@ private fun Sesion.toDomain() = SesionDomain(
 private fun Pelicula.toDomain() = PeliculaDomain(
    cartel = cartel.getUrlCartel(),
    fechaEstreno = fechaEstreno,
-   iDEspectaculo = iDEspectaculo,
+   idEspectaculo = idEspectaculo,
    titulo = titulo
 
 )

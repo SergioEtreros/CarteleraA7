@@ -1,7 +1,0 @@
-include ':app'
-include ':wear'
-include ':domain'
-include ':usecases'
-include ':data'
-include ':framework'
-include ':tv'

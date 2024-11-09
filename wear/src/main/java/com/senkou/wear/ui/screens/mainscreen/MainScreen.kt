@@ -32,6 +32,7 @@ fun MainScreen(
 
          items(
             items = state.peliculas,
+            key = { it.idEspectaculo },
             itemContent = { peli ->
                PeliculaItem(pelicula = peli) { idEspectaculo ->
                   onMovieClicked(idEspectaculo)

@@ -19,7 +19,7 @@ fun ArrayList<String>.ordenarMeses() {
 
       for (i in 1..index) {
          this.add(this.first())
-         this.removeFirst()
+         this.removeAt(0)
       }
    }
 }
@@ -28,13 +28,13 @@ fun Sesion.crearDetalles(): ArrayList<String> {
 
    val textoFicha: ArrayList<String> = ArrayList()
    textoFicha.add("")
-   textoFicha.add("Título original: ${this.tituloOriginal}")
-   textoFicha.add("Duración: ${this.duracion}")
+   textoFicha.add("Título original:\n${this.tituloOriginal}")
+   textoFicha.add("Duración:\n${this.duracion}")
 //        textoFicha.add("Director: ${this.director}")
-   textoFicha.add("Género: ${this.nombreGenero}")
-   textoFicha.add("Calificación: ${this.nombreCalificacion}")
-   textoFicha.add("Reparto: ${this.interpretes}")
-   textoFicha.add("Fecha de estreno: ${this.fechaEstrenoSpanish}")
+   textoFicha.add("Género:\n${this.nombreGenero}")
+   textoFicha.add("Calificación:\n${this.nombreCalificacion}")
+   textoFicha.add("Reparto:\n${this.interpretes}")
+   textoFicha.add("Fecha de estreno:\n${this.fechaEstrenoSpanish}")
    textoFicha.add(this.sinopsis)
 
    return textoFicha

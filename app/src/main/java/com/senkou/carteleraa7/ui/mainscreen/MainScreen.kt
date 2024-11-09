@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -26,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.theme.resalte_ticket
 import com.senkou.data.MoviesRepository
+import com.senkou.framework.remote.WebMovieDatasource
 import com.senkou.usecases.CargarCarteleraUseCase
 import kotlinx.coroutines.launch
 
@@ -37,53 +39,56 @@ fun MainScreen(
 
    Screen {
       Scaffold(
+         containerColor = MaterialTheme.colorScheme.surface,
          contentWindowInsets = WindowInsets.safeDrawing
       ) { paddingValues ->
 
-         val state by model.state.collectAsStateWithLifecycle()
 
-         var tabIndex by rememberSaveable { mutableIntStateOf(0) }
-         val coroutineScope = rememberCoroutineScope()
+         Column(
+            modifier = Modifier
+               .fillMaxWidth()
+               .padding(paddingValues)
+         ) {
 
-         val tabData = listOf(
-            "CARTELERA",
-            "PROX. ESTRENOS"
-         )
+            var tabIndex by rememberSaveable { mutableIntStateOf(0) }
+            val tabData = listOf("CARTELERA", "PROX. ESTRENOS")
+            val pagerState = rememberPagerState(
+               initialPage = 0,
+               initialPageOffsetFraction = 0f,
+            ) { tabData.size }
 
-         val pagerState = rememberPagerState(
-            initialPage = 0,
-            initialPageOffsetFraction = 0f,
-         ) { tabData.size }
-
-         Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(paddingValues)) {
             TabRow(selectedTabIndex = tabIndex,
+               modifier = Modifier.background(color = resalte_ticket),
                indicator = { tabPositions ->
                   SecondaryIndicator(
                      modifier = Modifier.tabIndicatorOffset(
                         currentTabPosition = tabPositions[tabIndex],
                      ),
-//               color = MaterialTheme.colorScheme.fromToken(PrimaryNavigationTabTokens.ActiveIndicatorColor)
+                     color = MaterialTheme.colorScheme.onBackground,
                   )
-               }) {
+               }
+            ) {
                tabData.forEachIndexed { index, title ->
-                  Tab(modifier = Modifier.background(color = resalte_ticket),
+                  val coroutineScope = rememberCoroutineScope()
+                  Tab(
                      selected = tabIndex == index,
                      onClick = {
+                        tabIndex = index
                         coroutineScope.launch {
                            pagerState.scrollToPage(index)
                         }
                      },
-                     text = { Text(text = title) })
+                     text = { Text(text = title, color = MaterialTheme.colorScheme.onBackground) })
                }
             }
 
             HorizontalPager(
                state = pagerState,
             ) { page ->
+               val state by model.state.collectAsStateWithLifecycle()
+
                tabIndex = page
-               when (tabIndex) {
+               when (page) {
                   0 -> Cartelera(state.peliculas) { idEspectaculo -> onMovieClicked(idEspectaculo) }
                   1 -> Cartelera(state.proximosEstrenos) {}
                }
@@ -96,7 +101,7 @@ fun MainScreen(
 @Preview(showSystemUi = false)
 @Composable
 fun MainScreenPreview() {
-   val moviesRepository = MoviesRepository(com.senkou.framework.remote.WebMovieDatasource())
+   val moviesRepository = MoviesRepository(WebMovieDatasource())
    val peliListViewModel = PeliListViewModel(CargarCarteleraUseCase(moviesRepository))
    MainScreen(peliListViewModel) {}
 }

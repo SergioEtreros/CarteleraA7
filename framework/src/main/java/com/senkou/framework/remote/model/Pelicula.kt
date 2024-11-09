@@ -10,7 +10,7 @@ data class Pelicula(
    @SerializedName("FechaEstreno")
    val fechaEstreno: String,
    @SerializedName("ID_Espectaculo")
-   val iDEspectaculo: Int,
+   val idEspectaculo: Int,
    @SerializedName("Titulo")
    val titulo: String
 )

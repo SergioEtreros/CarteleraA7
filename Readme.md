@@ -11,13 +11,15 @@
     - Géneros
     - Director y elenco
     - Duración
+    - Trailer
 - Multisistema, la app está disponible en versiones para móbil, watch y tv.
 
 ## 📱 Capturas de Pantalla
 
 | Inicio                          | Próximos Estrenos                     | Detalle de Película                      |
 |---------------------------------|---------------------------------------|------------------------------------------|
-| ![Inicio](screenshots/home.png) | ![Estrenos](screenshots/upcoming.png) | ![Detalle](screenshots/movie_detail.png) |
+|<img src="https://github.com/user-attachments/assets/ba713f9d-2faf-4f79-81b3-e99204bebab7" width="300" >|<img src="https://github.com/user-attachments/assets/b3335bed-c5b2-4525-bfae-deb74dc19b3d" width="300">|<img src="https://github.com/user-attachments/assets/d41839d5-1579-4aec-8893-e9d47e1412ad" width="300">|
+
 ## Tecnologías Utilizadas
 
 - **Backend**: Kotlin

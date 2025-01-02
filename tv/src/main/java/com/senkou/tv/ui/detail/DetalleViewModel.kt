@@ -10,15 +10,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.URLDecoder
 
 //@HiltViewModel
 class DetalleViewModel(
    private val idEspectaculo: Int,
+   background: String,
    private val cargarDetalle: CargarDetalleUseCase,
    private val reproducirTrailer: ReproducirTrailerUseCase,
 ) : ViewModel() {
 
-   private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
+   private val _uiState: MutableStateFlow<UiState> =
+      MutableStateFlow(UiState(background = URLDecoder.decode(background, "UTF-8")))
    val uiState = _uiState.asStateFlow()
 
    init {
@@ -52,7 +55,8 @@ class DetalleViewModel(
    }
 
    data class UiState(
-      val sesiones: List<Sesion> = emptyList()
+      val sesiones: List<Sesion> = emptyList(),
+      val background: String
    )
 }
 

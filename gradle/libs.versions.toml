@@ -1,10 +1,9 @@
 [versions]
-agp = "8.7.2"
+agp = "8.7.3"
 appcompat = "1.7.0"
 commonsText = "1.12.0"
-composeFoundation = "1.4.0"
-composeMaterial3 = "1.0.0-alpha28"
-composeNavigation = "1.4.0"
+composeMaterial3 = "1.0.0-alpha30"
+composeWear = "1.5.0-alpha07"
 coreSplashscreen = "1.0.1"
 #fragmentKtx = "1.8.1"
 gson = "2.11.0"
@@ -18,27 +17,29 @@ espressoCore = "3.6.1"
 kotlinxCoroutinesCore = "1.9.0"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
-composeBom = "2024.10.01"
+composeBom = "2024.12.01"
 #lifecycleViewmodelCompose = "2.8.3"
-playServicesWearable = "18.2.0"
+playServicesWearable = "19.0.0"
 room = "2.6.1"
 ksp = "2.0.0-1.0.21"
-#retrofit = "2.11.0"
+retrofit = "2.11.0"
 kotlinxSerialization = "1.7.3"
-navigationCompose = "2.8.3"
+navigationCompose = "2.8.5"
 coil = "2.7.0"
 #junitJupiter = "5.8.1"
 tvFoundation = "1.0.0-alpha11"
 tvMaterial = "1.0.0"
 wearToolingPreview = "1.0.0"
+okhttp = "4.12.0"
+uiToolingPreviewAndroid = "1.7.6"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
-androidx-compose-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "composeFoundation" }
+androidx-compose-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "composeWear" }
 androidx-compose-material3 = { module = "androidx.wear.compose:compose-material3", version.ref = "composeMaterial3" }
-androidx-compose-navigation = { module = "androidx.wear.compose:compose-navigation", version.ref = "composeNavigation" }
+androidx-compose-navigation = { module = "androidx.wear.compose:compose-navigation", version.ref = "composeWear" }
 #androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 #androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 #androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
@@ -57,8 +58,8 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview"}
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest"}
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 #kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinStdlib" }
@@ -67,13 +68,17 @@ play-services-wearable = { module = "com.google.android.gms:play-services-wearab
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-#retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-#retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 #material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 #junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

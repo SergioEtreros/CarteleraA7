@@ -72,3 +72,6 @@ fun List<Sesion>.crearTextoSesiones(): String {
 
 fun Date.format(): String =
    SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(this)
+
+fun String.parseDate() =
+   SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(this).format()

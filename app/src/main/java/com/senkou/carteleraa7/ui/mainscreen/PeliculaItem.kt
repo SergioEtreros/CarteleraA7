@@ -85,6 +85,7 @@ fun PeliculaItemPreview() {
          "01-01-0001",
          1,
          "Peli",
+         "PeliOriginal",
       )
    ) { }
 }

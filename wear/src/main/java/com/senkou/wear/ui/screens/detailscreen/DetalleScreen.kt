@@ -25,7 +25,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
 import com.senkou.data.MoviesRepository
 import com.senkou.domain.common.crearDetalles
-import com.senkou.framework.remote.WebMovieDatasource
+import com.senkou.framework.remote.arte7.WebMovieDatasource
 import com.senkou.usecases.CargarDetalleUseCase
 import com.senkou.wear.ui.screens.mainscreen.MarqueeText
 import com.senkou.wear.ui.theme.CarteleraA7Theme

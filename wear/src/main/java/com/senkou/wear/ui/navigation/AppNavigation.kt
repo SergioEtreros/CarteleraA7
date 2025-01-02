@@ -7,7 +7,7 @@ import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.senkou.data.MoviesRepository
-import com.senkou.framework.remote.WebMovieDatasource
+import com.senkou.framework.remote.arte7.WebMovieDatasource
 import com.senkou.usecases.CargarCarteleraUseCase
 import com.senkou.usecases.CargarDetalleUseCase
 import com.senkou.wear.ui.screens.detailscreen.DetallePelicula

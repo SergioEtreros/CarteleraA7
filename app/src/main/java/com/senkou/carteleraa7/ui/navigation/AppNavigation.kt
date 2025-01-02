@@ -13,7 +13,8 @@ import com.senkou.carteleraa7.ui.mainscreen.PeliListViewModel
 import com.senkou.carteleraa7.ui.splash.SplashScreen
 import com.senkou.data.MoviesRepository
 import com.senkou.data.VideoRepository
-import com.senkou.framework.remote.WebMovieDatasource
+import com.senkou.framework.YoutubeDatasource
+import com.senkou.framework.remote.arte7.WebMovieDatasource
 import com.senkou.usecases.CargarCarteleraUseCase
 import com.senkou.usecases.CargarDetalleUseCase
 import com.senkou.usecases.ReproducirTrailerUseCase
@@ -25,11 +26,8 @@ fun AppNavitagion() {
    val moviesRepository = MoviesRepository(WebMovieDatasource())
    val peliListViewModel = PeliListViewModel(CargarCarteleraUseCase(moviesRepository))
 
-   val videoRepository = VideoRepository(
-      com.senkou.framework.YoutubeDatasource(
-         context = LocalContext.current
-      )
-   )
+   val videoRepository = VideoRepository(YoutubeDatasource(context = LocalContext.current))
+
    NavHost(
       navController = navController,
       startDestination = SplashScreen

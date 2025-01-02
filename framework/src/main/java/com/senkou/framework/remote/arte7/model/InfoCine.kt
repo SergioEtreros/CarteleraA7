@@ -1,4 +1,4 @@
-package com.senkou.framework.remote.model
+package com.senkou.framework.remote.arte7.model
 
 import com.google.gson.annotations.SerializedName
 
@@ -11,5 +11,5 @@ class InfoCine(
    val sesiones: List<Sesion>,
 
    @SerializedName("Proximamente")
-   val proximosEstrenos: List<Pelicula>
+   val proximosEstrenos: List<Pelicula>?
 )

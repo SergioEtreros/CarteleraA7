@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
    id("com.android.library")
    alias(libs.plugins.jetbrains.kotlin.android)
@@ -13,6 +15,12 @@ android {
 
       testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
       consumerProguardFiles("consumer-rules.pro")
+
+      val properties = Properties()
+      properties.load(project.rootProject.file("local.properties").readText().byteInputStream())
+
+      val tmdbApiKey = properties.getProperty("TMDB_API_KEY", "")
+      buildConfigField("String", "TMDB_API_KEY", "\"$tmdbApiKey\"")
    }
 
    buildTypes {
@@ -33,6 +41,10 @@ android {
    kotlinOptions {
       jvmTarget = "21"
    }
+
+   buildFeatures {
+      buildConfig = true
+   }
 }
 
 dependencies {
@@ -45,6 +57,10 @@ dependencies {
    implementation(libs.jsoup)
    implementation(libs.commons.text)
    implementation(libs.gson)
+   implementation(libs.retrofit)
+   implementation(libs.retrofit.converter.kotlinx.serialization)
+   implementation(libs.okhttp)
+   implementation(libs.okhttp.logging.interceptor)
 
    testImplementation(libs.junit)
    androidTestImplementation(libs.androidx.junit)

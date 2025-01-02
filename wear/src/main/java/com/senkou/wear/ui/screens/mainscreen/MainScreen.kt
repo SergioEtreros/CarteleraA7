@@ -11,7 +11,7 @@ import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.tooling.preview.devices.WearDevices
 import com.senkou.data.MoviesRepository
-import com.senkou.framework.remote.WebMovieDatasource
+import com.senkou.framework.remote.arte7.WebMovieDatasource
 import com.senkou.usecases.CargarCarteleraUseCase
 import com.senkou.wear.ui.theme.fondo_lista
 

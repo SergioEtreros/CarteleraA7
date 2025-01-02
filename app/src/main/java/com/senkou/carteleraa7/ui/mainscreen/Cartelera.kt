@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.senkou.carteleraa7.ui.common.NoResult
 import com.senkou.domain.model.Pelicula
 
 @Composable
@@ -19,25 +20,29 @@ fun Cartelera(
    onMovieClicked: (idEspectaculo: Int) -> Unit,
 ) {
 
-   val state = rememberLazyListState()
+   if (lista.isNotEmpty()) {
+      val state = rememberLazyListState()
 
-   LazyColumn(
-      modifier = Modifier
-         .fillMaxSize()
-         .background(MaterialTheme.colorScheme.background),
-      state = state,
-      contentPadding = PaddingValues(24.dp),
-      verticalArrangement = Arrangement.spacedBy(24.dp)
-   ) {
+      LazyColumn(
+         modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+         state = state,
+         contentPadding = PaddingValues(24.dp),
+         verticalArrangement = Arrangement.spacedBy(24.dp)
+      ) {
 
-      items(
-         items = lista,
-         key = { it.idEspectaculo },
-         itemContent = { peli ->
-            PeliculaItem(pelicula = peli) { idEspectaculo ->
-               onMovieClicked(idEspectaculo)
+         items(
+            items = lista,
+            key = { it.idEspectaculo },
+            itemContent = { peli ->
+               PeliculaItem(pelicula = peli) { idEspectaculo ->
+                  onMovieClicked(idEspectaculo)
+               }
             }
-         }
-      )
+         )
+      }
+   } else {
+      NoResult()
    }
 }

@@ -2,7 +2,7 @@ package com.senkou.tv.ui.mainscreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -12,28 +12,26 @@ import androidx.compose.ui.unit.dp
 import com.senkou.domain.model.Pelicula
 
 @Composable
-fun Cartelera(
+fun CartelList(
    lista: List<Pelicula>,
    onMovieClicked: (idEspectaculo: Int) -> Unit,
+   onFocus: (Pelicula) -> Unit
 ) {
 
-   val state = rememberLazyListState()
+   val listState = rememberLazyListState()
 
    LazyRow(
-      modifier = Modifier.fillMaxSize(),
-      state = state,
-      contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
+      modifier = Modifier.fillMaxWidth(),
+      state = listState,
+      contentPadding = PaddingValues(start = 24.dp, end = 24.dp, bottom = 18.dp),
       horizontalArrangement = Arrangement.spacedBy(24.dp)
    ) {
-
-      items(
-         items = lista,
-         key = { it.idEspectaculo },
-         itemContent = { peli ->
-            PeliculaItem(pelicula = peli) { idEspectaculo ->
-               onMovieClicked(idEspectaculo)
-            }
-         }
-      )
+      items(items = lista, key = { it.idEspectaculo }) { peli ->
+         PeliculaItem(
+            pelicula = peli,
+            onMovieClicked = { idEspectaculo -> onMovieClicked(idEspectaculo) },
+            onFocus = onFocus
+         )
+      }
    }
 }

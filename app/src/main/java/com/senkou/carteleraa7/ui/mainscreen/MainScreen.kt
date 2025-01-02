@@ -27,7 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.theme.resalte_ticket
 import com.senkou.data.MoviesRepository
-import com.senkou.framework.remote.WebMovieDatasource
+import com.senkou.framework.remote.arte7.WebMovieDatasource
 import com.senkou.usecases.CargarCarteleraUseCase
 import kotlinx.coroutines.launch
 

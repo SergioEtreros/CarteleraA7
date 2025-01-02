@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -34,11 +33,10 @@ import androidx.tv.material3.ButtonDefaults
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil.compose.AsyncImage
-import com.senkou.domain.common.crearDetalles
 import com.senkou.tv.ui.Screen
+import com.senkou.tv.ui.common.AlphaBackground
 import com.senkou.tv.ui.theme.Typography
 import com.senkou.tv.ui.theme.fondoFechaEstreno
-import com.senkou.tv.ui.theme.fondo_lista
 import com.senkou.tv.ui.theme.resalte_ticket
 
 @Composable
@@ -50,11 +48,13 @@ fun DetallePelicula(
       val state by model.uiState.collectAsStateWithLifecycle()
       val shape = RoundedCornerShape(8.dp)
 
+      AlphaBackground(background = state.background)
+
       if (state.sesiones.isNotEmpty()) {
          Box(
             modifier = Modifier
                .fillMaxSize()
-               .padding(16.dp),
+               .padding(24.dp),
          ) {
 
             Row(
@@ -77,7 +77,6 @@ fun DetallePelicula(
                Column(
                   modifier = Modifier
                      .fillMaxSize()
-                     .background(fondo_lista)
                      .verticalScroll(state = rememberScrollState(), true),
                   horizontalAlignment = Alignment.CenterHorizontally
                ) {
@@ -99,30 +98,17 @@ fun DetallePelicula(
                   Spacer(modifier = Modifier.height(16.dp))
 
                   Column {
-
                      FilaFechas(state.sesiones, model.obtenerDiasSesiones())
-
-                     state.sesiones.first().crearDetalles().forEach { detalles ->
-
-                        Text(
-                           modifier = Modifier
-                              .fillMaxWidth()
-                              .wrapContentHeight(),
-                           color = Color.White,
-                           textAlign = TextAlign.Justify,
-                           style = Typography.bodyLarge,
-                           text = detalles
-                        )
-                     }
+                     Spacer(modifier = Modifier.height(16.dp))
+                     Detalles(state.sesiones.first(), modifier = Modifier.padding(end = 64.dp))
                   }
                }
             }
-
          }
 
          Button(
             modifier = Modifier
-               .padding(end = 14.dp, bottom = 10.dp)
+               .padding(end = 24.dp, bottom = 24.dp)
                .align(Alignment.BottomEnd),
             onClick = { model.playTrailer(state.sesiones.first().video) },
             colors = ButtonDefaults.colors(
@@ -135,3 +121,7 @@ fun DetallePelicula(
       }
    }
 }
+
+
+
+

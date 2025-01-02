@@ -1,11 +1,11 @@
-package com.senkou.framework.remote
+package com.senkou.framework.remote.arte7
 
 import com.google.gson.Gson
 import com.senkou.data.RemoteDataSource
 import com.senkou.domain.model.Cartelera
-import com.senkou.framework.remote.model.InfoCine
-import com.senkou.framework.remote.model.Pelicula
-import com.senkou.framework.remote.model.Sesion
+import com.senkou.framework.remote.arte7.model.InfoCine
+import com.senkou.framework.remote.arte7.model.Pelicula
+import com.senkou.framework.remote.arte7.model.Sesion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
@@ -27,32 +27,33 @@ class WebMovieDatasource : RemoteDataSource {
             url.openConnection()
          } as HttpURLConnection
 
-         var json: String
+         val rawJson: String
+         val estrenos: String
          try {
 
             val html = urlConnection.inputStream.bufferedReader().readText()
 
-            json = "{\"Cartelera\":" + html.substring(
+            rawJson = html.substring(
                html.indexOf(":onlytitlesinfo='[") + 17,
                html.lastIndexOf("}]' :fullsessionsinfo") + 2
-            ) + ","
+            )
 
-//            json += "\"Sesiones\":" + html.substring(
-//               html.indexOf(":fullsessionsinfo='[") + 19,
-//               html.lastIndexOf(";}]") + 3
-//            ) + ","
-
-            json += obtenerEstrenos(html)
-
-            json += "}"
-
+            estrenos = obtenerEstrenos(html)
          } finally {
             urlConnection.disconnect()
          }
-         json = StringEscapeUtils.unescapeHtml4(json)
+
+         var json = """
+            { 
+               "Cartelera" : $rawJson, 
+               "Proximamente" : $estrenos
+            }
+            """
+
+         json = StringEscapeUtils.unescapeHtml4(json).replace("\\/", "/")
 
          val response = Gson().fromJson(
-            json.replace("\\/", "/"),
+            json,
             InfoCine::class.java
          )
 
@@ -65,12 +66,12 @@ class WebMovieDatasource : RemoteDataSource {
    }
 
    private fun obtenerEstrenos(html: String): String {
-      var json = "\"Proximamente\" :"
-      Jsoup.parse(html).apply {
+      var json = "[\n"
 
-         json += "[\n"
+      Jsoup.parse(html).apply {
          this.getElementsByClass("swiper mySwiperNext mb-5").first()
             ?.getElementsByClass("swiper-slide")?.forEachIndexed { index, estreno ->
+
                val parser = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
                val fechaEstreno =
                   parser.parse(estreno.child(0).child(0).textNodes()[0].toString().trim())
@@ -87,16 +88,18 @@ class WebMovieDatasource : RemoteDataSource {
                   json += ",\n"
                }
 
-               json += "  {\n"
-               json += "    \"Cartel\" : \"$cartel\",\n"
-               json += "    \"FechaEstreno\" : \"$fecha\",\n"
-               json += "    \"ID_Espectaculo\" : $index,\n"
-               json += "    \"Titulo\" : \"$titulo\"\n"
-               json += "  }"
+               json += """
+               {    
+                  "Cartel" : "$cartel",
+                  "FechaEstreno" : "$fecha",
+                  "ID_Espectaculo" : $index,
+                  "Titulo" : "$titulo",
+                  "TituloOriginal" : "$titulo"
+               }
+               """
             }
-
-         json += "\n]"
       }
+      json += "\n]"
 
       return json
    }
@@ -109,29 +112,21 @@ class WebMovieDatasource : RemoteDataSource {
             url.openConnection()
          } as HttpURLConnection
 
-         var json: String
+         val html: String?
          try {
-
-            val html = urlConnection.inputStream.bufferedReader().readText()
-
-            json = "{\"Sesiones\":" + html.substring(
-               html.indexOf(":fullsessionsinfo='[") + 19,
-               html.lastIndexOf(";}]") + 3
-            ) + ","
-
-            json += obtenerEstrenos(html)
-
-            json += "}"
-
+            html = urlConnection.inputStream.bufferedReader().readText()
          } finally {
             urlConnection.disconnect()
          }
-         json = StringEscapeUtils.unescapeHtml4(json)
 
-         val response = Gson().fromJson(
-            json.replace("\\/", "/"),
-            InfoCine::class.java
+         val rawJson = html?.substring(
+            html.indexOf(":fullsessionsinfo='[") + 19,
+            html.lastIndexOf(";}]") + 3
          )
+
+         val json = StringEscapeUtils.unescapeHtml4("{\"Sesiones\": $rawJson}").replace("\\/", "/")
+
+         val response = Gson().fromJson(json, InfoCine::class.java)
 
          return response.sesiones.map { it.toDomain() }
 
@@ -168,13 +163,14 @@ private fun Pelicula.toDomain() = PeliculaDomain(
    cartel = cartel.getUrlCartel(),
    fechaEstreno = fechaEstreno,
    idEspectaculo = idEspectaculo,
-   titulo = titulo
-
+   titulo = titulo,
+   tituloOriginal = tituloOriginal
 )
 
 private fun InfoCine.toDomain() = Cartelera(
    peliculas = this.pelis.map { it.toDomain() },
-   proximosEstrenos = this.proximosEstrenos.map { it.toDomain() }
+   proximosEstrenos = this.proximosEstrenos?.let { estrenos -> estrenos.map { it.toDomain() } }
+      ?: emptyList()
 )
 
 private fun String.getUrlCartel(): String =

@@ -37,10 +37,10 @@
       </SelectionState>
       <SelectionState runConfigName="Cartelera_A7.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-01-02T12:27:55.727689500Z">
+        <DropdownSelection timestamp="2025-01-02T13:20:05.847239800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Senkou\.android\avd\Television_4K_API_34.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Senkou\.android\avd\Pixel_8_API_35.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -48,10 +48,10 @@
       </SelectionState>
       <SelectionState runConfigName="Cartelera_A7.tv">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-01-02T12:28:10.506298600Z">
+        <DropdownSelection timestamp="2025-01-02T13:20:01.833292500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Senkou\.android\avd\Television_4K_API_34.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Senkou\.android\avd\Pixel_8_API_35.avd" />
             </handle>
           </Target>
         </DropdownSelection>

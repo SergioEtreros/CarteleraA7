@@ -5,5 +5,6 @@ data class Pelicula(
    val fechaEstreno: String,
    val idEspectaculo: Int,
    val titulo: String,
-   val tituloOriginal: String
+   val tituloOriginal: String,
+   val background: String = ""
 )

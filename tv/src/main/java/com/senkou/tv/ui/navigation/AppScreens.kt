@@ -11,5 +11,5 @@ object MainScreen
 @Serializable
 data class DetalleScreen(
    val idEspectaculo: Int,
-   val background: String
+//   val background: String
 )

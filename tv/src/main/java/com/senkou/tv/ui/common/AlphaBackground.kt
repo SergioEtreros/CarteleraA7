@@ -19,18 +19,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import java.net.URLDecoder
 
 
 @Composable
-fun AlphaBackground(background: String) {
+fun AlphaBackground(background: String?) {
 
    val height = 460.dp
 
    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
 //      val aspectRatio = maxWidth / maxHeight
-      if (background.isNotBlank()) {
+      if (!background.isNullOrBlank()) {
          AsyncImage(
-            model = background,
+            model = URLDecoder.decode(background, "UTF-8"),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                .height(height)

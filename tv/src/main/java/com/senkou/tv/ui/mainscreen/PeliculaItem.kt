@@ -32,11 +32,11 @@ import java.util.*
 @Composable
 fun PeliculaItem(
    pelicula: Pelicula,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+   onMovieClicked: (idEspectaculo: Int, background: String) -> Unit,
    onFocus: (Pelicula) -> Unit
 ) {
    Card(
-      onClick = { onMovieClicked(pelicula.idEspectaculo) },
+      onClick = { onMovieClicked(pelicula.idEspectaculo, pelicula.background) },
       modifier = Modifier
          .width(120.dp)
          .aspectRatio(2 / 3f)

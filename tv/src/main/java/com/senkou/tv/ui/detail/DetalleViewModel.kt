@@ -4,31 +4,46 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.senkou.domain.common.ordenarMeses
 import com.senkou.domain.model.Sesion
+import com.senkou.usecases.CargarBackgroundUseCase
 import com.senkou.usecases.CargarDetalleUseCase
 import com.senkou.usecases.ReproducirTrailerUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.URLDecoder
+import java.net.URLEncoder
 
 //@HiltViewModel
 class DetalleViewModel(
    private val idEspectaculo: Int,
-   background: String,
+//   background: String,
    private val cargarDetalle: CargarDetalleUseCase,
+   private val cargarBackground: CargarBackgroundUseCase,
    private val reproducirTrailer: ReproducirTrailerUseCase,
 ) : ViewModel() {
 
    private val _uiState: MutableStateFlow<UiState> =
-      MutableStateFlow(UiState(background = URLDecoder.decode(background, "UTF-8")))
+      MutableStateFlow(UiState())
    val uiState = _uiState.asStateFlow()
 
    init {
       viewModelScope.launch {
          _uiState.update {
-            it.copy(sesiones = cargarDetalle(idEspectaculo))
+            it.copy(
+               sesiones = cargarDetalle(idEspectaculo),
 
+               )
+         }
+
+         _uiState.update {
+            it.copy(
+               background = URLEncoder.encode(
+                  cargarBackground(
+                     it.sesiones.first().tituloOriginal,
+                     it.sesiones.first().fechaEstrenoSpanish.substringBefore("-")
+                  ) ?: it.sesiones.first().cartel, "UTF-8"
+               )
+            )
          }
       }
    }
@@ -56,7 +71,7 @@ class DetalleViewModel(
 
    data class UiState(
       val sesiones: List<Sesion> = emptyList(),
-      val background: String
+      val background: String = ""
    )
 }
 

@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.DrawerValue
@@ -28,17 +29,15 @@ fun MainScreen(
    model: PeliListViewModel,
    onMovieClicked: (idEspectaculo: Int, background: String) -> Unit,
 ) {
-
    val state by model.state.collectAsStateWithLifecycle()
 
-   MainScreen(state, onMovieClicked, model::updateBackground)
+   MainScreen(state, onMovieClicked)
 }
 
 @Composable
 fun MainScreen(
    state: PeliListViewModel.UiState,
    onMovieClicked: (idEspectaculo: Int, background: String) -> Unit,
-   updateBackground: (Pelicula) -> Unit
 ) {
    Screen {
       var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -68,10 +67,8 @@ fun MainScreen(
             0 -> {
                ImmersiveList(
                   modifier = Modifier.padding(start = closeDrawerWidth),
-                  background = state.background,
                   peliculas = state.peliculas,
                   onMovieClicked = onMovieClicked,
-                  onMove = updateBackground
                )
             }
 
@@ -79,10 +76,8 @@ fun MainScreen(
                if (state.proximosEstrenos.isNotEmpty()) {
                   ImmersiveList(
                      modifier = Modifier.padding(start = closeDrawerWidth),
-                     background = state.background,
                      peliculas = state.proximosEstrenos,
                      onMovieClicked = { _, _ -> },
-                     onMove = updateBackground
                   )
                } else {
                   NoResult()
@@ -93,15 +88,16 @@ fun MainScreen(
    }
 }
 
-//@Preview(showSystemUi = false)
-//@Composable
-//fun MainScreenPreview() {
-//   val moviesRepository = MoviesRepository(WebMovieDatasource())
-//   val backgroundRepository =
-//      BackgroundRepository(TmdbServerDataSource(TmdbClient("https://api.themoviedb.org/3/").instance))
-//   val peliListViewModel = PeliListViewModel(
-//      CargarCarteleraUseCase(moviesRepository),
-//      CargarBackgroundUseCase(backgroundRepository),
-//   )
-//   MainScreen(peliListViewModel) { _, _ -> }
-//}
+@Preview(showSystemUi = false)
+@Composable
+fun MainScreenPreview() {
+
+   MainScreen(PeliListViewModel.UiState(listOf(Pelicula(
+      cartel = "cartel",
+      fechaEstreno = "fechaEstreno",
+      idEspectaculo = 1,
+      titulo = "titulo",
+      tituloOriginal = "tituloOriginal",
+      background = "background",
+   )), listOf())) { _, _ -> }
+}

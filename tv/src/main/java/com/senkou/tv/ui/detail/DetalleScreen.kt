@@ -19,13 +19,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Button
@@ -33,22 +37,38 @@ import androidx.tv.material3.ButtonDefaults
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil.compose.AsyncImage
+import com.senkou.domain.model.Sesion
 import com.senkou.tv.ui.Screen
 import com.senkou.tv.ui.common.AlphaBackground
 import com.senkou.tv.ui.theme.Typography
 import com.senkou.tv.ui.theme.fondoFechaEstreno
 import com.senkou.tv.ui.theme.resalte_ticket
+import java.net.URLDecoder
 
 @Composable
 fun DetallePelicula(
    model: DetalleViewModel,
 ) {
-   Screen {
+   val state by model.uiState.collectAsStateWithLifecycle()
+   val diasSesiones = model.obtenerDiasSesiones()
 
-      val state by model.uiState.collectAsStateWithLifecycle()
+   DetallePelicula(state = state, diasSesiones = diasSesiones) { url ->
+      model.playTrailer(url)
+   }
+}
+
+@Composable
+fun DetallePelicula(
+   state: DetalleViewModel.UiState,
+   diasSesiones: List<String>,
+   onPlayTrailer: (String) -> Unit = {}
+) {
+   Screen {
       val shape = RoundedCornerShape(8.dp)
 
-      AlphaBackground(background = state.background)
+      val (first, second, third, fourth) = remember { FocusRequester.createRefs() }
+
+      AlphaBackground(background = URLDecoder.decode(state.background, "UTF-8"))
 
       if (state.sesiones.isNotEmpty()) {
          Box(
@@ -77,7 +97,8 @@ fun DetallePelicula(
                Column(
                   modifier = Modifier
                      .fillMaxSize()
-                     .verticalScroll(state = rememberScrollState(), true),
+                     .verticalScroll(state = rememberScrollState(), true)
+                     .focusRequester(first),
                   horizontalAlignment = Alignment.CenterHorizontally
                ) {
 
@@ -98,9 +119,18 @@ fun DetallePelicula(
                   Spacer(modifier = Modifier.height(16.dp))
 
                   Column {
-                     FilaFechas(state.sesiones, model.obtenerDiasSesiones())
+                     FilaFechas(
+                        sesiones = state.sesiones,
+                        lista = diasSesiones,
+                        modifier = Modifier.focusRequester(second)
+                     )
                      Spacer(modifier = Modifier.height(16.dp))
-                     Detalles(state.sesiones.first(), modifier = Modifier.padding(end = 64.dp))
+                     Detalles(
+                        sesion = state.sesiones.first(),
+                        modifier = Modifier
+                           .padding(end = 64.dp)
+                           .focusRequester(third)
+                     )
                   }
                }
             }
@@ -109,8 +139,9 @@ fun DetallePelicula(
          Button(
             modifier = Modifier
                .padding(end = 24.dp, bottom = 24.dp)
-               .align(Alignment.BottomEnd),
-            onClick = { model.playTrailer(state.sesiones.first().video) },
+               .align(Alignment.BottomEnd)
+               .focusRequester(fourth),
+            onClick = { onPlayTrailer(state.sesiones.first().video) },
             colors = ButtonDefaults.colors(
                containerColor = Color.Red,
                contentColor = Color.White
@@ -122,6 +153,38 @@ fun DetallePelicula(
    }
 }
 
+@Preview
+@Composable
+fun DetallePeliculaPreview() {
+   DetallePelicula(
+      state = DetalleViewModel.UiState(
+         sesiones = listOf(
+            Sesion(
+               duracion = "duracion",
+               fechaEstrenoSpanish = "estreno",
+               hora = "hora",
+               iDEspectaculo = 1,
+               iDPase = "idpase",
+               iDSala = "iDSala",
+               nombreSala = "nombreSala",
+               nombreFormato = "nombreFormato",
+               interpretes = "interpretes",
+               nombreCalificacion = "nombreCalificacion",
+               nombreGenero = "nombreGenero",
+               sinopsis = "sinopsis",
+               titulo = "titulo",
+               tituloOriginal = "tituloOriginal",
+               video = "video",
+               cartel = "https://artesiete.es/Posters/sonic3.jpg",
+               diacompleto = "Hoy",
+
+               )
+         ),
+         background = "https://artesiete.es/Posters/sonic3.jpg"
+      ),
+      diasSesiones = listOf("Hoy")
+   ) {}
+}
 
 
 

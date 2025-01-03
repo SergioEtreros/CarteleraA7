@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 
 //@HiltViewModel
 class PeliListViewModel(
@@ -16,41 +17,37 @@ class PeliListViewModel(
    private val cargarBackgroundUseCase: CargarBackgroundUseCase,
 ) : ViewModel() {
 
-   private val _state = MutableStateFlow(UiState(background = ""))
+   private val _state = MutableStateFlow(UiState())
    val state get() = _state.asStateFlow()
 
    init {
       viewModelScope.launch {
          val cartelera = cargarCarteleraUseCase()
+
          _state.update {
             it.copy(
-               peliculas = cartelera.peliculas,
-               proximosEstrenos = cartelera.proximosEstrenos
+               peliculas = cartelera.peliculas.addBackground(),
+               proximosEstrenos = cartelera.proximosEstrenos.addBackground()
             )
-         }
-
-         if (cartelera.peliculas.isNotEmpty()) {
-            updateBackground(cartelera.peliculas.first())
          }
       }
    }
 
-   fun updateBackground(pelicula: Pelicula) {
-      viewModelScope.launch {
-         _state.update {
-            it.copy(
-               background = cargarBackgroundUseCase(
-                  pelicula.tituloOriginal,
-                  pelicula.fechaEstreno.substringBefore("-")
-               ) ?: pelicula.cartel,
-            )
-         }
-      }
+   private suspend fun List<Pelicula>.addBackground(): List<Pelicula> = map { pelicula ->
+      pelicula.copy(
+         background = URLEncoder.encode(
+            cargarBackgroundUseCase(
+               pelicula.tituloOriginal,
+               pelicula.fechaEstreno.substringBefore("-")
+            ) ?: pelicula.cartel,
+            "UTF-8"
+         )
+      )
    }
 
    data class UiState(
       val peliculas: List<Pelicula> = emptyList(),
       val proximosEstrenos: List<Pelicula> = emptyList(),
-      val background: String,
    )
 }
+

@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,28 +20,29 @@ import androidx.tv.material3.Text
 import com.senkou.domain.common.parseDate
 import com.senkou.domain.model.Pelicula
 import com.senkou.tv.ui.common.AlphaBackground
-import java.net.URLEncoder
 
 @Composable
 fun ImmersiveList(
    modifier: Modifier = Modifier,
-   background: String,
    peliculas: List<Pelicula>,
    onMovieClicked: (idEspectaculo: Int, background: String) -> Unit,
-   onMove: (Pelicula) -> Unit
 ) {
 
-   var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+   var selectedItem by remember { mutableStateOf(peliculas.firstOrNull()) }
 
    Box(modifier = modifier) {
 
-      AlphaBackground(background)
+      AlphaBackground(selectedItem?.background)
 
-      Box (Modifier.align(Alignment.TopStart).padding(start = 24.dp, top = 12.dp)) {
+      Box(
+         Modifier
+            .align(Alignment.TopStart)
+            .padding(start = 24.dp, top = 12.dp)
+      ) {
          Column {
 
             Text(
-               text = peliculas[selectedIndex].titulo,
+               text = selectedItem?.titulo ?: "",
                color = Color.White,
                fontWeight = FontWeight.Bold,
                style = MaterialTheme.typography.displaySmall.copy(
@@ -54,7 +55,7 @@ fun ImmersiveList(
             )
 
             Text(
-               text = peliculas[selectedIndex].fechaEstreno.parseDate(),
+               text = selectedItem?.fechaEstreno?.parseDate() ?: "",
                Modifier.padding(top = 4.dp),
                color = Color.White,
                fontWeight = FontWeight.Bold,
@@ -62,20 +63,17 @@ fun ImmersiveList(
          }
       }
 
-
-      Box (Modifier.align(Alignment.BottomEnd)) {
-
+      Box(Modifier.align(Alignment.BottomEnd)) {
          CartelList(
             lista = peliculas,
-            onMovieClicked = { idEspectaculo ->
+            onMovieClicked = { idEspectaculo, background ->
                onMovieClicked(
                   idEspectaculo,
-                  URLEncoder.encode(background, "UTF-8")
+                  background
                )
             },
             onFocus = { peli ->
-               onMove(peli)
-               selectedIndex = peliculas.indexOf(peli)
+               selectedItem = peli
             }
          )
       }

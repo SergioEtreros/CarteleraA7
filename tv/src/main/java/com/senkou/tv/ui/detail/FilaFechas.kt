@@ -14,11 +14,12 @@ import java.util.*
 @Composable
 fun FilaFechas(
    sesiones: List<Sesion>,
-   lista: List<String>
+   lista: List<String>,
+   modifier: Modifier = Modifier
 ) {
 
    LazyRow(
-      modifier = Modifier.fillMaxSize(),
+      modifier = modifier.fillMaxSize(),
       horizontalArrangement = Arrangement.spacedBy(8.dp)
    ) {
       items(

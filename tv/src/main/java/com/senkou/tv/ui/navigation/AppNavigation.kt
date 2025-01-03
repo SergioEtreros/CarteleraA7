@@ -50,19 +50,20 @@ fun AppNavitagion() {
 
       composable<MainScreen> {
          MainScreen(model) { idEspectaculo, background ->
-            navController.navigate(DetalleScreen(idEspectaculo, background))
+            navController.navigate(DetalleScreen(idEspectaculo))
          }
       }
 
       composable<DetalleScreen> { backstackEntry ->
          val idEspectaculo = backstackEntry.toRoute<DetalleScreen>().idEspectaculo
-         val background = backstackEntry.toRoute<DetalleScreen>().background
+//         val background = backstackEntry.toRoute<DetalleScreen>().background
 
          DetallePelicula(
             DetalleViewModel(
                idEspectaculo = idEspectaculo,
-               background = background,
+//               background = background,
                cargarDetalle = CargarDetalleUseCase(moviesRepository),
+               cargarBackground = CargarBackgroundUseCase(backgroundRepository),
                reproducirTrailer = ReproducirTrailerUseCase(videoRepository)
             )
          )

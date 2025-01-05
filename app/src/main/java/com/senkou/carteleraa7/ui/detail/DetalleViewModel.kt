@@ -48,7 +48,9 @@ class DetalleViewModel(
    }
 
    fun playTrailer(video: String) {
-      reproducirTrailer(video)
+      viewModelScope.launch {
+         reproducirTrailer(video)
+      }
    }
 
    data class UiState(

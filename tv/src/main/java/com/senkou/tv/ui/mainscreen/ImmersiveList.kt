@@ -25,7 +25,7 @@ import com.senkou.tv.ui.common.AlphaBackground
 fun ImmersiveList(
    modifier: Modifier = Modifier,
    peliculas: List<Pelicula>,
-   onMovieClicked: (idEspectaculo: Int, background: String) -> Unit,
+   onMovieClicked: (idEspectaculo: Int) -> Unit,
 ) {
 
    var selectedItem by remember { mutableStateOf(peliculas.firstOrNull()) }
@@ -66,10 +66,9 @@ fun ImmersiveList(
       Box(Modifier.align(Alignment.BottomEnd)) {
          CartelList(
             lista = peliculas,
-            onMovieClicked = { idEspectaculo, background ->
+            onMovieClicked = { idEspectaculo ->
                onMovieClicked(
                   idEspectaculo,
-                  background
                )
             },
             onFocus = { peli ->

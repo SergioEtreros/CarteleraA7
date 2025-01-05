@@ -1,7 +1,8 @@
 package com.senkou.tv.ui.detail
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -17,10 +18,10 @@ fun FilaFechas(
    lista: List<String>,
    modifier: Modifier = Modifier
 ) {
-
    LazyRow(
-      modifier = modifier.fillMaxSize(),
-      horizontalArrangement = Arrangement.spacedBy(8.dp)
+      modifier = modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      contentPadding = PaddingValues(horizontal = 16.dp)
    ) {
       items(
          items = lista,

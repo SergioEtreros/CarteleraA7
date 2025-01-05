@@ -2,6 +2,8 @@ package com.senkou.tv.ui.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -10,7 +12,7 @@ import com.senkou.domain.model.Sesion
 @Composable
 fun Detalles(sesion: Sesion, modifier: Modifier = Modifier) {
 
-   Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+   Column(modifier = modifier.verticalScroll(state = rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
       DetailTextItem("Título original", sesion.tituloOriginal)
       DetailTextItem("Duración", "${sesion.duracion} min")
       DetailTextItem("Género", sesion.nombreGenero)

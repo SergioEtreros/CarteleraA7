@@ -6,7 +6,6 @@ import com.senkou.domain.common.ordenarMeses
 import com.senkou.domain.model.Sesion
 import com.senkou.usecases.CargarBackgroundUseCase
 import com.senkou.usecases.CargarDetalleUseCase
-import com.senkou.usecases.ReproducirTrailerUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,7 +18,6 @@ class DetalleViewModel(
 //   background: String,
    private val cargarDetalle: CargarDetalleUseCase,
    private val cargarBackground: CargarBackgroundUseCase,
-   private val reproducirTrailer: ReproducirTrailerUseCase,
 ) : ViewModel() {
 
    private val _uiState: MutableStateFlow<UiState> =
@@ -63,10 +61,6 @@ class DetalleViewModel(
          fechasSpinner.ordenarMeses()
       }
       return fechasSpinner
-   }
-
-   fun playTrailer(video: String) {
-      reproducirTrailer(video)
    }
 
    data class UiState(

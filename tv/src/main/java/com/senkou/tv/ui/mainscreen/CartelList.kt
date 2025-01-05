@@ -14,7 +14,7 @@ import com.senkou.domain.model.Pelicula
 @Composable
 fun CartelList(
    lista: List<Pelicula>,
-   onMovieClicked: (idEspectaculo: Int, background: String) -> Unit,
+   onMovieClicked: (idEspectaculo: Int) -> Unit,
    onFocus: (Pelicula) -> Unit
 ) {
 
@@ -29,7 +29,7 @@ fun CartelList(
       items(items = lista, key = { it.idEspectaculo }) { peli ->
          PeliculaItem(
             pelicula = peli,
-            onMovieClicked = { idEspectaculo, background -> onMovieClicked(idEspectaculo, background) },
+            onMovieClicked = { idEspectaculo -> onMovieClicked(idEspectaculo) },
             onFocus = onFocus
          )
       }

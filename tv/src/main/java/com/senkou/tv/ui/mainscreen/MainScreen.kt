@@ -27,7 +27,7 @@ import com.senkou.tv.ui.common.NoResult
 @Composable
 fun MainScreen(
    model: PeliListViewModel,
-   onMovieClicked: (idEspectaculo: Int, background: String) -> Unit,
+   onMovieClicked: (idEspectaculo: Int) -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()
 
@@ -37,7 +37,7 @@ fun MainScreen(
 @Composable
 fun MainScreen(
    state: PeliListViewModel.UiState,
-   onMovieClicked: (idEspectaculo: Int, background: String) -> Unit,
+   onMovieClicked: (idEspectaculo: Int) -> Unit,
 ) {
    Screen {
       var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -77,7 +77,7 @@ fun MainScreen(
                   ImmersiveList(
                      modifier = Modifier.padding(start = closeDrawerWidth),
                      peliculas = state.proximosEstrenos,
-                     onMovieClicked = { _, _ -> },
+                     onMovieClicked = { _ -> },
                   )
                } else {
                   NoResult()
@@ -99,5 +99,5 @@ fun MainScreenPreview() {
       titulo = "titulo",
       tituloOriginal = "tituloOriginal",
       background = "background",
-   )), listOf())) { _, _ -> }
+   )), listOf())) { _ -> }
 }

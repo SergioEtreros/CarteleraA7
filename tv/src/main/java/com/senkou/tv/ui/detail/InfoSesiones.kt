@@ -28,6 +28,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.tv.material3.Border
+import androidx.tv.material3.Card
+import androidx.tv.material3.CardDefaults
+import androidx.tv.material3.Glow
 import androidx.tv.material3.Text
 import coil.compose.AsyncImage
 import com.senkou.domain.common.crearTextoSesiones
@@ -41,69 +45,77 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
 
    val shape = RoundedCutoutShape(offset = 210.0F, 10.dp, Orientation.Horizontal)
 
-   Row(
-      modifier = Modifier
-         .width(250.dp)
-         .height(140.dp)
-         .background(
-            color = Color.White,
-            shape = shape
-         )
-         .border(1.dp, fondoLogo, shape)
-         .padding(12.dp, 12.dp),
+   Card(
+      onClick = { },
+      shape = CardDefaults.shape(shape),
+      glow = CardDefaults.glow(focusedGlow = Glow(Color.White, 8.dp)),
+      border = CardDefaults.border(focusedBorder = Border.None),
    ) {
-      AsyncImage(
-         model = urlImagen,
-         contentScale = ContentScale.Fit,
+
+      Row(
          modifier = Modifier
-            .width(80.dp)
-            .fillMaxHeight()
-            .align(Alignment.CenterVertically)
-            .clip(RoundedCornerShape(5.dp)),
-         contentDescription = "",
-      )
-
-      Spacer(modifier = Modifier.width(12.dp))
-
-      val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-      Canvas(
-         Modifier
-            .fillMaxHeight()
-            .width(2.dp)
+            .width(250.dp)
+            .height(140.dp)
+            .background(
+               color = Color.White,
+               shape = shape
+            )
+            .border(1.dp, fondoLogo, shape)
+            .padding(12.dp, 12.dp),
       ) {
-         drawLine(
-            color = Color.Gray,
-            start = Offset(0f, 0f),
-            end = Offset(0f, size.height),
-            pathEffect = pathEffect
-         )
-      }
-
-      Spacer(modifier = Modifier.width(12.dp))
-
-      Column(modifier = Modifier.fillMaxWidth()) {
-
-         Text(
+         AsyncImage(
+            model = urlImagen,
+            contentScale = ContentScale.Fit,
             modifier = Modifier
-               .fillMaxWidth()
-               .wrapContentHeight(),
-            color = Color.Black,
-            textAlign = TextAlign.Start,
-            style = Typography.bodyMedium,
-            text = fecha
+               .width(80.dp)
+               .fillMaxHeight()
+               .align(Alignment.CenterVertically)
+               .clip(RoundedCornerShape(5.dp)),
+            contentDescription = "",
          )
 
-         Spacer(modifier = Modifier.width(3.dp))
+         Spacer(modifier = Modifier.width(12.dp))
 
-         Text(
-            modifier = Modifier
-               .fillMaxSize()
-               .scrollable(rememberScrollState(), orientation = Orientation.Vertical),
-            color = Color.Black,
-            textAlign = TextAlign.Start,
-            style = Typography.bodySmall,
-            text = sesiones.crearTextoSesiones()
-         )
+         val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+         Canvas(
+            Modifier
+               .fillMaxHeight()
+               .width(2.dp)
+         ) {
+            drawLine(
+               color = Color.Gray,
+               start = Offset(0f, 0f),
+               end = Offset(0f, size.height),
+               pathEffect = pathEffect
+            )
+         }
+
+         Spacer(modifier = Modifier.width(12.dp))
+
+         Column(modifier = Modifier.fillMaxWidth()) {
+
+            Text(
+               modifier = Modifier
+                  .fillMaxWidth()
+                  .wrapContentHeight(),
+               color = Color.Black,
+               textAlign = TextAlign.Start,
+               style = Typography.bodyMedium,
+               text = fecha
+            )
+
+            Spacer(modifier = Modifier.width(3.dp))
+
+            Text(
+               modifier = Modifier
+                  .fillMaxSize()
+                  .scrollable(rememberScrollState(), orientation = Orientation.Vertical),
+               color = Color.Black,
+               textAlign = TextAlign.Start,
+               style = Typography.bodySmall,
+               text = sesiones.crearTextoSesiones()
+            )
+         }
       }
    }
 }

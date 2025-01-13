@@ -13,8 +13,8 @@ import com.senkou.carteleraa7.ui.mainscreen.PeliListViewModel
 import com.senkou.carteleraa7.ui.splash.SplashScreen
 import com.senkou.data.MoviesRepository
 import com.senkou.data.VideoRepository
-import com.senkou.framework.YoutubeDatasource
 import com.senkou.framework.remote.arte7.WebMovieDatasource
+import com.senkou.framework.remote.youtube.YoutubeDatasource
 import com.senkou.usecases.CargarCarteleraUseCase
 import com.senkou.usecases.CargarDetalleUseCase
 import com.senkou.usecases.ReproducirTrailerUseCase

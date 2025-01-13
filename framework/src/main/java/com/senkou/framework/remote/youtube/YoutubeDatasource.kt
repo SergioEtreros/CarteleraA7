@@ -1,11 +1,11 @@
-package com.senkou.framework
+package com.senkou.framework.remote.youtube
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.senkou.data.PlayVideoDataSource
 
 class YoutubeDatasource(private val context: Context) : PlayVideoDataSource {
@@ -41,7 +41,7 @@ class YoutubeDatasource(private val context: Context) : PlayVideoDataSource {
       Log.d("Youtube", "id: $id")
 
       try {
-         val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$id"))
+         val intentApp = Intent(Intent.ACTION_VIEW, "vnd.youtube:$id".toUri())
          intentApp.putExtra("force_fullscreen", true)
          intentApp.putExtra("finish_on_ended", true)
          intentApp.putExtra("autoplay", true)
@@ -51,7 +51,7 @@ class YoutubeDatasource(private val context: Context) : PlayVideoDataSource {
       } catch (ex: ActivityNotFoundException) {
          try {
             val intentBrowser =
-               Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/embed/$id"))
+               Intent(Intent.ACTION_VIEW, "https://www.youtube.com/embed/$id".toUri())
             intentBrowser.putExtra("force_fullscreen", true)
             intentBrowser.putExtra("finish_on_ended", true)
             intentBrowser.putExtra("autoplay", true)

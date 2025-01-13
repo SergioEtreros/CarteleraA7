@@ -33,10 +33,7 @@ class WebMovieDatasource : RemoteDataSource {
 
             val html = urlConnection.inputStream.bufferedReader().readText()
 
-            rawJson = html.substring(
-               html.indexOf(":onlytitlesinfo='[") + 17,
-               html.lastIndexOf("}]' :fullsessionsinfo") + 2
-            )
+            rawJson = html.substringAfter(":onlytitlesinfo='").substringBefore("}]") + "}]"
 
             estrenos = obtenerEstrenos(html)
          } finally {
@@ -119,10 +116,7 @@ class WebMovieDatasource : RemoteDataSource {
             urlConnection.disconnect()
          }
 
-         val rawJson = html?.substring(
-            html.indexOf(":fullsessionsinfo='[") + 19,
-            html.lastIndexOf(";}]") + 3
-         )
+         val rawJson = html.substringAfter(":fullsessionsinfo='").substringBefore("}]") + "}]"
 
          val json = StringEscapeUtils.unescapeHtml4("{\"Sesiones\": $rawJson}").replace("\\/", "/")
 

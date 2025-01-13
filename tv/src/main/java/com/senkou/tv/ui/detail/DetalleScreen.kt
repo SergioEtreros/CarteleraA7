@@ -158,7 +158,6 @@ fun DetallePelicula(
             state.sesiones.first().video.substringAfterLast("/"),
             LocalLifecycleOwner.current
          )
-
       }
    }
 }

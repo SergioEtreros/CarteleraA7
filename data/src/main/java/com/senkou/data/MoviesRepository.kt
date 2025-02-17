@@ -4,5 +4,5 @@ class MoviesRepository(
    private val webMovieDatasource: RemoteDataSource
 ) {
    suspend fun getCartelera() = webMovieDatasource.getCartelera()
-   suspend fun getSesiones() = webMovieDatasource.getSsiones()
+   suspend fun getSesiones(idEspectaculo: Int) = webMovieDatasource.getSesiones(idEspectaculo)
 }

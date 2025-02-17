@@ -6,6 +6,6 @@ import kotlinx.coroutines.withContext
 
 class CargarDetalleUseCase(private val repository: MoviesRepository) {
    suspend operator fun invoke(idEspectaculo: Int) = withContext(Dispatchers.IO) {
-      repository.getSesiones().filter { it.iDEspectaculo == idEspectaculo }
+      repository.getSesiones(idEspectaculo)
    }
 }

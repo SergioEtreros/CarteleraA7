@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Cartelera A7"
+//rootProject.name = "Cartelera A7"
 include(":app")
 include(":wear")
 include(":tv")

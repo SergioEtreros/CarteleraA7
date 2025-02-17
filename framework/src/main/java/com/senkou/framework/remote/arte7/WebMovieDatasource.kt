@@ -101,7 +101,7 @@ class WebMovieDatasource : RemoteDataSource {
       return json
    }
 
-   override suspend fun getSsiones(): List<SesionDomain> {
+   override suspend fun getSesiones(idEspectaculo: Int): List<SesionDomain> {
 
       try {
          val url = URL("https://artesiete.es/Cine/13/Artesiete-segovia")
@@ -116,13 +116,15 @@ class WebMovieDatasource : RemoteDataSource {
             urlConnection.disconnect()
          }
 
-         val rawJson = html.substringAfter(":fullsessionsinfo='").substringBefore("}]") + "}]"
+         val rawJson = html?.substringAfter(":fullsessionsinfo='")?.substringBefore("}]") + "}]"
 
          val json = StringEscapeUtils.unescapeHtml4("{\"Sesiones\": $rawJson}").replace("\\/", "/")
 
          val response = Gson().fromJson(json, InfoCine::class.java)
 
-         return response.sesiones.map { it.toDomain() }
+         return response.sesiones
+            .map { it.toDomain() }
+            .filter { it.iDEspectaculo == idEspectaculo }
 
       } catch (e: Exception) {
          e.printStackTrace()

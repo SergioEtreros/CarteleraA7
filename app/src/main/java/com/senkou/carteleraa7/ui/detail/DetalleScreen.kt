@@ -40,14 +40,31 @@ import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.theme.Typography
 import com.senkou.carteleraa7.ui.theme.fondoFechaEstreno
 import com.senkou.domain.common.crearDetalles
+import java.net.URLDecoder
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun DetallePelicula(
    model: DetalleViewModel,
    onBack: () -> Unit
 ) {
    val state by model.uiState.collectAsStateWithLifecycle()
+
+   DetallePelicula(
+      state = state,
+      onBack = onBack,
+      onPlayTrailer = { model.playTrailer() }
+   )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetallePelicula(
+   state: DetalleViewModel.UiState,
+   onBack: () -> Unit,
+   onPlayTrailer: () -> Unit
+
+) {
 
    Screen {
       Scaffold(
@@ -87,7 +104,7 @@ fun DetallePelicula(
 
                Box {
                   AsyncImage(
-                     model = state.sesiones.first().cartel,
+                     model = URLDecoder.decode(state.background, "UTF-8"),
                      contentScale = ContentScale.Crop,
                      modifier = Modifier
                         .height(200.dp)
@@ -95,48 +112,12 @@ fun DetallePelicula(
                      contentDescription = "",
                   )
 
-//                  Text(
-//                     modifier = Modifier
-//                        .fillMaxWidth()
-//                        .background(
-//                           color = fondoFechaEstreno,
-//                        )
-//                        .padding(16.dp, 8.dp, 16.dp, 8.dp),
-//                     maxLines = 1,
-//                     textAlign = TextAlign.Center,
-//                     color = Color.White,
-//                     style = Typography.bodySmall,
-//                     text = state.sesiones.first().titulo
-//                  )
-
-//                  Button(modifier = Modifier
-//                     .padding(0.dp)
-//                     .align(Alignment.TopStart)
-//                     .offset(x = (-8).dp, y = (-8).dp),
-//                     elevation = ButtonDefaults.elevatedButtonElevation(0.dp),
-//                     colors = ButtonDefaults.buttonColors(transparente),
-//                     contentPadding = PaddingValues(0.dp),
-//                     onClick = { onBack() }) {
-//                     Icon(
-//                        modifier = Modifier
-//                           .height(24.dp)
-//                           .width(24.dp),
-//                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
-//                        contentDescription = "Volver",
-//                        tint = MaterialTheme.colorScheme.onPrimary
-//                     )
-
-//                  }
-
                   FloatingActionButton(
                      modifier = Modifier
                         .padding(end = 10.dp)
                         .align(Alignment.BottomEnd)
                         .offset(y = (25).dp),
-                     onClick = {
-                        model.playTrailer(state.sesiones.first().video)
-
-                     },
+                     onClick = onPlayTrailer,
                      containerColor = Color.Red,
                      contentColor = Color.White
                   ) {
@@ -152,7 +133,7 @@ fun DetallePelicula(
                      .wrapContentHeight()
                ) {
 
-                  FilaFechas(state.sesiones, model.obtenerDiasSesiones())
+                  FilaFechas(state.sesiones, state.diasSesiones)
 
                   state.sesiones.first().crearDetalles().forEach { detalles ->
 

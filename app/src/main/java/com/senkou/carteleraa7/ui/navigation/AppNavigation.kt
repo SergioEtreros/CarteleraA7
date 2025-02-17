@@ -11,10 +11,14 @@ import com.senkou.carteleraa7.ui.detail.DetalleViewModel
 import com.senkou.carteleraa7.ui.mainscreen.MainScreen
 import com.senkou.carteleraa7.ui.mainscreen.PeliListViewModel
 import com.senkou.carteleraa7.ui.splash.SplashScreen
+import com.senkou.data.BackgroundRepository
 import com.senkou.data.MoviesRepository
 import com.senkou.data.VideoRepository
 import com.senkou.framework.remote.arte7.WebMovieDatasource
+import com.senkou.framework.remote.tmdb.TmdbClient
+import com.senkou.framework.remote.tmdb.TmdbServerDataSource
 import com.senkou.framework.remote.youtube.YoutubeDatasource
+import com.senkou.usecases.CargarBackgroundUseCase
 import com.senkou.usecases.CargarCarteleraUseCase
 import com.senkou.usecases.CargarDetalleUseCase
 import com.senkou.usecases.ReproducirTrailerUseCase
@@ -25,7 +29,8 @@ fun AppNavitagion() {
 
    val moviesRepository = MoviesRepository(WebMovieDatasource())
    val peliListViewModel = PeliListViewModel(CargarCarteleraUseCase(moviesRepository))
-
+   val backgroundRepository =
+      BackgroundRepository(TmdbServerDataSource(TmdbClient("https://api.themoviedb.org/3/").instance))
    val videoRepository = VideoRepository(YoutubeDatasource(context = LocalContext.current))
 
    NavHost(
@@ -51,6 +56,7 @@ fun AppNavitagion() {
             DetalleViewModel(
                idEspectaculo,
                cargarDetalle = CargarDetalleUseCase(moviesRepository),
+               cargarBackground = CargarBackgroundUseCase(backgroundRepository),
                reproducirTrailer = ReproducirTrailerUseCase(videoRepository)
             )
          ) {

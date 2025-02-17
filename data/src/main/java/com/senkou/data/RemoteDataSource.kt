@@ -5,5 +5,5 @@ import com.senkou.domain.model.Sesion
 
 interface RemoteDataSource {
    suspend fun getCartelera(): Cartelera
-   suspend fun getSsiones(): List<Sesion>
+   suspend fun getSesiones(idEspectaculo: Int): List<Sesion>
 }

@@ -3,9 +3,9 @@ package com.senkou.framework.remote.arte7
 import com.google.gson.Gson
 import com.senkou.data.RemoteDataSource
 import com.senkou.domain.model.Cartelera
+import com.senkou.domain.model.Sesion
 import com.senkou.framework.remote.arte7.model.InfoCine
-import com.senkou.framework.remote.arte7.model.Pelicula
-import com.senkou.framework.remote.arte7.model.Sesion
+import com.senkou.framework.toDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.commons.text.StringEscapeUtils
@@ -14,18 +14,12 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
-import com.senkou.domain.model.Pelicula as PeliculaDomain
-import com.senkou.domain.model.Sesion as SesionDomain
-
-const val RUTA_CARTELES = "https://artesiete.es/Posters/"
 
 class WebMovieDatasource : RemoteDataSource {
-   override suspend fun getCartelera(): Cartelera {
+   override suspend fun getCartelera(): Cartelera = withContext(Dispatchers.IO) {
       try {
          val url = URL("https://artesiete.es/Cine/13/Artesiete-segovia")
-         val urlConnection = withContext(Dispatchers.IO) {
-            url.openConnection()
-         } as HttpURLConnection
+         val urlConnection = url.openConnection() as HttpURLConnection
 
          val rawJson: String
          val estrenos: String
@@ -54,11 +48,11 @@ class WebMovieDatasource : RemoteDataSource {
             InfoCine::class.java
          )
 
-         return response.toDomain()
+         response.toDomain()
 
       } catch (e: Exception) {
          e.printStackTrace()
-         return Cartelera(emptyList(), emptyList())
+         Cartelera(emptyList(), emptyList())
       }
    }
 
@@ -101,13 +95,11 @@ class WebMovieDatasource : RemoteDataSource {
       return json
    }
 
-   override suspend fun getSesiones(idEspectaculo: Int): List<SesionDomain> {
+   override suspend fun getSesiones(idEspectaculo: Int): List<Sesion> = withContext(Dispatchers.IO) {
 
       try {
          val url = URL("https://artesiete.es/Cine/13/Artesiete-segovia")
-         val urlConnection = withContext(Dispatchers.IO) {
-            url.openConnection()
-         } as HttpURLConnection
+         val urlConnection = url.openConnection() as HttpURLConnection
 
          val html: String?
          try {
@@ -122,52 +114,13 @@ class WebMovieDatasource : RemoteDataSource {
 
          val response = Gson().fromJson(json, InfoCine::class.java)
 
-         return response.sesiones
+         response.sesiones
             .map { it.toDomain() }
-            .filter { it.iDEspectaculo == idEspectaculo }
+            .filter { it.idEspectaculo == idEspectaculo }
 
       } catch (e: Exception) {
          e.printStackTrace()
-         return emptyList()
+         emptyList()
       }
    }
 }
-
-fun InfoCine?.orElse(alternateObject: InfoCine): InfoCine = alternateObject
-
-private fun Sesion.toDomain() = SesionDomain(
-   duracion = duracion,
-   fechaEstrenoSpanish = fechaEstrenoSpanish,
-   hora = hora,
-   iDEspectaculo = iDEspectaculo,
-   iDPase = iDPase,
-   iDSala = iDSala,
-   nombreSala = nombreSala,
-   nombreFormato = nombreFormato,
-   interpretes = interpretes,
-   nombreCalificacion = nombreCalificacion,
-   nombreGenero = nombreGenero,
-   sinopsis = sinopsis,
-   titulo = titulo,
-   tituloOriginal = tituloOriginal,
-   video = video,
-   cartel = cartel.getUrlCartel(),
-   diacompleto = diacompleto,
-)
-
-private fun Pelicula.toDomain() = PeliculaDomain(
-   cartel = cartel.getUrlCartel(),
-   fechaEstreno = fechaEstreno,
-   idEspectaculo = idEspectaculo,
-   titulo = titulo,
-   tituloOriginal = tituloOriginal
-)
-
-private fun InfoCine.toDomain() = Cartelera(
-   peliculas = this.pelis.map { it.toDomain() },
-   proximosEstrenos = this.proximosEstrenos?.let { estrenos -> estrenos.map { it.toDomain() } }
-      ?: emptyList()
-)
-
-private fun String.getUrlCartel(): String =
-   this.takeIf { it.startsWith("https") } ?: (RUTA_CARTELES + this)

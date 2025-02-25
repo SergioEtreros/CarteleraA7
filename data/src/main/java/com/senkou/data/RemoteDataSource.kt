@@ -7,3 +7,4 @@ interface RemoteDataSource {
    suspend fun getCartelera(): Cartelera
    suspend fun getSesiones(idEspectaculo: Int): List<Sesion>
 }
+

@@ -1,8 +1,9 @@
-import java.util.Properties
+import java.util.*
 
 plugins {
    id("com.android.library")
    alias(libs.plugins.jetbrains.kotlin.android)
+   alias(libs.plugins.google.devtools.ksp)
    alias(libs.plugins.kotlin.serialization)
 }
 
@@ -21,6 +22,10 @@ android {
 
       val tmdbApiKey = properties.getProperty("TMDB_API_KEY", "")
       buildConfigField("String", "TMDB_API_KEY", "\"$tmdbApiKey\"")
+
+      ksp {
+         arg("room.schemaLocation", "$projectDir/schemas")
+      }
    }
 
    buildTypes {
@@ -61,6 +66,8 @@ dependencies {
    implementation(libs.retrofit.converter.kotlinx.serialization)
    implementation(libs.okhttp)
    implementation(libs.okhttp.logging.interceptor)
+   implementation(libs.room.ktx)
+   ksp(libs.room.compiler)
 
    testImplementation(libs.junit)
    androidTestImplementation(libs.androidx.junit)

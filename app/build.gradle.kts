@@ -75,6 +75,8 @@ dependencies {
    implementation(libs.coil.compose)
    implementation(libs.navigation.compose)
    implementation(libs.kotlinx.serialization.json)
+   implementation(libs.room.ktx)
+   ksp(libs.room.compiler)
 
    testImplementation(libs.junit)
    androidTestImplementation(libs.androidx.junit)

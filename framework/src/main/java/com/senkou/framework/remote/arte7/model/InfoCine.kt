@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 class InfoCine(
 
    @SerializedName("Cartelera")
-   val pelis: List<Pelicula>,
+   val pelis: List<PeliculaRemote>,
 
    @SerializedName("Sesiones")
-   val sesiones: List<Sesion>,
+   val sesiones: List<SesionRemote>,
 
    @SerializedName("Proximamente")
-   val proximosEstrenos: List<Pelicula>?
+   val proximosEstrenos: List<PeliculaRemote>?
 )

@@ -1,8 +1,46 @@
 package com.senkou.data
 
+import com.senkou.domain.model.Pelicula
+import kotlinx.coroutines.flow.onEach
+
 class MoviesRepository(
-   private val webMovieDatasource: RemoteDataSource
+   private val localDataSource: LocalDataSource,
+   private val webMovieDatasource: RemoteDataSource,
+   private val backgroundDataSource: BackgroundDataSource
 ) {
-   suspend fun getCartelera() = webMovieDatasource.getCartelera()
-   suspend fun getSesiones(idEspectaculo: Int) = webMovieDatasource.getSesiones(idEspectaculo)
+
+   val peliculas
+      get() = localDataSource.peliculas.onEach { peliculas ->
+         if (peliculas.isEmpty()) {
+            val cartelera = webMovieDatasource.getCartelera()
+            localDataSource.savePeliculas(cartelera.peliculas.addmoviesBackground(backgroundDataSource))
+            localDataSource.saveProximosEstrenos(
+               cartelera.proximosEstrenos.addmoviesBackground(
+                  backgroundDataSource
+               )
+            )
+         }
+      }
+
+   val proximosEstrenos
+      get() = localDataSource.proximosEstrenos
+
+
+   fun getSesiones(idEspectaculo: Int) = localDataSource.getSesiones(idEspectaculo).onEach {
+      if (it.isEmpty()) {
+         val sesiones = webMovieDatasource.getSesiones(idEspectaculo)
+         localDataSource.saveSesiones(sesiones)
+      }
+   }
 }
+
+private suspend fun List<Pelicula>.addmoviesBackground(backgroundDataSource: BackgroundDataSource) =
+   map {
+      it.copy(
+         background = backgroundDataSource.getMovieBackgroundByName(
+            it.tituloOriginal,
+            it.fechaEstreno.substringBefore("-")
+         ) ?: it.cartel
+      )
+   }
+

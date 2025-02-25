@@ -4,9 +4,9 @@ data class Sesion(
    val duracion: String,
    val fechaEstrenoSpanish: String,
    val hora: String,
-   val iDEspectaculo: Int,
-   val iDPase: String,
-   val iDSala: String,
+   val idEspectaculo: Int,
+   val idPase: String,
+   val idSala: String,
    val nombreSala: String,
    val nombreFormato: String,
    val interpretes: String,
@@ -18,4 +18,5 @@ data class Sesion(
    val video: String,
    val cartel: String,
    val diacompleto: String,
+   val background: String = ""
 )

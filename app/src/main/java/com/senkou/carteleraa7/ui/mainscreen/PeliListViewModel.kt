@@ -2,32 +2,23 @@ package com.senkou.carteleraa7.ui.mainscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.senkou.carteleraa7.ui.common.stateAsResultIn
 import com.senkou.domain.model.Pelicula
-import com.senkou.usecases.CargarCarteleraUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import com.senkou.usecases.CargarPeliculasUseCase
+import com.senkou.usecases.CargarProximosEstrenosUseCase
+import kotlinx.coroutines.flow.combine
 
 //@HiltViewModel
 class PeliListViewModel(
-   private val cargarCarteleraUseCase: CargarCarteleraUseCase
+   cargarPeliculasUseCase: CargarPeliculasUseCase,
+   cargarProximosEstrenosUseCase: CargarProximosEstrenosUseCase
 ) : ViewModel() {
 
-   private val _state = MutableStateFlow(UiState())
-   val state get() = _state.asStateFlow()
 
-   init {
-      viewModelScope.launch {
-         val cartelera = cargarCarteleraUseCase()
-         _state.update {
-            it.copy(
-               peliculas = cartelera.peliculas,
-               proximosEstrenos = cartelera.proximosEstrenos
-            )
-         }
-      }
-   }
+   val state = cargarPeliculasUseCase()
+      .combine(cargarProximosEstrenosUseCase()) { cartelera, proximosEstrenos ->
+         UiState(cartelera,proximosEstrenos)
+      }.stateAsResultIn(viewModelScope)
 
    data class UiState(
       val peliculas: List<Pelicula> = emptyList(),

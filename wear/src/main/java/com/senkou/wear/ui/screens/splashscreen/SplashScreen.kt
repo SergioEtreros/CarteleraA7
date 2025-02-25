@@ -6,28 +6,30 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.wear.R
+import com.senkou.wear.ui.common.ifSuccess
 import com.senkou.wear.ui.screens.mainscreen.PeliViewModel
 import com.senkou.wear.ui.theme.fondoLogo
-import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
    model: PeliViewModel,
    onMoviesLoaded: () -> Unit,
 ) {
-   val state = model.state.collectAsState().value
+   val state by model.state.collectAsStateWithLifecycle()
 
-   LaunchedEffect(state.peliculas.isNotEmpty()) {
-      delay(250)
-      onMoviesLoaded()
-   }
+//   LaunchedEffect(state.peliculas.isNotEmpty()) {
+//      delay(250)
+//      onMoviesLoaded()
+//   }
+
+   state.ifSuccess { onMoviesLoaded() }
 
    Splash()
 }

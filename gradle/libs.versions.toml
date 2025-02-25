@@ -33,6 +33,7 @@ wearToolingPreview = "1.0.0"
 okhttp = "4.12.0"
 uiToolingPreviewAndroid = "1.7.8"
 youtubeAndroidPlayer = "12.1.1"
+#roomRuntimeAndroid = "2.7.0-beta01"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -82,6 +83,7 @@ okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver",
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 
 youtube-android-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtubeAndroidPlayer" }
+#androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

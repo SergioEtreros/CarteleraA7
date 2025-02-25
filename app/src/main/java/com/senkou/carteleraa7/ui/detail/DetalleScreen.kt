@@ -3,6 +3,7 @@ package com.senkou.carteleraa7.ui.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,11 +38,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.senkou.carteleraa7.ui.Screen
+import com.senkou.carteleraa7.ui.common.LoadingIndicator
+import com.senkou.carteleraa7.ui.common.Result
+import com.senkou.carteleraa7.ui.common.ifSuccess
 import com.senkou.carteleraa7.ui.theme.Typography
 import com.senkou.carteleraa7.ui.theme.fondoFechaEstreno
 import com.senkou.domain.common.crearDetalles
 import java.net.URLDecoder
-
 
 @Composable
 fun DetallePelicula(
@@ -53,28 +56,29 @@ fun DetallePelicula(
    DetallePelicula(
       state = state,
       onBack = onBack,
-      onPlayTrailer = { model.playTrailer() }
+      onPlayTrailer = { video -> model.playTrailer(video) }
    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetallePelicula(
-   state: DetalleViewModel.UiState,
+   state: Result<DetalleViewModel.UiState>,
    onBack: () -> Unit,
-   onPlayTrailer: () -> Unit
+   onPlayTrailer: (video: String) -> Unit
 
 ) {
-
    Screen {
       Scaffold(
          topBar = {
             TopAppBar(
                title = {
-                  Text(
-                     text = state.sesiones.firstOrNull()?.titulo ?: "",
-                     color = MaterialTheme.colorScheme.onSurface
-                  )
+                  state.ifSuccess {
+                     Text(
+                        text = it.sesiones.firstOrNull()?.titulo ?: "",
+                        color = MaterialTheme.colorScheme.onSurface
+                     )
+                  }
                },
                navigationIcon = {
                   IconButton(onClick = onBack) {
@@ -92,67 +96,79 @@ fun DetallePelicula(
          contentWindowInsets = WindowInsets.safeDrawing
       ) { padding ->
 
-         if (state.sesiones.isNotEmpty()) {
-            Column(
+         when (state) {
+            Result.Loading -> LoadingIndicator(padding)
+            is Result.Error -> Text(text = state.throwable.message.orEmpty())
+            is Result.Success -> Detalles(state.data, padding, onPlayTrailer)
+         }
+      }
+   }
+}
+
+@Composable
+fun Detalles(
+   state: DetalleViewModel.UiState,
+   padding: PaddingValues,
+   onPlayTrailer: (video: String) -> Unit
+) {
+   if (state.sesiones.isNotEmpty()) {
+      Column(
+         modifier = Modifier
+            .fillMaxSize()
+            .padding(padding)
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(state = rememberScrollState(), true),
+         horizontalAlignment = Alignment.CenterHorizontally
+      ) {
+         Box {
+            AsyncImage(
+               model = URLDecoder.decode(state.sesiones.first().background, "UTF-8"),
+               contentScale = ContentScale.Crop,
                modifier = Modifier
-                  .fillMaxSize()
-                  .padding(padding)
-                  .background(MaterialTheme.colorScheme.background)
-                  .verticalScroll(state = rememberScrollState(), true),
-               horizontalAlignment = Alignment.CenterHorizontally
+                  .height(200.dp)
+                  .fillMaxWidth(),
+               contentDescription = "",
+            )
+
+            FloatingActionButton(
+               modifier = Modifier
+                  .padding(end = 10.dp)
+                  .align(Alignment.BottomEnd)
+                  .offset(y = (25).dp),
+               onClick = { onPlayTrailer(state.sesiones.first().video) },
+               containerColor = Color.Red,
+               contentColor = Color.White
             ) {
-
-               Box {
-                  AsyncImage(
-                     model = URLDecoder.decode(state.background, "UTF-8"),
-                     contentScale = ContentScale.Crop,
-                     modifier = Modifier
-                        .height(200.dp)
-                        .fillMaxWidth(),
-                     contentDescription = "",
-                  )
-
-                  FloatingActionButton(
-                     modifier = Modifier
-                        .padding(end = 10.dp)
-                        .align(Alignment.BottomEnd)
-                        .offset(y = (25).dp),
-                     onClick = onPlayTrailer,
-                     containerColor = Color.Red,
-                     contentColor = Color.White
-                  ) {
-                     Icon(Icons.Default.PlayArrow, "")
-                  }
-               }
-
-               Spacer(modifier = Modifier.height(30.dp))
-
-               Column(
-                  Modifier
-                     .padding(16.dp, 6.dp)
-                     .wrapContentHeight()
-               ) {
-
-                  FilaFechas(state.sesiones, state.diasSesiones)
-
-                  state.sesiones.first().crearDetalles().forEach { detalles ->
-
-                     Text(
-                        modifier = Modifier
-                           .fillMaxWidth()
-                           .wrapContentHeight(),
-                        color = Color.White,
-                        textAlign = TextAlign.Start,
-                        style = Typography.labelSmall,
-                        text = detalles
-                     )
-
-                     Spacer(modifier = Modifier.height(6.dp))
-                  }
-
-                  Spacer(modifier = Modifier.height(28.dp))
-               }
+               Icon(Icons.Default.PlayArrow, "")
             }
+         }
+
+         Spacer(modifier = Modifier.height(30.dp))
+
+         Column(
+            Modifier
+               .padding(16.dp, 6.dp)
+               .wrapContentHeight()
+         ) {
+
+            FilaFechas(state.sesiones, state.diasSesiones)
+
+            state.sesiones.first().crearDetalles().forEach { detalles ->
+
+               Text(
+                  modifier = Modifier
+                     .fillMaxWidth()
+                     .wrapContentHeight(),
+                  color = Color.White,
+                  textAlign = TextAlign.Start,
+                  style = Typography.labelSmall,
+                  text = detalles
+               )
+
+               Spacer(modifier = Modifier.height(6.dp))
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
          }
       }
    }

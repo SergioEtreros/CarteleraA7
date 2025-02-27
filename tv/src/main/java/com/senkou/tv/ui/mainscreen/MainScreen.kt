@@ -14,15 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.DrawerValue
 import androidx.tv.material3.ModalNavigationDrawer
+import androidx.tv.material3.Text
 import androidx.tv.material3.rememberDrawerState
-import com.senkou.domain.model.Pelicula
 import com.senkou.tv.ui.Screen
+import com.senkou.tv.ui.common.LoadingIndicator
 import com.senkou.tv.ui.common.NoResult
+import com.senkou.tv.ui.common.Result
 
 @Composable
 fun MainScreen(
@@ -36,51 +37,58 @@ fun MainScreen(
 
 @Composable
 fun MainScreen(
-   state: PeliListViewModel.UiState,
+   state: Result<PeliListViewModel.UiState>,
    onMovieClicked: (idEspectaculo: Int) -> Unit,
 ) {
    Screen {
-      var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
-      val closeDrawerWidth = 80.dp
-      val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-      ModalNavigationDrawer(
-         drawerContent = {
-            Column(
-               Modifier
-                  .fillMaxHeight()
-                  .padding(12.dp)
-                  .selectableGroup(),
-               horizontalAlignment = Alignment.Start,
-               verticalArrangement = Arrangement.Center
+      when (state) {
+         Result.Loading -> LoadingIndicator()
+         is Result.Error -> Text(text = state.throwable.message.orEmpty())
+         is Result.Success -> {
+            var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+            val closeDrawerWidth = 80.dp
+            val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+            ModalNavigationDrawer(
+               drawerContent = {
+                  Column(
+                     Modifier
+                        .fillMaxHeight()
+                        .padding(12.dp)
+                        .selectableGroup(),
+                     horizontalAlignment = Alignment.Start,
+                     verticalArrangement = Arrangement.Center
+                  ) {
+                     DrawerMenuItems(selectedIndex) { index ->
+                        selectedIndex = index
+                        drawerState.setValue(DrawerValue.Closed)
+                     }
+                  }
+               },
+               drawerState = drawerState,
+               scrimBrush = Brush.horizontalGradient(listOf(Color.Black, Color.Transparent))
             ) {
-               DrawerMenuItems(selectedIndex) { index ->
-                  selectedIndex = index
-                  drawerState.setValue(DrawerValue.Closed)
-               }
-            }
-         },
-         drawerState = drawerState,
-         scrimBrush = Brush.horizontalGradient(listOf(Color.Black, Color.Transparent))
-      ) {
-         when (selectedIndex) {
-            0 -> {
-               ImmersiveList(
-                  modifier = Modifier.padding(start = closeDrawerWidth),
-                  peliculas = state.peliculas,
-                  onMovieClicked = onMovieClicked,
-               )
-            }
+               when (selectedIndex) {
+                  0 -> {
+                     ImmersiveList(
+                        modifier = Modifier.padding(start = closeDrawerWidth),
+                        peliculas = state.data.peliculas,
+                        onMovieClicked = onMovieClicked,
+                     )
+                  }
 
-            1 -> {
-               if (state.proximosEstrenos.isNotEmpty()) {
-                  ImmersiveList(
-                     modifier = Modifier.padding(start = closeDrawerWidth),
-                     peliculas = state.proximosEstrenos,
-                     onMovieClicked = { _ -> },
-                  )
-               } else {
-                  NoResult()
+                  1 -> {
+                     if (state.data.proximosEstrenos.isNotEmpty()) {
+                        ImmersiveList(
+                           modifier = Modifier.padding(start = closeDrawerWidth),
+                           peliculas = state.data.proximosEstrenos,
+                           onMovieClicked = { _ -> },
+                        )
+                     } else {
+                        NoResult()
+                     }
+                  }
                }
             }
          }
@@ -88,16 +96,16 @@ fun MainScreen(
    }
 }
 
-@Preview(showSystemUi = false)
-@Composable
-fun MainScreenPreview() {
-
-   MainScreen(PeliListViewModel.UiState(listOf(Pelicula(
-      cartel = "cartel",
-      fechaEstreno = "fechaEstreno",
-      idEspectaculo = 1,
-      titulo = "titulo",
-      tituloOriginal = "tituloOriginal",
-      background = "background",
-   )), listOf())) { _ -> }
-}
+//@Preview(showSystemUi = false)
+//@Composable
+//fun MainScreenPreview() {
+//
+//   MainScreen(PeliListViewModel.UiState(listOf(Pelicula(
+//      cartel = "cartel",
+//      fechaEstreno = "fechaEstreno",
+//      idEspectaculo = 1,
+//      titulo = "titulo",
+//      tituloOriginal = "tituloOriginal",
+//      background = "background",
+//   )), listOf())) { _ -> }
+//}

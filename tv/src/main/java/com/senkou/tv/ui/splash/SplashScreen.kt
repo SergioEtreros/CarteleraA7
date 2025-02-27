@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.tv.R
 import com.senkou.tv.ui.Screen
+import com.senkou.tv.ui.common.ifSuccess
 import com.senkou.tv.ui.mainscreen.PeliListViewModel
 import com.senkou.tv.ui.theme.fondoLogo
 
@@ -25,9 +26,7 @@ fun SplashScreen(
 ) {
    val state by model.state.collectAsStateWithLifecycle()
 
-   if (state.peliculas.isNotEmpty()) {
-      onMoviesLoaded()
-   }
+   state.ifSuccess { onMoviesLoaded() }
 
    Splash()
 }

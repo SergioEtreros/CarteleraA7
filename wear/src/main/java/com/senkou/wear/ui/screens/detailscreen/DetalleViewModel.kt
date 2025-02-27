@@ -21,37 +21,4 @@ class DetalleViewModel(
       val sesiones: List<Sesion> = emptyList(),
       val diasSesiones: List<String> = emptyList(),
    )
-//
-//   private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
-//   val uiState = _uiState.asStateFlow()
-//
-//   init {
-//      viewModelScope.launch {
-//         _uiState.update {
-//            it.copy(sesiones = cargarDetalle(idEspectaculo))
-//
-//         }
-//      }
-//   }
-//
-//   fun obtenerDiasSesiones(): List<String> {
-//      val fechasSpinner = arrayListOf<String>()
-//      uiState.value.sesiones.forEach { sesion ->
-//         sesion.diacompleto.let {
-//            if (!fechasSpinner.contains(it)) {
-//               fechasSpinner.add(it)
-//            }
-//         }
-//      }
-//
-//      if (fechasSpinner.isNotEmpty()) {
-//         fechasSpinner.sort()
-//         fechasSpinner.ordenarMeses()
-//      }
-//      return fechasSpinner
-//   }
-//
-//   data class UiState(
-//      val sesiones: List<Sesion> = emptyList()
-//   )
 }

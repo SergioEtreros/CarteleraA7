@@ -1,13 +1,13 @@
 package com.senkou.tv.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.room.Room
-import com.senkou.data.BackgroundRepository
 import com.senkou.data.MoviesRepository
 import com.senkou.framework.local.room.RoomMovieDataSource
 import com.senkou.framework.local.room.db.CarteleraDB
@@ -19,9 +19,9 @@ import com.senkou.tv.ui.detail.DetalleViewModel
 import com.senkou.tv.ui.mainscreen.MainScreen
 import com.senkou.tv.ui.mainscreen.PeliListViewModel
 import com.senkou.tv.ui.splash.SplashScreen
-import com.senkou.usecases.CargarBackgroundUseCase
-import com.senkou.usecases.CargarCarteleraUseCase
 import com.senkou.usecases.CargarDetalleUseCase
+import com.senkou.usecases.CargarPeliculasUseCase
+import com.senkou.usecases.CargarProximosEstrenosUseCase
 
 @Composable
 fun AppNavitagion() {
@@ -33,6 +33,13 @@ fun AppNavitagion() {
       "Cartelera"
    ).build()
 
+   LaunchedEffect(true) {
+      db.peliculaDao().deletePeliculas()
+      db.proximoEstrenoDao().deleteEstrenos()
+   }
+
+   val backgroundDataSource = TmdbServerDataSource(TmdbClient("https://api.themoviedb.org/3/").instance)
+
    val moviesRepository = MoviesRepository(
       localDataSource = RoomMovieDataSource(
          peliculaDao = db.peliculaDao(),
@@ -40,14 +47,13 @@ fun AppNavitagion() {
          sesionDao = db.sesionDao()
       ),
       webMovieDatasource = WebMovieDatasource(),
+      backgroundDataSource = backgroundDataSource
+
    )
 
-   val backgroundRepository =
-      BackgroundRepository(TmdbServerDataSource(TmdbClient("https://api.themoviedb.org/3/").instance))
-
    val model = PeliListViewModel(
-      CargarCarteleraUseCase(moviesRepository),
-      CargarBackgroundUseCase(backgroundRepository),
+      cargarPeliculasUseCase = CargarPeliculasUseCase(moviesRepository),
+      cargarProximosEstrenosUseCase = CargarProximosEstrenosUseCase(moviesRepository)
    )
 
    NavHost(
@@ -74,7 +80,6 @@ fun AppNavitagion() {
             DetalleViewModel(
                idEspectaculo = idEspectaculo,
                cargarDetalle = CargarDetalleUseCase(moviesRepository),
-               cargarBackground = CargarBackgroundUseCase(backgroundRepository),
             )
          )
       }

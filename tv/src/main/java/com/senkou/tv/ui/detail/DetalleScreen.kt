@@ -27,8 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,169 +36,175 @@ import androidx.tv.material3.Glow
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil.compose.AsyncImage
-import com.senkou.domain.model.Sesion
 import com.senkou.tv.ui.Screen
 import com.senkou.tv.ui.common.AlphaBackground
+import com.senkou.tv.ui.common.LoadingIndicator
+import com.senkou.tv.ui.common.Result
 import com.senkou.tv.ui.theme.Typography
 import com.senkou.tv.ui.theme.fondoFechaEstreno
 import com.senkou.tv.ui.theme.resalte_ticket
-import java.net.URLDecoder
 
 @Composable
 fun DetallePelicula(
    model: DetalleViewModel,
 ) {
    val state by model.uiState.collectAsStateWithLifecycle()
-   val diasSesiones = model.obtenerDiasSesiones()
 
-   DetallePelicula(state = state, diasSesiones = diasSesiones)
+   DetallePelicula(state = state)
 }
 
 @Composable
 fun DetallePelicula(
-   state: DetalleViewModel.UiState,
-   diasSesiones: List<String>,
+   state: Result<DetalleViewModel.UiState>,
 ) {
    Screen {
-      val shape = RoundedCornerShape(8.dp)
 
-      var trailerVisible by remember { mutableStateOf(false) }
+      when (state) {
+         Result.Loading -> LoadingIndicator()
+         is Result.Error -> Text(text = state.throwable.message.orEmpty())
+         is Result.Success -> {
+            val shape = RoundedCornerShape(8.dp)
 
-      AlphaBackground(background = URLDecoder.decode(state.background, "UTF-8"))
+            var trailerVisible by remember { mutableStateOf(false) }
 
-      if (state.sesiones.isNotEmpty()) {
-         Row(
-            modifier = Modifier
-               .fillMaxWidth()
-               .padding(24.dp),
-         ) {
+//            AlphaBackground(background = URLDecoder.decode(state.data.sesiones.first().background, "UTF-8"))
+            AlphaBackground(background = state.data.sesiones.first().background)
 
-            AsyncImage(
-               model = state.sesiones.first().cartel,
-               contentScale = ContentScale.Crop,
-               modifier = Modifier
-                  .width(350.dp)
-                  .fillMaxHeight()
-                  .clip(shape)
-                  .border(4.dp, resalte_ticket, shape),
-               contentDescription = "",
-            )
-
-
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Column(
-               modifier = Modifier
-                  .fillMaxSize(),
-               horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-               Text(
+            if (state.data.sesiones.isNotEmpty()) {
+               Row(
                   modifier = Modifier
                      .fillMaxWidth()
-                     .clip(shape)
-                     .background(color = fondoFechaEstreno)
-                     .padding(16.dp, 8.dp, 16.dp, 8.dp),
-                  maxLines = 1,
-                  textAlign = TextAlign.Center,
-                  color = Color.White,
-                  style = Typography.bodyLarge,
-                  fontWeight = FontWeight.Bold,
-                  text = state.sesiones.first().titulo
-               )
+                     .padding(24.dp),
+               ) {
 
-               Spacer(modifier = Modifier.height(16.dp))
-
-               FilaFechas(
-                  sesiones = state.sesiones,
-                  lista = diasSesiones,
-               )
-
-               Spacer(modifier = Modifier.height(16.dp))
-
-               Row(modifier = Modifier.fillMaxSize()) {
-                  Detalles(
-                     sesion = state.sesiones.first(),
+                  AsyncImage(
+                     model = state.data.sesiones.first().cartel,
+                     contentScale = ContentScale.Crop,
                      modifier = Modifier
+                        .width(350.dp)
                         .fillMaxHeight()
-                        .weight(1f)
+                        .clip(shape)
+                        .border(4.dp, resalte_ticket, shape),
+                     contentDescription = "",
                   )
 
-                  Button(
+
+
+                  Spacer(modifier = Modifier.width(16.dp))
+
+                  Column(
                      modifier = Modifier
-                        .padding(start = 16.dp)
-                        .align(Alignment.Bottom),
-                     onClick = {
-                        trailerVisible = true
-                     },
-                     colors = ButtonDefaults.colors(
-                        containerColor = Color.Red,
-                        contentColor = Color.White,
-                        focusedContainerColor = Color.Red,
-                        focusedContentColor = Color.White,
-                     ),
-                     glow = ButtonDefaults.glow(focusedGlow = Glow(Color.White, 8.dp)),
+                        .fillMaxSize(),
+                     horizontalAlignment = Alignment.CenterHorizontally
                   ) {
-                     Icon(imageVector = Icons.Default.PlayArrow, "")
+
+                     Text(
+                        modifier = Modifier
+                           .fillMaxWidth()
+                           .clip(shape)
+                           .background(color = fondoFechaEstreno)
+                           .padding(16.dp, 8.dp, 16.dp, 8.dp),
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
+                        style = Typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        text = state.data.sesiones.first().titulo
+                     )
+
+                     Spacer(modifier = Modifier.height(16.dp))
+
+                     FilaFechas(
+                        sesiones = state.data.sesiones,
+                        lista = state.data.diasSesiones,
+                     )
+
+                     Spacer(modifier = Modifier.height(16.dp))
+
+                     Row(modifier = Modifier.fillMaxSize()) {
+                        Detalles(
+                           sesion = state.data.sesiones.first(),
+                           modifier = Modifier
+                              .fillMaxHeight()
+                              .weight(1f)
+                        )
+
+                        Button(
+                           modifier = Modifier
+                              .padding(start = 16.dp)
+                              .align(Alignment.Bottom),
+                           onClick = {
+                              trailerVisible = true
+                           },
+                           colors = ButtonDefaults.colors(
+                              containerColor = Color.Red,
+                              contentColor = Color.White,
+                              focusedContainerColor = Color.Red,
+                              focusedContentColor = Color.White,
+                           ),
+                           glow = ButtonDefaults.glow(focusedGlow = Glow(Color.White, 8.dp)),
+                        ) {
+                           Icon(imageVector = Icons.Default.PlayArrow, "")
+                        }
+                     }
                   }
                }
             }
-         }
-      }
 
-      if (trailerVisible) {
+            if (trailerVisible) {
 
-         BackHandler {
-            trailerVisible = false
+               BackHandler {
+                  trailerVisible = false
+               }
+               YoutubeView(
+                  state.data.sesiones.first().video.substringAfterLast("/"),
+                  LocalLifecycleOwner.current
+               )
+            }
          }
-         YoutubeView(
-            state.sesiones.first().video.substringAfterLast("/"),
-            LocalLifecycleOwner.current
-         )
       }
    }
 }
 
-@Preview(
-   showBackground = true,
-   showSystemUi = true,
-   device = Devices.TV_1080p,
-   backgroundColor = 0xFFFFFFFF,
-   widthDp = 1920,
-   heightDp = 1080
-)
-@Composable
-fun DetallePeliculaPreview() {
-   DetallePelicula(
-      state = DetalleViewModel.UiState(
-         sesiones = listOf(
-            Sesion(
-               duracion = "duracion",
-               fechaEstrenoSpanish = "estreno",
-               hora = "hora",
-               idEspectaculo = 1,
-               idPase = "idpase",
-               idSala = "iDSala",
-               nombreSala = "nombreSala",
-               nombreFormato = "nombreFormato",
-               interpretes = "interpretes",
-               nombreCalificacion = "nombreCalificacion",
-               nombreGenero = "nombreGenero",
-               sinopsis = "sinopsis",
-               titulo = "titulo",
-               tituloOriginal = "tituloOriginal",
-               video = "video",
-               cartel = "https://artesiete.es/Posters/sonic3.jpg",
-               diacompleto = "Hoy",
-
-               )
-         ),
-         background = "https://artesiete.es/Posters/sonic3.jpg"
-      ),
-      diasSesiones = listOf("Hoy")
-   )
-}
+//@Preview(
+//   showBackground = true,
+//   showSystemUi = true,
+//   device = Devices.TV_1080p,
+//   backgroundColor = 0xFFFFFFFF,
+//   widthDp = 1920,
+//   heightDp = 1080
+//)
+//@Composable
+//fun DetallePeliculaPreview() {
+//   DetallePelicula(
+//      state = DetalleViewModel.UiState(
+//         sesiones = listOf(
+//            Sesion(
+//               duracion = "duracion",
+//               fechaEstrenoSpanish = "estreno",
+//               hora = "hora",
+//               idEspectaculo = 1,
+//               idPase = "idpase",
+//               idSala = "iDSala",
+//               nombreSala = "nombreSala",
+//               nombreFormato = "nombreFormato",
+//               interpretes = "interpretes",
+//               nombreCalificacion = "nombreCalificacion",
+//               nombreGenero = "nombreGenero",
+//               sinopsis = "sinopsis",
+//               titulo = "titulo",
+//               tituloOriginal = "tituloOriginal",
+//               video = "video",
+//               cartel = "https://artesiete.es/Posters/sonic3.jpg",
+//               diacompleto = "Hoy",
+//
+//               )
+//         ),
+//         background = "https://artesiete.es/Posters/sonic3.jpg"
+//      ),
+//      diasSesiones = listOf("Hoy")
+//   )
+//}
 
 
 

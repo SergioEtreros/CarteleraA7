@@ -3,51 +3,25 @@ package com.senkou.tv.ui.mainscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.senkou.domain.model.Pelicula
-import com.senkou.usecases.CargarBackgroundUseCase
-import com.senkou.usecases.CargarCarteleraUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import java.net.URLEncoder
+import com.senkou.tv.ui.common.stateAsResultIn
+import com.senkou.usecases.CargarPeliculasUseCase
+import com.senkou.usecases.CargarProximosEstrenosUseCase
+import kotlinx.coroutines.flow.combine
 
 //@HiltViewModel
 class PeliListViewModel(
-   private val cargarCarteleraUseCase: CargarCarteleraUseCase,
-   private val cargarBackgroundUseCase: CargarBackgroundUseCase,
+   cargarPeliculasUseCase: CargarPeliculasUseCase,
+   cargarProximosEstrenosUseCase: CargarProximosEstrenosUseCase
 ) : ViewModel() {
 
-   private val _state = MutableStateFlow(UiState())
-   val state get() = _state.asStateFlow()
-
-   init {
-      viewModelScope.launch {
-         val cartelera = cargarCarteleraUseCase()
-
-         _state.update {
-            it.copy(
-               peliculas = cartelera.peliculas.addBackground(),
-               proximosEstrenos = cartelera.proximosEstrenos.addBackground()
-            )
-         }
-      }
-   }
-
-   private suspend fun List<Pelicula>.addBackground(): List<Pelicula> = map { pelicula ->
-      pelicula.copy(
-         background = URLEncoder.encode(
-            cargarBackgroundUseCase(
-               pelicula.tituloOriginal,
-               pelicula.fechaEstreno.substringBefore("-")
-            ) ?: pelicula.cartel,
-            "UTF-8"
-         )
-      )
-   }
+   val state = cargarPeliculasUseCase()
+      .combine(cargarProximosEstrenosUseCase()) { cartelera, proximosEstrenos ->
+         UiState(cartelera, proximosEstrenos)
+      }.stateAsResultIn(viewModelScope)
 
    data class UiState(
       val peliculas: List<Pelicula> = emptyList(),
-      val proximosEstrenos: List<Pelicula> = emptyList(),
+      val proximosEstrenos: List<Pelicula> = emptyList()
    )
 }
 

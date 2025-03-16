@@ -6,11 +6,11 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 
 private val colorScheme = darkColorScheme(
-   primary = fondoFechaEstreno,
-   secondary = resalte_ticket,
-   surface = resalte_ticket,
-   surfaceVariant = fondoLogo,
-   background = fondo_lista
+   primary = releaseDateBackground,
+   secondary = ticketHighlight,
+   surface = ticketHighlight,
+   surfaceVariant = logoBackground,
+   background = listBackground
 )
 
 @Composable

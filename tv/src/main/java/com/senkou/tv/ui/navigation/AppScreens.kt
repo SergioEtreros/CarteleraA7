@@ -3,13 +3,12 @@ package com.senkou.tv.ui.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object SplashScreen
+object Splash
 
 @Serializable
-object MainScreen
+object Main
 
 @Serializable
-data class DetalleScreen(
-   val idEspectaculo: Int,
-//   val background: String
+data class Detail(
+   val movieId: Int,
 )

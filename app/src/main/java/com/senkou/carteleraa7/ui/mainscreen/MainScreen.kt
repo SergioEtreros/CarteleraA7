@@ -27,12 +27,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.common.LoadingIndicator
 import com.senkou.carteleraa7.ui.common.Result
-import com.senkou.carteleraa7.ui.theme.resalte_ticket
+import com.senkou.carteleraa7.ui.theme.ticketHighlight
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
-   model: PeliListViewModel,
+   model: MovieListViewModel,
    onMovieClicked: (idEspectaculo: Int) -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()
@@ -42,7 +42,7 @@ fun MainScreen(
 
 @Composable
 fun MainScreen(
-   state: Result<PeliListViewModel.UiState>,
+   state: Result<MovieListViewModel.UiState>,
    onMovieClicked: (idEspectaculo: Int) -> Unit,
 ) {
    Screen {
@@ -64,7 +64,7 @@ fun MainScreen(
 @Composable
 fun CarteleraPage(
    paddingValues: PaddingValues,
-   state: PeliListViewModel.UiState,
+   state: MovieListViewModel.UiState,
    onMovieClicked: (idEspectaculo: Int) -> Unit
 ) {
    Column(
@@ -81,7 +81,7 @@ fun CarteleraPage(
       ) { tabData.size }
 
       TabRow(selectedTabIndex = tabIndex,
-         modifier = Modifier.background(color = resalte_ticket),
+         modifier = Modifier.background(color = ticketHighlight),
          indicator = { tabPositions ->
             SecondaryIndicator(
                modifier = Modifier.tabIndicatorOffset(
@@ -110,8 +110,8 @@ fun CarteleraPage(
       ) { page ->
          tabIndex = page
          when (page) {
-            0 -> Cartelera(state.peliculas) { idEspectaculo -> onMovieClicked(idEspectaculo) }
-            1 -> Cartelera(state.proximosEstrenos) {}
+            0 -> MovieList(state.movies) { idEspectaculo -> onMovieClicked(idEspectaculo) }
+            1 -> MovieList(state.upcominMovies) {}
          }
       }
    }

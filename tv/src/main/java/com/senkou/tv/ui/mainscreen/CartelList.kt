@@ -27,8 +27,8 @@ fun CartelList(
       horizontalArrangement = Arrangement.spacedBy(24.dp)
    ) {
       items(items = lista, key = { it.idEspectaculo }) { peli ->
-         PeliculaItem(
-            pelicula = peli,
+         MovieItem(
+            movie = peli,
             onMovieClicked = { idEspectaculo -> onMovieClicked(idEspectaculo) },
             onFocus = onFocus
          )

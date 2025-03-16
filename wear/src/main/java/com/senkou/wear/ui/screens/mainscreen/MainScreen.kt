@@ -17,8 +17,8 @@ import com.senkou.wear.ui.theme.fondo_lista
 
 @Composable
 fun MainScreen(
-   model: PeliViewModel,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+   model: MoviesListViewModel,
+   onMovieClicked: (movieId: Int) -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()
 
@@ -28,7 +28,7 @@ fun MainScreen(
 @Composable
 fun MainScreen(
    state: Result<List<Pelicula>>,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+   onMovieClicked: (movieId: Int) -> Unit,
 ) {
 
    Scaffold {
@@ -44,9 +44,9 @@ fun MainScreen(
                items(
                   items = state.data,
                   key = { it.idEspectaculo },
-                  itemContent = { peli ->
-                     PeliculaItem(pelicula = peli) { idEspectaculo ->
-                        onMovieClicked(idEspectaculo)
+                  itemContent = { movie ->
+                     MovieItem(movie = movie) { movieId ->
+                        onMovieClicked(movieId)
                      }
                   }
                )

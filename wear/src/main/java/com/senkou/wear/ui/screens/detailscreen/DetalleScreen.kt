@@ -23,87 +23,78 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
 import com.senkou.domain.common.crearDetalles
-import com.senkou.wear.ui.common.LoadingIndicator
-import com.senkou.wear.ui.common.Result
+import com.senkou.wear.ui.screens.detailscreen.DetailViewModel.UiState
 import com.senkou.wear.ui.screens.mainscreen.MarqueeText
 import com.senkou.wear.ui.theme.Typography
 import com.senkou.wear.ui.theme.fondo_lista
 import com.senkou.wear.ui.theme.resalte_ticket
 
 @Composable
-fun DetallePelicula(model: DetalleViewModel) {
-   val state by model.uiState.collectAsStateWithLifecycle()
+fun DetailScreen(model: DetailViewModel) {
+   val state by model.uiState.collectAsStateWithLifecycle(UiState())
 
-   DetallePelicula(state = state)
+   DetailScreen(state = state)
 }
 
 @Composable
-fun DetallePelicula(state: Result<DetalleViewModel.UiState>) {
+fun DetailScreen(state: UiState) {
    Scaffold {
-      when (state) {
-         Result.Loading -> LoadingIndicator()
-         is Result.Error -> Text(text = state.throwable.message.orEmpty())
-         is Result.Success -> {
-            if (state.data.sesiones.isNotEmpty()) {
-               Column(
+      if (state.sessions.isNotEmpty()) {
+         Column(
+            modifier = Modifier
+               .fillMaxSize()
+               .background(fondo_lista),
+            horizontalAlignment = Alignment.CenterHorizontally
+         ) {
+            Box(
+               modifier = Modifier
+                  .fillMaxWidth()
+                  .background(
+                     color = resalte_ticket,
+                     shape = RoundedCornerShape(5.dp)
+                  ),
+               contentAlignment = Alignment.Center
+            ) {
+
+               MarqueeText(
                   modifier = Modifier
-                     .fillMaxSize()
-                     .background(fondo_lista),
-                  horizontalAlignment = Alignment.CenterHorizontally
-               ) {
-                  Box(
+                     .padding(horizontal = 48.dp, vertical = 8.dp),
+                  textAlign = TextAlign.Center,
+                  color = Color.White,
+                  style = Typography.body2,
+                  text = state.sessions.first().titulo,
+                  gradientEdgeColor = Color.Transparent
+               )
+            }
+
+            Column(
+               Modifier
+                  .padding(16.dp, 6.dp)
+                  .fillMaxSize()
+                  .verticalScroll(state = rememberScrollState(), true)
+            ) {
+
+               SessionsRow(sessions = state.sessions, sessionsDays = state.sessionsDays)
+
+               state.sessions.first().crearDetalles().forEach { detalles ->
+
+                  Text(
                      modifier = Modifier
                         .fillMaxWidth()
-                        .background(
-                           color = resalte_ticket,
-                           shape = RoundedCornerShape(5.dp)
-                        ),
-                     contentAlignment = Alignment.Center
-                  ) {
+                        .wrapContentHeight(),
+                     color = Color.White,
+                     textAlign = TextAlign.Justify,
+                     style = Typography.display2,
+                     text = detalles
+                  )
 
-                     MarqueeText(
-                        modifier = Modifier
-                           .padding(horizontal = 48.dp, vertical = 8.dp),
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
-                        style = Typography.body2,
-                        text = state.data.sesiones.first().titulo,
-                        gradientEdgeColor = Color.Transparent
-                     )
-                  }
-
-                  Column(
-                     Modifier
-                        .padding(16.dp, 6.dp)
-                        .fillMaxSize()
-                        .verticalScroll(state = rememberScrollState(), true)
-                  ) {
-
-                     FilaFechas(state.data.sesiones, state.data.diasSesiones)
-
-                     state.data.sesiones.first().crearDetalles().forEach { detalles ->
-
-                        Text(
-                           modifier = Modifier
-                              .fillMaxWidth()
-                              .wrapContentHeight(),
-                           color = Color.White,
-                           textAlign = TextAlign.Justify,
-                           style = Typography.display2,
-                           text = detalles
-                        )
-
-                        Spacer(modifier = Modifier.height(6.dp))
-                     }
-
-                     Spacer(modifier = Modifier.height(28.dp))
-                  }
+                  Spacer(modifier = Modifier.height(6.dp))
                }
+
+               Spacer(modifier = Modifier.height(28.dp))
             }
          }
       }
-
-
    }
 }
 

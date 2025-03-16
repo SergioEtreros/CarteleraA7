@@ -10,15 +10,15 @@ import androidx.compose.ui.unit.dp
 import com.senkou.domain.model.Sesion
 
 @Composable
-fun Detalles(sesion: Sesion, modifier: Modifier = Modifier) {
+fun Details(session: Sesion, modifier: Modifier = Modifier) {
 
    Column(modifier = modifier.verticalScroll(state = rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-      DetailTextItem("Título original", sesion.tituloOriginal)
-      DetailTextItem("Duración", "${sesion.duracion} min")
-      DetailTextItem("Género", sesion.nombreGenero)
-      DetailTextItem("Calificación", sesion.nombreCalificacion)
-      DetailTextItem("Reparto", sesion.interpretes)
-      DetailTextItem("Fecha de estreno", sesion.fechaEstrenoSpanish)
-      DetailTextItem("Sinopsis", sesion.sinopsis)
+      DetailTextItem("Título original", session.tituloOriginal)
+      DetailTextItem("Duración", "${session.duracion} min")
+      DetailTextItem("Género", session.nombreGenero)
+      DetailTextItem("Calificación", session.nombreCalificacion)
+      DetailTextItem("Reparto", session.interpretes)
+      DetailTextItem("Fecha de estreno", session.fechaEstrenoSpanish)
+      DetailTextItem("Sinopsis", session.sinopsis)
    }
 }

@@ -23,7 +23,6 @@ fun YoutubeView(
 
             addYouTubePlayerListener(youTubePlayerListener = object :
                AbstractYouTubePlayerListener() {
-
                override fun onReady(youTubePlayer: YouTubePlayer) {
                   youTubePlayer.loadVideo(videoId, 0f)
                }

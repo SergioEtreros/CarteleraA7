@@ -19,6 +19,7 @@ class MoviesRepository(
                   backgroundDataSource
                )
             )
+            localDataSource.saveSesiones(cartelera.sesiones)
          }
       }
 
@@ -26,12 +27,8 @@ class MoviesRepository(
       get() = localDataSource.proximosEstrenos
 
 
-   fun getSesiones(idEspectaculo: Int) = localDataSource.getSesiones(idEspectaculo).onEach {
-      if (it.isEmpty()) {
-         val sesiones = webMovieDatasource.getSesiones(idEspectaculo)
-         localDataSource.saveSesiones(sesiones)
-      }
-   }
+   fun getSesiones(idEspectaculo: Int) = localDataSource.getSesiones(idEspectaculo)
+
 }
 
 private suspend fun List<Pelicula>.addmoviesBackground(backgroundDataSource: BackgroundDataSource) =

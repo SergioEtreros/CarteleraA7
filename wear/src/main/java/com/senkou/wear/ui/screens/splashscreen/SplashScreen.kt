@@ -14,22 +14,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.wear.R
 import com.senkou.wear.ui.common.ifSuccess
-import com.senkou.wear.ui.screens.mainscreen.PeliViewModel
+import com.senkou.wear.ui.screens.mainscreen.MoviesListViewModel
 import com.senkou.wear.ui.theme.fondoLogo
 
 @Composable
 fun SplashScreen(
-   model: PeliViewModel,
+   model: MoviesListViewModel,
    onMoviesLoaded: () -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()
 
-//   LaunchedEffect(state.peliculas.isNotEmpty()) {
-//      delay(250)
-//      onMoviesLoaded()
-//   }
-
-   state.ifSuccess { onMoviesLoaded() }
+   state.ifSuccess {
+      if (it.isNotEmpty()) onMoviesLoaded()
+   }
 
    Splash()
 }

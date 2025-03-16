@@ -12,8 +12,8 @@ import androidx.tv.material3.NavigationDrawerItemDefaults
 import androidx.tv.material3.NavigationDrawerScope
 import androidx.tv.material3.Text
 import com.senkou.tv.R
-import com.senkou.tv.ui.theme.fondo_lista
-import com.senkou.tv.ui.theme.resalte_ticket
+import com.senkou.tv.ui.theme.listBackground
+import com.senkou.tv.ui.theme.ticketHighlight
 
 @Composable
 fun NavigationDrawerScope.DrawerMenuItems(
@@ -35,8 +35,8 @@ fun NavigationDrawerScope.DrawerMenuItems(
             contentColor = Color.White,
             inactiveContentColor = Color.White,
             selectedContentColor = Color.White,
-            selectedContainerColor = resalte_ticket,
-            focusedContainerColor = fondo_lista,
+            selectedContainerColor = ticketHighlight,
+            focusedContainerColor = listBackground,
             focusedContentColor = Color.White
          ),
          leadingContent = {

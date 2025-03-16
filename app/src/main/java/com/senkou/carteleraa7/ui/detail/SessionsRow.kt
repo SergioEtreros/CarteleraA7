@@ -12,9 +12,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun FilaFechas(
-   sesiones: List<Sesion>,
-   lista: List<String>
+fun SessionsRow(
+   sessions: List<Sesion>,
+   sessionsDays: List<String>
 ) {
 
    LazyRow(
@@ -22,17 +22,17 @@ fun FilaFechas(
       horizontalArrangement = Arrangement.spacedBy(8.dp)
    ) {
       items(
-         items = lista,
-         itemContent = { dia ->
+         items = sessionsDays,
+         itemContent = { day ->
 
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val hoy = sdf.format(Calendar.getInstance().time)
-            val fecha = "Hoy".takeIf { hoy == dia } ?: dia
+            val today = sdf.format(Calendar.getInstance().time)
+            val date = "Hoy".takeIf { today == day } ?: day
 
-            InfoSesiones(
-               sesiones.first().cartel,
-               fecha,
-               sesiones.filter { it.diacompleto == dia })
+            SessionInfo(
+               imagenUrl = sessions.first().cartel,
+               date = date,
+               sessions = sessions.filter { it.diacompleto == day })
          }
       )
    }

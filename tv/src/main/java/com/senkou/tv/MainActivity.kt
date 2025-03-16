@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import com.senkou.tv.ui.navigation.AppNavitagion
 import com.senkou.tv.ui.theme.CarteleraA7Theme
 
+//@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)

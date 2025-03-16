@@ -8,10 +8,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.room.Room
-import com.senkou.carteleraa7.ui.detail.DetallePelicula
-import com.senkou.carteleraa7.ui.detail.DetalleViewModel
+import com.senkou.carteleraa7.ui.detail.DetailScreen
+import com.senkou.carteleraa7.ui.detail.DetailViewModel
 import com.senkou.carteleraa7.ui.mainscreen.MainScreen
-import com.senkou.carteleraa7.ui.mainscreen.PeliListViewModel
+import com.senkou.carteleraa7.ui.mainscreen.MovieListViewModel
 import com.senkou.carteleraa7.ui.splash.SplashScreen
 import com.senkou.data.MoviesRepository
 import com.senkou.data.VideoRepository
@@ -21,10 +21,10 @@ import com.senkou.framework.remote.arte7.WebMovieDatasource
 import com.senkou.framework.remote.tmdb.TmdbClient
 import com.senkou.framework.remote.tmdb.TmdbServerDataSource
 import com.senkou.framework.remote.youtube.YoutubeDatasource
-import com.senkou.usecases.CargarDetalleUseCase
-import com.senkou.usecases.CargarPeliculasUseCase
-import com.senkou.usecases.CargarProximosEstrenosUseCase
-import com.senkou.usecases.ReproducirTrailerUseCase
+import com.senkou.usecases.LoadDetailUseCase
+import com.senkou.usecases.LoadMoviesUseCase
+import com.senkou.usecases.LoadUpcomingMoviesUseCase
+import com.senkou.usecases.PlayTrailerUseCase
 
 @Composable
 fun AppNavitagion() {
@@ -53,37 +53,39 @@ fun AppNavitagion() {
       backgroundDataSource = backgroundDataSource
    )
 
-   val peliListViewModel = PeliListViewModel(
-      cargarPeliculasUseCase = CargarPeliculasUseCase(moviesRepository),
-      cargarProximosEstrenosUseCase = CargarProximosEstrenosUseCase(moviesRepository)
+   val peliListViewModel = MovieListViewModel(
+      loadMoviesUseCase = LoadMoviesUseCase(moviesRepository),
+      loadUpcomingMoviesUseCase = LoadUpcomingMoviesUseCase(moviesRepository)
    )
 
    val videoRepository = VideoRepository(YoutubeDatasource(context = LocalContext.current))
 
    NavHost(
       navController = navController,
-      startDestination = SplashScreen
+      startDestination = Splash
    ) {
-      composable<SplashScreen> {
+      composable<Splash> {
          SplashScreen(peliListViewModel) {
-            navController.navigate(MainScreen)
+            navController.navigate(Main) {
+               popUpTo(0) { inclusive = true }
+            }
          }
       }
 
-      composable<MainScreen> {
-         MainScreen(peliListViewModel) { pelicula ->
-            navController.navigate(DetalleScreen(pelicula))
+      composable<Main> {
+         MainScreen(peliListViewModel) { movieId ->
+            navController.navigate(Detail(movieId))
          }
       }
 
-      composable<DetalleScreen> { backstackEntry ->
-         val idEspectaculo = backstackEntry.toRoute<DetalleScreen>().idEspectaculo
+      composable<Detail> { backstackEntry ->
+         val movieId = backstackEntry.toRoute<Detail>().movieId
 
-         DetallePelicula(
-            DetalleViewModel(
-               idEspectaculo,
-               cargarDetalle = CargarDetalleUseCase(moviesRepository),
-               reproducirTrailer = ReproducirTrailerUseCase(videoRepository)
+         DetailScreen(
+            DetailViewModel(
+               movieId = movieId,
+               loadDetailUseCase = LoadDetailUseCase(moviesRepository),
+               playTrailerUseCase = PlayTrailerUseCase(videoRepository)
             )
          ) {
             navController.popBackStack()

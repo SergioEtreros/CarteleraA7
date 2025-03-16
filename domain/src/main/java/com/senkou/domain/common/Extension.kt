@@ -45,16 +45,16 @@ fun List<Sesion>.crearTextoSesiones(): String {
    val sesions = ArrayList<Sala>()
    var textoSesionesHoy = ""
 
-   this.forEach { sesion ->
-      val sala = sesions.find { s -> s.sala == sesion.idSala }
+   this.forEach { session ->
+      val sala = sesions.find { s -> s.sala == session.idSala }
       if (sala != null) {
-         sala.horas += " - " + sesion.hora
+         sala.horas += " - " + session.hora
       } else {
-         val formato = "(${sesion.nombreFormato})"
+         val formato = "(${session.nombreFormato})"
          sesions.add(
             Sala(
-               sesion.nombreSala,
-               "${formato.takeIf { it.contains("3D") } ?: ""} ${sesion.hora}"
+               session.nombreSala,
+               "${formato.takeIf { it.contains("3D") } ?: ""} ${session.hora}"
             )
          )
       }
@@ -70,7 +70,7 @@ fun List<Sesion>.crearTextoSesiones(): String {
    return textoSesionesHoy
 }
 
-fun List<Sesion>.obtenerDiasSesiones(): List<String> {
+fun List<Sesion>.getDaysSessions(): List<String> {
    val fechasSpinner = arrayListOf<String>()
    forEach { sesion ->
       sesion.diacompleto.let {

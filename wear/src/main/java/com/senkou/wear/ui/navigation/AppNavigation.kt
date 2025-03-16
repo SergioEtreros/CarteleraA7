@@ -14,12 +14,12 @@ import com.senkou.framework.local.room.db.CarteleraDB
 import com.senkou.framework.remote.arte7.WebMovieDatasource
 import com.senkou.framework.remote.tmdb.TmdbClient
 import com.senkou.framework.remote.tmdb.TmdbServerDataSource
-import com.senkou.usecases.CargarDetalleUseCase
-import com.senkou.usecases.CargarPeliculasUseCase
-import com.senkou.wear.ui.screens.detailscreen.DetallePelicula
-import com.senkou.wear.ui.screens.detailscreen.DetalleViewModel
+import com.senkou.usecases.LoadDetailUseCase
+import com.senkou.usecases.LoadMoviesUseCase
+import com.senkou.wear.ui.screens.detailscreen.DetailScreen
+import com.senkou.wear.ui.screens.detailscreen.DetailViewModel
 import com.senkou.wear.ui.screens.mainscreen.MainScreen
-import com.senkou.wear.ui.screens.mainscreen.PeliViewModel
+import com.senkou.wear.ui.screens.mainscreen.MoviesListViewModel
 import com.senkou.wear.ui.screens.splashscreen.SplashScreen
 
 @Composable
@@ -45,34 +45,36 @@ fun AppNavitagion() {
       backgroundDataSource = backgroundDataSource
    )
 
-   val model = PeliViewModel(
-      cargarPeliculasUseCase = CargarPeliculasUseCase(moviesRepository),
+   val model = MoviesListViewModel(
+      loadMoviesUseCase = LoadMoviesUseCase(moviesRepository),
    )
 
    SwipeDismissableNavHost(
       navController = navController,
-      startDestination = AppScreens.SplashScreen.route
+      startDestination = AppScreens.Splash.route
    ) {
-      composable(AppScreens.SplashScreen.route) {
+      composable(AppScreens.Splash.route) {
          SplashScreen(model) {
-            navController.navigate(AppScreens.MainScreen.route)
+            navController.navigate(AppScreens.Main.route) {
+               popUpTo(0) { inclusive = true }
+            }
          }
       }
-      composable(AppScreens.MainScreen.route) {
-         MainScreen(model) { idEspectaculo ->
-            navController.navigate("${AppScreens.DetalleScreen.route}/$idEspectaculo")
+      composable(AppScreens.Main.route) {
+         MainScreen(model) { movieId ->
+            navController.navigate("${AppScreens.Detail.route}/$movieId")
          }
       }
       composable(
-         route = "${AppScreens.DetalleScreen.route}/{iDEspectaculo}",
-         arguments = listOf(navArgument("iDEspectaculo") { type = NavType.IntType })
+         route = "${AppScreens.Detail.route}/{movieId}",
+         arguments = listOf(navArgument("movieId") { type = NavType.IntType })
       ) { navBackStackEntry ->
-         val idEspectaculo = navBackStackEntry.arguments?.getInt("iDEspectaculo", -1)
-         idEspectaculo?.let {
-            DetallePelicula(
-               DetalleViewModel(
-                  idEspectaculo,
-                  cargarDetalle = CargarDetalleUseCase(moviesRepository),
+         val movieId = navBackStackEntry.arguments?.getInt("movieId", -1)
+         movieId?.let {
+            DetailScreen(
+               DetailViewModel(
+                  movieId = movieId,
+                  loadDetailUseCase = LoadDetailUseCase(moviesRepository),
                )
             )
          }

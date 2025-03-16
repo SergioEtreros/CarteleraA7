@@ -24,11 +24,11 @@ import com.senkou.tv.ui.common.AlphaBackground
 @Composable
 fun ImmersiveList(
    modifier: Modifier = Modifier,
-   peliculas: List<Pelicula>,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+   movies: List<Pelicula>,
+   onMovieClicked: (movieId: Int) -> Unit,
 ) {
 
-   var selectedItem by remember { mutableStateOf(peliculas.firstOrNull()) }
+   var selectedItem by remember { mutableStateOf(movies.firstOrNull()) }
 
    Box(modifier = modifier) {
 
@@ -40,7 +40,6 @@ fun ImmersiveList(
             .padding(start = 24.dp, top = 12.dp)
       ) {
          Column {
-
             Text(
                text = selectedItem?.titulo ?: "",
                color = Color.White,
@@ -65,7 +64,7 @@ fun ImmersiveList(
 
       Box(Modifier.align(Alignment.BottomEnd)) {
          CartelList(
-            lista = peliculas,
+            lista = movies,
             onMovieClicked = { idEspectaculo ->
                onMovieClicked(
                   idEspectaculo,

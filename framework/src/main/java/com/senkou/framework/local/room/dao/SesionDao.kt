@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.senkou.framework.local.room.SesionConFondo
 import com.senkou.framework.local.room.entities.SesionEntity
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface SesionDao {
 
+   @Transaction
    @Query("SELECT * FROM sesiones WHERE idEspectaculo = :idEspectaculo")
    fun getSesiones(idEspectaculo: Int): Flow<List<SesionConFondo>>
 

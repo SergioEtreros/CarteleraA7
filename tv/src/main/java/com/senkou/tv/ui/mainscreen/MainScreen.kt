@@ -27,8 +27,8 @@ import com.senkou.tv.ui.common.Result
 
 @Composable
 fun MainScreen(
-   model: PeliListViewModel,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+   model: MoviesListViewModel,
+   onMovieClicked: (movieId: Int) -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()
 
@@ -37,11 +37,10 @@ fun MainScreen(
 
 @Composable
 fun MainScreen(
-   state: Result<PeliListViewModel.UiState>,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+   state: Result<MoviesListViewModel.UiState>,
+   onMovieClicked: (movieId: Int) -> Unit,
 ) {
    Screen {
-
       when (state) {
          Result.Loading -> LoadingIndicator()
          is Result.Error -> Text(text = state.throwable.message.orEmpty())
@@ -53,14 +52,14 @@ fun MainScreen(
             ModalNavigationDrawer(
                drawerContent = {
                   Column(
-                     Modifier
+                     modifier = Modifier
                         .fillMaxHeight()
                         .padding(12.dp)
                         .selectableGroup(),
                      horizontalAlignment = Alignment.Start,
                      verticalArrangement = Arrangement.Center
                   ) {
-                     DrawerMenuItems(selectedIndex) { index ->
+                     DrawerMenuItems(selectedIndex = selectedIndex) { index ->
                         selectedIndex = index
                         drawerState.setValue(DrawerValue.Closed)
                      }
@@ -73,16 +72,16 @@ fun MainScreen(
                   0 -> {
                      ImmersiveList(
                         modifier = Modifier.padding(start = closeDrawerWidth),
-                        peliculas = state.data.peliculas,
+                        movies = state.data.movies,
                         onMovieClicked = onMovieClicked,
                      )
                   }
 
                   1 -> {
-                     if (state.data.proximosEstrenos.isNotEmpty()) {
+                     if (state.data.upcomingMovies.isNotEmpty()) {
                         ImmersiveList(
                            modifier = Modifier.padding(start = closeDrawerWidth),
-                           peliculas = state.data.proximosEstrenos,
+                           movies = state.data.upcomingMovies,
                            onMovieClicked = { _ -> },
                         )
                      } else {

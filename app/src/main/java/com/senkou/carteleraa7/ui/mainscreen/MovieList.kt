@@ -15,12 +15,12 @@ import com.senkou.carteleraa7.ui.common.NoResult
 import com.senkou.domain.model.Pelicula
 
 @Composable
-fun Cartelera(
-   lista: List<Pelicula>,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+fun MovieList(
+   movies: List<Pelicula>,
+   onMovieClicked: (movieId: Int) -> Unit,
 ) {
 
-   if (lista.isNotEmpty()) {
+   if (movies.isNotEmpty()) {
       val state = rememberLazyListState()
 
       LazyColumn(
@@ -33,11 +33,11 @@ fun Cartelera(
       ) {
 
          items(
-            items = lista,
+            items = movies,
             key = { it.idEspectaculo },
-            itemContent = { peli ->
-               PeliculaItem(pelicula = peli) { idEspectaculo ->
-                  onMovieClicked(idEspectaculo)
+            itemContent = { movie ->
+               MovieItem(movie = movie) { movieId ->
+                  onMovieClicked(movieId)
                }
             }
          )

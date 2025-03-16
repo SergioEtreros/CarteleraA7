@@ -18,11 +18,11 @@ inline fun <T> Result<T>.ifSuccess(action: (T) -> Unit) {
    if (this is Result.Success) action(data)
 }
 
-fun <T> Flow<T>.stateAsResultIn(scope: CoroutineScope): StateFlow<Result<T>> =
+fun <T> Flow<T>.stateAsResultIn(scope: CoroutineScope, initialValue: Result<T>): StateFlow<Result<T>> =
    map<T, Result<T>> { Result.Success(it) }
       .catch { emit(Result.Error(it)) }
       .stateIn(
          scope = scope,
          started = SharingStarted.WhileSubscribed(5_000),
-         initialValue = Result.Loading
+         initialValue = initialValue
       )

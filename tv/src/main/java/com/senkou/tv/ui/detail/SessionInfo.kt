@@ -38,10 +38,10 @@ import com.senkou.domain.common.crearTextoSesiones
 import com.senkou.domain.model.Sesion
 import com.senkou.tv.ui.common.RoundedCutoutShape
 import com.senkou.tv.ui.theme.Typography
-import com.senkou.tv.ui.theme.fondoLogo
+import com.senkou.tv.ui.theme.logoBackground
 
 @Composable
-fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
+fun SessionInfo(imageUrl: String, date: String, sessiones: List<Sesion>) {
 
    val shape = RoundedCutoutShape(offset = 210.0F, 10.dp, Orientation.Horizontal)
 
@@ -60,11 +60,11 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
                color = Color.White,
                shape = shape
             )
-            .border(1.dp, fondoLogo, shape)
+            .border(1.dp, logoBackground, shape)
             .padding(12.dp, 12.dp),
       ) {
          AsyncImage(
-            model = urlImagen,
+            model = imageUrl,
             contentScale = ContentScale.Fit,
             modifier = Modifier
                .width(80.dp)
@@ -101,7 +101,7 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
                color = Color.Black,
                textAlign = TextAlign.Start,
                style = Typography.bodyMedium,
-               text = fecha
+               text = date
             )
 
             Spacer(modifier = Modifier.width(3.dp))
@@ -113,7 +113,7 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
                color = Color.Black,
                textAlign = TextAlign.Start,
                style = Typography.bodySmall,
-               text = sesiones.crearTextoSesiones()
+               text = sessiones.crearTextoSesiones()
             )
          }
       }
@@ -122,6 +122,6 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
 
 @Preview
 @Composable
-fun PreviewInfoSesiones() {
-   InfoSesiones("", "09/03/2023", emptyList())
+fun PreviewSessionInfo() {
+   SessionInfo("", "09/03/2023", emptyList())
 }

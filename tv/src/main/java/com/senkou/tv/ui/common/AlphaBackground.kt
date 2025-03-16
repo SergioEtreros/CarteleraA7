@@ -26,9 +26,8 @@ import java.net.URLDecoder
 fun AlphaBackground(background: String?) {
 
    val height = 460.dp
-
+   
    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-//      val aspectRatio = maxWidth / maxHeight
       if (!background.isNullOrBlank()) {
          AsyncImage(
             model = URLDecoder.decode(background, "UTF-8"),

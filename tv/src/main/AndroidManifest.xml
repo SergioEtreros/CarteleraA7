@@ -13,6 +13,7 @@
         android:required="true" />
 
     <application
+        android:name=".CarteleraA7Application"
         android:allowBackup="true"
         android:banner="@drawable/ic_launcher"
         android:icon="@drawable/ic_launcher"

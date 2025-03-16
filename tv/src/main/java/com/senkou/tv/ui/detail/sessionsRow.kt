@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun FilaFechas(
+fun SessionsRow(
    sesiones: List<Sesion>,
    lista: List<String>,
    modifier: Modifier = Modifier
@@ -31,7 +31,7 @@ fun FilaFechas(
             val hoy = sdf.format(Calendar.getInstance().time)
             val fecha = "Hoy".takeIf { hoy == dia } ?: dia
 
-            InfoSesiones(
+            SessionInfo(
                sesiones.first().cartel,
                fecha,
                sesiones.filter { it.diacompleto == dia })

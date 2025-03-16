@@ -31,7 +31,7 @@ import com.senkou.wear.ui.theme.Typography
 import com.senkou.wear.ui.theme.color_blanco
 
 @Composable
-fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
+fun SessionInfo(imageUrl: String, date: String, sessions: List<Sesion>) {
 
    val shape = RoundedCutoutShape(offset = 100.0F, 4.dp, Orientation.Horizontal)
 
@@ -46,7 +46,7 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
          .padding(6.dp, 3.dp)
    ) {
       AsyncImage(
-         model = urlImagen,
+         model = imageUrl,
          contentScale = ContentScale.Fit,
          modifier = Modifier
             .width(40.dp)
@@ -54,7 +54,6 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             .align(Alignment.CenterVertically)
             .clip(RoundedCornerShape(5.dp)),
          contentDescription = "",
-//         loading = { CircularProgressIndicator() }
       )
 
       Spacer(modifier = Modifier.width(8.dp))
@@ -69,7 +68,7 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             textAlign = TextAlign.Start,
             style = Typography.display3,
             fontWeight = FontWeight.Bold,
-            text = fecha
+            text = date
          )
 
          Spacer(modifier = Modifier.width(3.dp))
@@ -81,7 +80,7 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             color = Color.Black,
             textAlign = TextAlign.Start,
             style = Typography.display3,
-            text = sesiones.crearTextoSesiones()
+            text = sessions.crearTextoSesiones()
          )
       }
    }
@@ -90,9 +89,9 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
 @Preview
 @Composable
 fun PreviewInfoSesiones() {
-   InfoSesiones(
-      urlImagen = "https://images.pexels.com/photos/1758144/pexels-photo-1758144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      fecha = "09/03/2023",
-      sesiones = emptyList()
+   SessionInfo(
+      imageUrl = "https://images.pexels.com/photos/1758144/pexels-photo-1758144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      date = "09/03/2023",
+      sessions = emptyList()
    )
 }

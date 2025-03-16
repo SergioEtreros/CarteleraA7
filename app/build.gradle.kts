@@ -4,6 +4,7 @@ plugins {
    alias(libs.plugins.google.devtools.ksp)
    alias(libs.plugins.kotlin.serialization)
    alias(libs.plugins.compose.compiler)
+   alias(libs.plugins.hilt)
 }
 
 android {
@@ -57,6 +58,7 @@ android {
       }
    }
 }
+
 dependencies {
 
    implementation(project(":data"))
@@ -76,7 +78,13 @@ dependencies {
    implementation(libs.navigation.compose)
    implementation(libs.kotlinx.serialization.json)
    implementation(libs.room.ktx)
+   implementation(libs.hilt.android)
    ksp(libs.room.compiler)
+
+   implementation(libs.hilt.core)
+   implementation(libs.hilt.android)
+   implementation(libs.androidx.hilt.navigation.compose)
+   ksp(libs.hilt.compiler)
 
    testImplementation(libs.junit)
    androidTestImplementation(libs.androidx.junit)
@@ -88,6 +96,3 @@ dependencies {
 
 }
 
-composeCompiler {
-   enableStrongSkippingMode = true
-}

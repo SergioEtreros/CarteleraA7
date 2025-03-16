@@ -143,7 +143,8 @@ fun PeliculaRemote.toDomain() = Pelicula(
 fun InfoCine.toDomain() = Cartelera(
    peliculas = this.pelis.map { it.toDomain() },
    proximosEstrenos = this.proximosEstrenos?.let { estrenos -> estrenos.map { it.toDomain() } }
-      ?: emptyList()
+      ?: emptyList(),
+   sesiones = this.sesiones.map { it.toDomain() }
 )
 
 fun String.getUrlCartel(): String =

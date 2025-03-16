@@ -16,18 +16,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.common.ifSuccess
-import com.senkou.carteleraa7.ui.mainscreen.PeliListViewModel
+import com.senkou.carteleraa7.ui.mainscreen.MovieListViewModel
 
 @Composable
-
 fun SplashScreen(
-   model: PeliListViewModel,
+   model: MovieListViewModel,
    onMoviesLoaded: () -> Unit,
 ) {
 
    val state by model.state.collectAsStateWithLifecycle()
 
-   state.ifSuccess { onMoviesLoaded() }
+   state.ifSuccess {
+      if (it.movies.isNotEmpty()) onMoviesLoaded()
+   }
 
    Splash()
 }

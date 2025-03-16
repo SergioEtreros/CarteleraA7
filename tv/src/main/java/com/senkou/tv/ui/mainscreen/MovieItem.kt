@@ -25,24 +25,24 @@ import coil.compose.AsyncImage
 import com.senkou.domain.common.format
 import com.senkou.domain.model.Pelicula
 import com.senkou.tv.ui.theme.Typography
-import com.senkou.tv.ui.theme.fondoFechaEstreno
+import com.senkou.tv.ui.theme.releaseDateBackground
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun PeliculaItem(
-   pelicula: Pelicula,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
-   onFocus: (Pelicula) -> Unit
+fun MovieItem(
+   movie: Pelicula,
+   onMovieClicked: (movieId: Int) -> Unit,
+   onFocus: (movie: Pelicula) -> Unit
 ) {
    Card(
-      onClick = { onMovieClicked(pelicula.idEspectaculo) },
+      onClick = { onMovieClicked(movie.idEspectaculo) },
       modifier = Modifier
          .width(120.dp)
          .aspectRatio(2 / 3f)
          .onFocusChanged {
             if (it.isFocused) {
-               onFocus(pelicula)
+               onFocus(movie)
             }
          },
       border = CardDefaults.border(
@@ -55,28 +55,28 @@ fun PeliculaItem(
    ) {
       Box {
          AsyncImage(
-            model = pelicula.cartel,
+            model = movie.cartel,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
-            contentDescription = pelicula.titulo
+            contentDescription = movie.titulo
          )
 
-         if (pelicula.fechaEstreno.isNotEmpty()) {
+         if (movie.fechaEstreno.isNotEmpty()) {
             val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val fecha = parser.parse(parser.format(Date()))
-            val fechaEstreno = parser.parse(pelicula.fechaEstreno)
-            if (fechaEstreno != null && fecha != null) {
-               if (fechaEstreno >= fecha) {
+            val date = parser.parse(parser.format(Date()))
+            val releaseDate = parser.parse(movie.fechaEstreno)
+            if (releaseDate != null && date != null) {
+               if (releaseDate >= date) {
                   Text(
                      modifier = Modifier
                         .fillMaxWidth()
-                        .background(fondoFechaEstreno)
+                        .background(releaseDateBackground)
                         .padding(vertical = 4.dp),
                      textAlign = TextAlign.Center,
                      color = Color.White,
                      style = Typography.bodyMedium,
                      fontWeight = FontWeight.Bold,
-                     text = fechaEstreno.format()
+                     text = releaseDate.format()
                   )
                }
             }

@@ -15,18 +15,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.tv.R
 import com.senkou.tv.ui.Screen
 import com.senkou.tv.ui.common.ifSuccess
-import com.senkou.tv.ui.mainscreen.PeliListViewModel
-import com.senkou.tv.ui.theme.fondoLogo
+import com.senkou.tv.ui.mainscreen.MoviesListViewModel
+import com.senkou.tv.ui.theme.logoBackground
 
 @Composable
-
 fun SplashScreen(
-   model: PeliListViewModel,
+   model: MoviesListViewModel,
    onMoviesLoaded: () -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()
 
-   state.ifSuccess { onMoviesLoaded() }
+   state.ifSuccess {
+      if (it.movies.isNotEmpty()) onMoviesLoaded()
+   }
 
    Splash()
 }
@@ -38,7 +39,7 @@ fun Splash() {
       Column(
          modifier = Modifier
             .fillMaxSize()
-            .background(fondoLogo),
+            .background(logoBackground),
          horizontalAlignment = Alignment.CenterHorizontally,
          verticalArrangement = Arrangement.Center
       ) {

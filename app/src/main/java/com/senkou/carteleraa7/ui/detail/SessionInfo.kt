@@ -30,12 +30,16 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.senkou.carteleraa7.ui.common.RoundedCutoutShape
 import com.senkou.carteleraa7.ui.theme.Typography
-import com.senkou.carteleraa7.ui.theme.fondoLogo
+import com.senkou.carteleraa7.ui.theme.logoBackground
 import com.senkou.domain.common.crearTextoSesiones
 import com.senkou.domain.model.Sesion
 
 @Composable
-fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
+fun SessionInfo(
+   imagenUrl: String,
+   date: String,
+   sessions: List<Sesion>
+) {
 
    val shape = RoundedCutoutShape(offset = 310.0F, 10.dp, Orientation.Horizontal)
 
@@ -47,11 +51,11 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             color = Color.White,
             shape = shape
          )
-         .border(1.dp, fondoLogo, shape)
+         .border(1.dp, logoBackground, shape)
          .padding(12.dp, 12.dp),
    ) {
       AsyncImage(
-         model = urlImagen,
+         model = imagenUrl,
          contentScale = ContentScale.Fit,
          modifier = Modifier
             .width(80.dp)
@@ -59,7 +63,6 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             .align(Alignment.CenterVertically)
             .clip(RoundedCornerShape(5.dp)),
          contentDescription = "",
-//         loading = { CircularProgressIndicator() }
       )
 
       Spacer(modifier = Modifier.width(12.dp))
@@ -70,7 +73,6 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             .fillMaxHeight()
             .width(2.dp)
       ) {
-
          drawLine(
             color = Color.Gray,
             start = Offset(0f, 0f),
@@ -90,7 +92,7 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             color = Color.Black,
             textAlign = TextAlign.Start,
             style = Typography.bodyMedium,
-            text = fecha
+            text = date
          )
 
          Spacer(modifier = Modifier.width(3.dp))
@@ -100,7 +102,7 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
             color = Color.Black,
             textAlign = TextAlign.Start,
             style = Typography.bodySmall,
-            text = sesiones.crearTextoSesiones()
+            text = sessions.crearTextoSesiones()
          )
       }
    }
@@ -108,6 +110,6 @@ fun InfoSesiones(urlImagen: String, fecha: String, sesiones: List<Sesion>) {
 
 @Preview
 @Composable
-fun PreviewInfoSesiones() {
-   InfoSesiones("", "09/03/2023", emptyList())
+fun PreviewSessionInfo() {
+   SessionInfo("", "09/03/2023", emptyList())
 }

@@ -15,11 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.tv.material3.DrawerValue
 import androidx.tv.material3.ModalNavigationDrawer
 import androidx.tv.material3.Text
-import androidx.tv.material3.rememberDrawerState
 import com.senkou.tv.ui.Screen
 import com.senkou.tv.ui.common.LoadingIndicator
 import com.senkou.tv.ui.common.NoResult
@@ -27,7 +26,7 @@ import com.senkou.tv.ui.common.Result
 
 @Composable
 fun MainScreen(
-   model: MoviesListViewModel,
+   model: MoviesListViewModel = hiltViewModel(),
    onMovieClicked: (movieId: Int) -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()
@@ -47,7 +46,6 @@ fun MainScreen(
          is Result.Success -> {
             var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
             val closeDrawerWidth = 80.dp
-            val drawerState = rememberDrawerState(DrawerValue.Closed)
 
             ModalNavigationDrawer(
                drawerContent = {
@@ -61,13 +59,39 @@ fun MainScreen(
                   ) {
                      DrawerMenuItems(selectedIndex = selectedIndex) { index ->
                         selectedIndex = index
-                        drawerState.setValue(DrawerValue.Closed)
                      }
                   }
                },
-               drawerState = drawerState,
                scrimBrush = Brush.horizontalGradient(listOf(Color.Black, Color.Transparent))
             ) {
+//               when (selectedIndex) {
+//                  0 -> {
+//                     Button(
+//                        modifier =
+//                           Modifier
+//                              .padding(closeDrawerWidth)
+//                              .height(100.dp)
+//                              .fillMaxWidth(),
+//                        onClick = {}
+//                     ) {
+//                        Text("Uno")
+//                     }
+//                  }
+//
+//                  1 -> {
+//                     Button(
+//                        modifier =
+//                           Modifier
+//                              .padding(closeDrawerWidth)
+//                              .height(100.dp)
+//                              .fillMaxWidth(),
+//                        onClick = {}
+//                     ) {
+//                        Text("Dos")
+//                     }
+//                  }
+
+
                when (selectedIndex) {
                   0 -> {
                      ImmersiveList(
@@ -92,6 +116,7 @@ fun MainScreen(
             }
          }
       }
+
    }
 }
 

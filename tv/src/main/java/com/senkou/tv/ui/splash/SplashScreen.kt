@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.tv.R
 import com.senkou.tv.ui.Screen
@@ -20,7 +21,7 @@ import com.senkou.tv.ui.theme.logoBackground
 
 @Composable
 fun SplashScreen(
-   model: MoviesListViewModel,
+   model: MoviesListViewModel = hiltViewModel(),
    onMoviesLoaded: () -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()

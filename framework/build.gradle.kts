@@ -5,6 +5,7 @@ plugins {
    alias(libs.plugins.jetbrains.kotlin.android)
    alias(libs.plugins.google.devtools.ksp)
    alias(libs.plugins.kotlin.serialization)
+   alias(libs.plugins.hilt)
 }
 
 android {
@@ -68,6 +69,10 @@ dependencies {
    implementation(libs.okhttp.logging.interceptor)
    implementation(libs.room.ktx)
    ksp(libs.room.compiler)
+
+   implementation(libs.hilt.core)
+   implementation(libs.hilt.android)
+   ksp(libs.hilt.compiler)
 
    testImplementation(libs.junit)
    androidTestImplementation(libs.androidx.junit)

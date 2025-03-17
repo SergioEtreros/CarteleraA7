@@ -13,8 +13,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class WebMovieDatasource : RemoteDataSource {
+class WebMovieDatasource @Inject constructor() : RemoteDataSource {
    override suspend fun getCartelera(): Cartelera = withContext(Dispatchers.IO) {
       try {
          val url = URL("https://artesiete.es/Cine/13/Artesiete-segovia")

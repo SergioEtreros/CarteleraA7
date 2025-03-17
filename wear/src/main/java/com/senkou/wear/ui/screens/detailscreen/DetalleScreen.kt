@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
@@ -30,7 +31,7 @@ import com.senkou.wear.ui.theme.fondo_lista
 import com.senkou.wear.ui.theme.resalte_ticket
 
 @Composable
-fun DetailScreen(model: DetailViewModel) {
+fun DetailScreen(model: DetailViewModel = hiltViewModel()) {
    val state by model.uiState.collectAsStateWithLifecycle(UiState())
 
    DetailScreen(state = state)

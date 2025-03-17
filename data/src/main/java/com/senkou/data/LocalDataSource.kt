@@ -6,16 +6,16 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
 
-   val peliculas: Flow<List<Pelicula>>
-   val proximosEstrenos: Flow<List<Pelicula>>
-   fun getSesiones(idEspectaculo: Int): Flow<List<Sesion>>
+   val movies: Flow<List<Pelicula>>
+   val upcomingMovies: Flow<List<Pelicula>>
+   fun getSessions(movieId: Int): Flow<List<Sesion>>
 
-   suspend fun savePeliculas(peliculas: List<Pelicula>)
-   suspend fun saveProximosEstrenos(proximosEstrenos: List<Pelicula>)
+   suspend fun saveMovies(movies: List<Pelicula>)
+   suspend fun saveUpcomingMovies(upcomingMovies: List<Pelicula>)
 
-   suspend fun saveSesiones(sesiones: List<Sesion>)
+   suspend fun saveSessions(sessions: List<Sesion>)
 
-   suspend fun deletePeliculas()
+   suspend fun deleteMovies()
 
-   suspend fun deleteEstrenos()
+   suspend fun deleteUpcomingMovies()
 }

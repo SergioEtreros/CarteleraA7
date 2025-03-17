@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.carteleraa7.R
 import com.senkou.carteleraa7.ui.Screen
@@ -20,7 +21,7 @@ import com.senkou.carteleraa7.ui.mainscreen.MovieListViewModel
 
 @Composable
 fun SplashScreen(
-   model: MovieListViewModel,
+   model: MovieListViewModel = hiltViewModel(),
    onMoviesLoaded: () -> Unit,
 ) {
 

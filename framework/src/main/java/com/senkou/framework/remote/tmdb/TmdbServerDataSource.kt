@@ -1,8 +1,9 @@
 package com.senkou.framework.remote.tmdb
 
 import com.senkou.data.BackgroundDataSource
+import javax.inject.Inject
 
-class TmdbServerDataSource(
+class TmdbServerDataSource @Inject constructor(
    private val tmdbService: TmdbService
 ) : BackgroundDataSource {
    override suspend fun getMovieBackgroundByName(movieName: String, year: String): String? {

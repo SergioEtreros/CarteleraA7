@@ -6,12 +6,15 @@ import com.senkou.domain.common.getDaysSessions
 import com.senkou.domain.model.Sesion
 import com.senkou.usecases.LoadDetailUseCase
 import com.senkou.usecases.PlayTrailerUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Named
 
-//@HiltViewModel
-class DetailViewModel(
-   movieId: Int,
+@HiltViewModel
+class DetailViewModel @Inject constructor(
+   @Named("movieId") movieId: Int,
    loadDetailUseCase: LoadDetailUseCase,
    private val playTrailerUseCase: PlayTrailerUseCase,
 ) : ViewModel() {

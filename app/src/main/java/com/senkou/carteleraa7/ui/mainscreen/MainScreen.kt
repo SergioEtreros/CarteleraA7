@@ -23,6 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.common.LoadingIndicator
@@ -32,8 +33,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
-   model: MovieListViewModel,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+   model: MovieListViewModel = hiltViewModel(),
+   onMovieClicked: (movieId: Int) -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()
 
@@ -43,7 +44,7 @@ fun MainScreen(
 @Composable
 fun MainScreen(
    state: Result<MovieListViewModel.UiState>,
-   onMovieClicked: (idEspectaculo: Int) -> Unit,
+   onMovieClicked: (movieId: Int) -> Unit,
 ) {
    Screen {
       Scaffold(
@@ -54,7 +55,7 @@ fun MainScreen(
             Result.Loading -> LoadingIndicator(paddingValues)
             is Result.Error -> Text(text = state.throwable.message.orEmpty())
             is Result.Success -> {
-              CarteleraPage(paddingValues, state.data, onMovieClicked)
+               MovieList(paddingValues, state.data, onMovieClicked)
             }
          }
       }
@@ -62,10 +63,10 @@ fun MainScreen(
 }
 
 @Composable
-fun CarteleraPage(
+fun MovieList(
    paddingValues: PaddingValues,
    state: MovieListViewModel.UiState,
-   onMovieClicked: (idEspectaculo: Int) -> Unit
+   onMovieClicked: (movieId: Int) -> Unit
 ) {
    Column(
       modifier = Modifier
@@ -110,7 +111,7 @@ fun CarteleraPage(
       ) { page ->
          tabIndex = page
          when (page) {
-            0 -> MovieList(state.movies) { idEspectaculo -> onMovieClicked(idEspectaculo) }
+            0 -> MovieList(state.movies) { movieId -> onMovieClicked(movieId) }
             1 -> MovieList(state.upcominMovies) {}
          }
       }

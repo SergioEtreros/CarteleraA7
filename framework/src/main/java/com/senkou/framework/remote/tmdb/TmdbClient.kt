@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.create
 
-class TmdbClient(baseUrl: String) {
+internal class TmdbClient(baseUrl: String) {
 
    private val intercepter = HttpLoggingInterceptor().apply {
       level = HttpLoggingInterceptor.Level.HEADERS

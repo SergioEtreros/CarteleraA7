@@ -46,8 +46,10 @@ class YoutubeDatasource(private val context: Context) : PlayVideoDataSource {
          intentApp.putExtra("finish_on_ended", true)
          intentApp.putExtra("autoplay", true)
 
+         intentApp.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
          Log.d("Youtube", "intentApp: ${intentApp.data}")
-         context.startActivity(intentApp)
+         context.applicationContext.startActivity(intentApp)
       } catch (ex: ActivityNotFoundException) {
          try {
             val intentBrowser =

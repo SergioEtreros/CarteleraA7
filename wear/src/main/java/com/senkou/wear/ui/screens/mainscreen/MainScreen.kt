@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.items
@@ -17,7 +18,7 @@ import com.senkou.wear.ui.theme.fondo_lista
 
 @Composable
 fun MainScreen(
-   model: MoviesListViewModel,
+   model: MoviesListViewModel = hiltViewModel(),
    onMovieClicked: (movieId: Int) -> Unit,
 ) {
    val state by model.state.collectAsStateWithLifecycle()

@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senkou.carteleraa7.ui.Screen
 import com.senkou.carteleraa7.ui.detail.DetailViewModel.UiState
 
 @Composable
 fun DetailScreen(
-   model: DetailViewModel,
+   model: DetailViewModel = hiltViewModel(),
    onBack: () -> Unit
 ) {
    val state by model.uiState.collectAsStateWithLifecycle(UiState())
